@@ -1,7 +1,7 @@
 package com.herecity.user.framework.adapter.input.rest
 
 import com.herecity.user.application.dto.UserDto
-import com.herecity.user.application.port.input.FakeSignInputPort
+import com.herecity.user.application.usecase.FakeSignUseCase
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/api/users")
-class UserRestAdapter(private val fakeSignUseCase: FakeSignInputPort) {
+class UserRestAdapter(private val fakeSignUseCase: FakeSignUseCase) {
 
   @Operation(summary = "fake 로그인")
   @ApiResponses(
