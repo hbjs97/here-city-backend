@@ -6,17 +6,10 @@ import com.herecity.user.framework.adapter.output.mariadb.UserEntity
 import java.util.*
 
 class User(entity: UserEntity) : BaseDomain(entity) {
-  var id: UUID
-  var email: String
-  var displayName: String
-  var password: String
-  var role: UserRole
+  var id: UUID? = entity.id
+  var email: String = entity.email
+  var displayName: String = entity.displayName
+  var password: String = entity.password
+  var role: UserRole = entity.role
 
-  init {
-    this.id = entity.id!!
-    this.email = entity.email
-    this.password = entity.password
-    this.displayName = entity.displayName
-    this.role = entity.role
-  }
 }

@@ -3,7 +3,7 @@ package com.herecity.common.domain.entity
 import java.time.LocalDateTime
 
 open class BaseDomain {
-  val createdAt: LocalDateTime;
+  var createdAt: LocalDateTime
   var deletedAt: LocalDateTime?
 
   constructor(entity: BaseEntity) {

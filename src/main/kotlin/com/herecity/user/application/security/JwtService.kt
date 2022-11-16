@@ -1,6 +1,6 @@
 package com.herecity.user.application.security
 
-import com.herecity.user.application.port.output.FetchUserPort
+import com.herecity.user.application.port.output.UserQueryOutputPort
 import com.herecity.user.domain.UserSecurity
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
@@ -15,10 +15,10 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class JwtService(private val fetchUserPort: FetchUserPort) {
+class JwtService(private val userQueryOutputPort: UserQueryOutputPort) {
   companion object {
     private val secretKey: Key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-    
+
     fun getIdFromToken(token: String): String {
       return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).body.subject
     }
@@ -50,7 +50,7 @@ class JwtService(private val fetchUserPort: FetchUserPort) {
   }
 
   fun getAuthentication(token: String): Authentication {
-    val user = fetchUserPort.getById(UUID.fromString(getIdFromToken(token)))
+    val user = userQueryOutputPort.getById(UUID.fromString(getIdFromToken(token)))
     val userDetails = UserSecurity(user);
     return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
   }

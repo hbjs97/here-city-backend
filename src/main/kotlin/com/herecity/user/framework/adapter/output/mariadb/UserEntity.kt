@@ -7,7 +7,7 @@ import org.hibernate.annotations.Type
 import java.util.*
 import javax.persistence.*
 
-@Entity
+@Entity(name = "user")
 class UserEntity(
   @Id
   @GeneratedValue(generator = "hibernate-uuid")
@@ -15,7 +15,7 @@ class UserEntity(
   @Type(type = "uuid-char")
   var id: UUID? = null,
 
-  @Column(length = 30, nullable = false, unique = true)
+  @Column(length = 100, nullable = false, unique = true)
   var email: String,
 
   @Column(length = 20, nullable = false, unique = true)
