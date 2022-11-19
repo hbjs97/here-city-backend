@@ -11,22 +11,18 @@ class UserMariaAdapter(
   private val userRepository: UserRepository
 ) : UserQueryOutputPort, UserCommandOutputPort {
   override fun getById(id: UUID): User {
-    val userEntity = userRepository.findById(id).orElseThrow()
-    return UserEntityMapper.userEntityToDomain(userEntity)
+    return userRepository.findById(id).orElseThrow()
   }
 
   override fun findById(id: UUID): User? {
-    val userEntity = userRepository.findById(id).get()
-    return UserEntityMapper.userEntityToDomain(userEntity)
+    return userRepository.findById(id).get()
   }
 
   override fun findByEmail(email: String): User? {
-    val userEntity = userRepository.findByEmail(email) ?: return null
-    return UserEntityMapper.userEntityToDomain(userEntity)
+    return userRepository.findByEmail(email) ?: null
   }
 
   override fun save(user: User): User {
-    val userEntity = userRepository.save(UserEntityMapper.userDomainToEntity(user))
-    return UserEntityMapper.userEntityToDomain(userEntity)
+    return userRepository.save(user)
   }
 }

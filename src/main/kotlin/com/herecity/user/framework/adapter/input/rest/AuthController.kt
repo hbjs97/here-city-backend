@@ -1,7 +1,8 @@
 package com.herecity.user.framework.adapter.input.rest
 
-import com.herecity.user.application.dto.UserDto
-import com.herecity.user.application.usecase.FakeSignUseCase
+import com.herecity.user.application.dto.JwtToken
+import com.herecity.user.application.port.input.FakeSignUseCase
+import com.herecity.user.domain.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("/api/users")
-class UserRestAdapter(private val fakeSignUseCase: FakeSignUseCase) {
+@RequestMapping("/api/auth")
+class AuthController(private val fakeSignUseCase: FakeSignUseCase) {
 
   @Operation(summary = "fake 로그인")
   @ApiResponses(
@@ -21,7 +22,7 @@ class UserRestAdapter(private val fakeSignUseCase: FakeSignUseCase) {
   )
   @ResponseStatus(value = HttpStatus.CREATED)
   @PostMapping("fake-login")
-  fun fakeSignIn(): UserDto {
-    return fakeSignUseCase.fakeSignIn()
+  fun fakeSignIn(): JwtToken {
+    return fakeSignUseCase.fakeSignIn(UserRole.USER)
   }
 }

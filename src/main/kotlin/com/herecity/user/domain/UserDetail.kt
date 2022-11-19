@@ -4,13 +4,20 @@ import com.herecity.user.domain.entity.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.crypto.password.PasswordEncoder
 
-class UserSecurity(private val user: User) : UserDetails {
+
+class UserDetail(
+  private val user: User,
+  private val passwordEncoder: PasswordEncoder
+) : UserDetails {
+
+
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf<GrantedAuthority>(
     SimpleGrantedAuthority(user.role.toString())
   )
 
-  override fun getPassword(): String = user.password
+  override fun getPassword(): String = passwordEncoder.encode("")
 
   override fun getUsername(): String = user.email
 

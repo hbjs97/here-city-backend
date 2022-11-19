@@ -42,6 +42,7 @@ dependencies {
   val querydslVersion = "5.0.0"
   val kotestVersion = "5.1.0"
 
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
   implementation("org.springframework.boot:spring-boot-starter-web")
 
   // oauth2 && security
