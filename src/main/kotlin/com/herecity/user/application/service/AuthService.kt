@@ -6,9 +6,9 @@ import com.herecity.user.application.port.input.FakeSignUseCase
 import com.herecity.user.application.port.output.UserCommandOutputPort
 import com.herecity.user.application.port.output.UserQueryOutputPort
 import com.herecity.user.application.security.JwtService
-import com.herecity.user.domain.UserRole
 import com.herecity.user.domain.entity.User
 import com.herecity.user.domain.exception.SignInFailException
+import com.herecity.user.domain.vo.UserRole
 import io.github.serpro69.kfaker.Faker
 import mu.KotlinLogging
 import org.springframework.security.authentication.AuthenticationManager
@@ -42,7 +42,8 @@ class AuthService(
         id = UUID.randomUUID(),
         email = Faker().internet.unique.email(),
         displayName = Faker().name.firstName(),
-        role = role
+        role = role,
+        twitterId = Faker().artist.names()
       )
     )
     try {

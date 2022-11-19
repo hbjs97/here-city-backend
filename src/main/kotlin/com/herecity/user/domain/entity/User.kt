@@ -1,13 +1,21 @@
 package com.herecity.user.domain.entity
 
 import com.herecity.common.domain.entity.BaseEntity
-import com.herecity.user.domain.UserRole
+import com.herecity.user.domain.vo.UserRole
 import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Type
+import org.hibernate.annotations.Where
 import java.util.*
 import javax.persistence.*
 
-@Entity(name = "user")
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
+@Entity
+@Table(name = "user", indexes = [
+  Index(columnList = "email, deletedAt")
+])
+
 class User(
   @Id
   @GeneratedValue(generator = "hibernate-uuid")
@@ -20,6 +28,9 @@ class User(
 
   @Column(length = 20, nullable = false, unique = true)
   var displayName: String,
+
+  @Column(length = 20, nullable = true, unique = true)
+  var twitterId: String,
 
   @Enumerated(EnumType.STRING)
   var role: UserRole = UserRole.USER

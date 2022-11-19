@@ -30,7 +30,7 @@ class SecurityConfig(private val jwtService: JwtService) : WebSecurityConfigurer
 
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-    http.authorizeRequests().antMatchers("/api/auth/**").permitAll().antMatchers("/api/**").authenticated()
+    http.authorizeRequests().antMatchers("/api/v1/auth/**").permitAll().antMatchers("/api/v1/**").authenticated()
 
     http.addFilterBefore(
       JwtAuthenticationFilter(jwtService, passwordEncoder()), UsernamePasswordAuthenticationFilter::class.java

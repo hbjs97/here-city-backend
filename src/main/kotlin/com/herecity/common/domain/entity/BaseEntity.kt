@@ -8,7 +8,6 @@ import javax.persistence.Column
 import javax.persistence.EntityListeners
 import javax.persistence.MappedSuperclass
 
-@Where(clause = "deleted_at IS NULL")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 open class BaseEntity {

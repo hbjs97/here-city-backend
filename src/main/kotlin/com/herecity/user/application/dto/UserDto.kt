@@ -1,7 +1,7 @@
 package com.herecity.user.application.dto
 
-import com.herecity.user.domain.UserRole
 import com.herecity.user.domain.entity.User
+import com.herecity.user.domain.vo.UserRole
 import java.util.*
 
 data class UserDto(

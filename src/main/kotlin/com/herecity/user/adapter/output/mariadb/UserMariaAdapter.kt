@@ -1,4 +1,4 @@
-package com.herecity.user.framework.adapter.output.mariadb
+package com.herecity.user.adapter.output.mariadb
 
 import com.herecity.user.application.port.output.UserCommandOutputPort
 import com.herecity.user.application.port.output.UserQueryOutputPort

@@ -1,4 +1,4 @@
-package com.herecity.user.framework.adapter.output.mariadb
+package com.herecity.user.adapter.output.mariadb
 
 import com.herecity.user.domain.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
