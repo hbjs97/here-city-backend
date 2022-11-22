@@ -12,9 +12,11 @@ import javax.persistence.*
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
 @Entity
-@Table(name = "user", indexes = [
-  Index(columnList = "email, deletedAt")
-])
+@Table(
+  name = "user", indexes = [
+    Index(columnList = "email, deletedAt")
+  ]
+)
 
 class User(
   @Id
@@ -26,10 +28,10 @@ class User(
   @Column(length = 100, nullable = false, unique = true)
   var email: String,
 
-  @Column(length = 20, nullable = false, unique = true)
+  @Column(length = 30, nullable = false, unique = true)
   var displayName: String,
 
-  @Column(length = 20, nullable = true, unique = true)
+  @Column(length = 30, nullable = true, unique = true)
   var twitterId: String,
 
   @Enumerated(EnumType.STRING)

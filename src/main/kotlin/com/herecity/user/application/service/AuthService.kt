@@ -41,9 +41,9 @@ class AuthService(
       User(
         id = UUID.randomUUID(),
         email = Faker().internet.unique.email(),
-        displayName = Faker().name.firstName(),
+        displayName = Faker().name.name().chunked(30).first(),
         role = role,
-        twitterId = Faker().artist.names()
+        twitterId = Faker().name.name().chunked(30).first(),
       )
     )
     try {

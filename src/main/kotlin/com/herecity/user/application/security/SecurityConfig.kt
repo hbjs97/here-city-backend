@@ -24,16 +24,16 @@ class SecurityConfig(private val jwtService: JwtService) : WebSecurityConfigurer
   override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
 
   override fun configure(http: HttpSecurity) {
-    http.httpBasic().disable().csrf().disable().cors().disable()
-
-    http.formLogin().usernameParameter("email")
-
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-    http.authorizeRequests().antMatchers("/api/v1/auth/**").permitAll().antMatchers("/api/v1/**").authenticated()
-
-    http.addFilterBefore(
-      JwtAuthenticationFilter(jwtService, passwordEncoder()), UsernamePasswordAuthenticationFilter::class.java
-    )
+    http
+      .httpBasic().disable()
+      .csrf().disable()
+      .cors().disable()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+//      .formLogin().usernameParameter("email").disable()
+      .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+      .antMatchers("/api/**").authenticated()
+      .and()
+      .addFilterBefore(JwtAuthenticationFilter(jwtService, passwordEncoder()), UsernamePasswordAuthenticationFilter::class.java)
   }
 }

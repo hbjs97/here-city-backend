@@ -11,8 +11,7 @@ class UserDetail(
   private val user: User,
   private val passwordEncoder: PasswordEncoder
 ) : UserDetails {
-
-
+  
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf<GrantedAuthority>(
     SimpleGrantedAuthority(user.role.toString())
   )

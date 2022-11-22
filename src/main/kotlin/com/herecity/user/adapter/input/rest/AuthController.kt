@@ -1,8 +1,8 @@
 package com.herecity.user.adapter.input.rest
 
+import com.herecity.user.adapter.input.rest.dto.FakeSignInDto
 import com.herecity.user.application.dto.JwtToken
 import com.herecity.user.application.port.input.FakeSignUseCase
-import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
@@ -19,8 +19,8 @@ class AuthController(private val fakeSignUseCase: FakeSignUseCase) {
   @ApiResponse(responseCode = "201", description = "가입 및 로그인 성공")
   @ResponseStatus(value = HttpStatus.CREATED)
   @PostMapping("fake-login")
-  fun fakeSignIn(): JwtToken {
-    return fakeSignUseCase.fakeSignIn(UserRole.USER)
+  fun fakeSignIn(@RequestBody fakeSignInDto: FakeSignInDto): JwtToken {
+    return fakeSignUseCase.fakeSignIn(fakeSignInDto.role)
   }
 }
 
