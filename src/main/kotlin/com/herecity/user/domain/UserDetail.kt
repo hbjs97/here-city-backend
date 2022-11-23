@@ -1,6 +1,7 @@
 package com.herecity.user.domain
 
 import com.herecity.user.domain.entity.User
+import com.herecity.user.domain.vo.UserRole
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,7 +12,7 @@ class UserDetail(
   private val user: User,
   private val passwordEncoder: PasswordEncoder
 ) : UserDetails {
-  
+
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf<GrantedAuthority>(
     SimpleGrantedAuthority(user.role.toString())
   )
@@ -27,4 +28,10 @@ class UserDetail(
   override fun isCredentialsNonExpired(): Boolean = true
 
   override fun isEnabled(): Boolean = true
+
+  fun getEmail(): String = user.email
+
+  fun getDisplayName(): String = user.displayName
+
+  fun getRole(): UserRole = user.role
 }

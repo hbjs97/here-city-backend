@@ -1,10 +1,12 @@
 package com.herecity.unit.adapter.rest
 
+import com.herecity.common.annotation.ReqUser
 import com.herecity.unit.application.dto.CreateUnitDto
 import com.herecity.unit.application.dto.UnitDto
 import com.herecity.unit.application.dto.UpdateUnitDto
 import com.herecity.unit.application.port.input.LoadUnitUseCase
 import com.herecity.unit.application.port.input.RecordUnitUseCase
+import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
@@ -22,8 +24,9 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ApiResponse(responseCode = "200")
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
+//  @Secured("ADMIN" or "USER")
   @GetMapping
-  fun getUnits(): List<UnitDto> = this.loadUnitUseCase.getAllUnits()
+  fun getUnits(@ReqUser user: UserDetail): List<UnitDto> = this.loadUnitUseCase.getAllUnits()
 
   @Operation(summary = "유닛 등록")
   @ApiResponse(responseCode = "201")

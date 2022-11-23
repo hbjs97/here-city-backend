@@ -93,6 +93,11 @@ dependencies {
   annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
   annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jpa")
 
+
+  // kapt
+  kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+  kapt("org.springframework.boot:spring-boot-configuration-processor")
+
   // gson
   implementation("com.google.code.gson:gson:2.10")
 

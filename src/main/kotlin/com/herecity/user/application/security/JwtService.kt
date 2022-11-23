@@ -26,9 +26,9 @@ class JwtService(
     //    private val secretKey: Key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
 
 
-    private const val accessTokenValidTime = 30 * 60 * 1000L
+    private const val accessTokenValidTime = 86400000L
 
-    private const val refreshTokenValidTime = 30 * 24 * 60 * 60 * 1000L
+    private const val refreshTokenValidTime = 604800000L
 
 
   }
