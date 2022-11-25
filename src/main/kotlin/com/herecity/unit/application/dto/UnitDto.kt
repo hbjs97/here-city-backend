@@ -1,7 +1,6 @@
 package com.herecity.unit.application.dto
 
-import java.util.*
-import com.herecity.member.domain.entity.Unit
+import com.herecity.unit.domain.entity.Unit
 
 
 data class UnitDto(

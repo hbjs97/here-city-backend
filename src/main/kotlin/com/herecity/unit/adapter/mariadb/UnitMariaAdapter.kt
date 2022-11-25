@@ -1,8 +1,8 @@
 package com.herecity.unit.adapter.mariadb
 
-import com.herecity.member.domain.entity.Unit
 import com.herecity.unit.application.port.output.UnitCommandOutputPort
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
+import com.herecity.unit.domain.entity.Unit
 import com.herecity.unit.domain.exception.DuplicateUnitNameException
 import mu.KotlinLogging
 import org.springframework.dao.DataIntegrityViolationException

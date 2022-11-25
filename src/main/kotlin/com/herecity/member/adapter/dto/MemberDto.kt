@@ -1,8 +1,8 @@
 package com.herecity.member.adapter.dto
 
 import com.herecity.member.domain.entity.Member
-import com.herecity.member.domain.entity.Unit
 import com.herecity.unit.application.dto.UnitDto
+import com.herecity.unit.domain.entity.Unit
 
 data class MemberDto(
   val id: Long?,

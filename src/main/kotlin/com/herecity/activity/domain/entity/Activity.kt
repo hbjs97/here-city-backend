@@ -1,4 +1,4 @@
-package com.herecity.member.domain.entity
+package com.herecity.activity.domain.entity
 
 import com.herecity.common.domain.entity.BaseEntity
 import org.hibernate.annotations.SQLDelete
@@ -8,11 +8,11 @@ import javax.persistence.*
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE activity SET deleted_at = NOW() WHERE id = ?")
 @Entity(name = "activity")
-class Activity (
+class Activity(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   var id: Long? = null,
-  
+
   @Column(nullable = false, length = 20)
   var name: String
-): BaseEntity()
+) : BaseEntity()

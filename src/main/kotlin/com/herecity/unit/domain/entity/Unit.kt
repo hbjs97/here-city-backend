@@ -1,4 +1,4 @@
-package com.herecity.member.domain.entity
+package com.herecity.unit.domain.entity
 
 
 import com.herecity.common.domain.entity.BaseEntity

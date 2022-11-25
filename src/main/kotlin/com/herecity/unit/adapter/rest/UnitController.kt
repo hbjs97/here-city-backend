@@ -1,5 +1,6 @@
 package com.herecity.unit.adapter.rest
 
+
 import com.herecity.common.annotation.ReqUser
 import com.herecity.unit.application.dto.CreateUnitDto
 import com.herecity.unit.application.dto.UnitDto
@@ -24,7 +25,6 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ApiResponse(responseCode = "200")
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
-//  @Secured("ADMIN" or "USER")
   @GetMapping
   fun getUnits(@ReqUser user: UserDetail): List<UnitDto> = this.loadUnitUseCase.getAllUnits()
 
@@ -39,14 +39,14 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
-  @PatchMapping(":id")
-  fun updateUnit(@RequestParam id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto = this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
+  @PatchMapping("{id}")
+  fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto = this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
 
   @Operation(summary = "유닛 삭제")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
-  @DeleteMapping(":id")
-  fun deleteUnit(@RequestParam id: Long) = this.recordUnitUseCase.deleteUnit(id)
+  @DeleteMapping("{id}")
+  fun deleteUnit(@PathVariable id: Long) = this.recordUnitUseCase.deleteUnit(id)
 }
 

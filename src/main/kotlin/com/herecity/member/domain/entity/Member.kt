@@ -2,12 +2,10 @@ package com.herecity.member.domain.entity
 
 
 import com.herecity.common.domain.entity.BaseEntity
-import com.herecity.member.domain.entity.Unit
+import com.herecity.unit.domain.entity.Unit
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 import javax.persistence.*
-import kotlin.Long
-import kotlin.String
 
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE member SET deleted_at = NOW() WHERE id = ?")

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 class MemberService(private val memberQueryOutputPort: MemberQueryOutputPort, private val memberCommandOutputPort: MemberCommandOutputPort, private val unitQueryOutputPort: UnitQueryOutputPort) :
   LoadMemberUseCase, RecordMemberUseCase {
   override fun getMembers(searchMemberDto: SearchMemberDto): List<MemberDto> {
-    return this.memberQueryOutputPort.searchMembers(searchMemberDto)
+    return this.memberQueryOutputPort.search(searchMemberDto)
   }
 
   override fun addMember(addMemberDto: AddMemberDto): MemberDto {
@@ -41,6 +41,4 @@ class MemberService(private val memberQueryOutputPort: MemberQueryOutputPort, pr
   }
 
   override fun deleteMember(id: Long) = this.memberCommandOutputPort.deleteById(id)
-
-
 }

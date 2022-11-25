@@ -39,8 +39,8 @@ class MemberController(
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
-  @PatchMapping(":id")
-  fun updateMember(@RequestParam id: Long, @RequestBody updateMemberDto: UpdateMemberDto): MemberDto {
+  @PatchMapping("{id}")
+  fun updateMember(@PathVariable id: Long, @RequestBody updateMemberDto: UpdateMemberDto): MemberDto {
     if (updateMemberDto.unitId == null && updateMemberDto.name == null) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "멤버 수정 시 파라미터가 모두 null 일 수 없습니다.")
     }
@@ -51,6 +51,6 @@ class MemberController(
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
-  @DeleteMapping(":id")
-  fun deleteMember(@RequestParam id: Long) = this.recordMemberUseCase.deleteMember(id)
+  @DeleteMapping("{id}")
+  fun deleteMember(@PathVariable id: Long) = this.recordMemberUseCase.deleteMember(id)
 }

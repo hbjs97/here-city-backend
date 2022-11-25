@@ -20,7 +20,7 @@ class MemberMariaAdapter(
   private val queryFactory: JPAQueryFactory
 ) : MemberQueryOutputPort, MemberCommandOutputPort {
 
-  override fun searchMembers(searchMemberDto: SearchMemberDto): List<MemberDto> = this.queryFactory
+  override fun search(searchMemberDto: SearchMemberDto): List<MemberDto> = this.queryFactory
     .select(
       Projections.constructor(
         MemberDto::class.java,

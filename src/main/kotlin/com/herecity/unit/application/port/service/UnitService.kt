@@ -1,12 +1,12 @@
 package com.herecity.unit.application.port.service
 
-import com.herecity.member.domain.entity.Unit
+import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import com.herecity.unit.application.dto.UnitDto
 import com.herecity.unit.application.port.input.LoadUnitUseCase
 import com.herecity.unit.application.port.input.RecordUnitUseCase
 import com.herecity.unit.application.port.output.UnitCommandOutputPort
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
-import com.herecity.unit.domain.exception.DuplicateUnitNameException
+import com.herecity.unit.domain.entity.Unit
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +18,7 @@ class UnitService(private val unitQueryOutputPort: UnitQueryOutputPort, private 
 
   override fun createUnit(name: String): UnitDto {
     val exist = this.unitQueryOutputPort.findByName(name) !== null
-    if (exist) throw DuplicateUnitNameException()
+    if (exist) throw DuplicateActivityNameException()
     val unit = this.unitCommandOutputPort.save(Unit(name = name))
     return UnitDto(unit)
   }
