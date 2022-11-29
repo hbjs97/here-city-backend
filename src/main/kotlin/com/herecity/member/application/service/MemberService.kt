@@ -9,7 +9,7 @@ import com.herecity.member.application.port.input.RecordMemberUseCase
 import com.herecity.member.application.port.output.MemberCommandOutputPort
 import com.herecity.member.application.port.output.MemberQueryOutputPort
 import com.herecity.member.domain.entity.Member
-import com.herecity.member.domain.exception.DuplicateMemberNameException
+import com.herecity.region.domain.exception.DuplicateCityNameException
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.springframework.stereotype.Service
 
@@ -23,7 +23,7 @@ class MemberService(private val memberQueryOutputPort: MemberQueryOutputPort, pr
   override fun addMember(addMemberDto: AddMemberDto): MemberDto {
     val unit = this.unitQueryOutputPort.getById(addMemberDto.unitId)
     val duplicatedName = this.memberQueryOutputPort.findByName(addMemberDto.name) != null
-    if (duplicatedName) throw DuplicateMemberNameException()
+    if (duplicatedName) throw DuplicateCityNameException()
     val member = this.memberCommandOutputPort.save(Member(unit = unit, name = addMemberDto.name))
     return MemberDto(member, unit)
   }
