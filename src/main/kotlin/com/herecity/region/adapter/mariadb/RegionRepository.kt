@@ -1,11 +1,11 @@
 package com.herecity.region.adapter.mariadb
 
-import com.herecity.region.domain.entity.City
+import com.herecity.region.domain.entity.Region
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CityRepository : JpaRepository<City, Long> {
-  fun findByName(name: String): City?
+interface RegionRepository : JpaRepository<Region, Long> {
+  fun findByName(name: String): Region?
   fun existsByName(name: String): Boolean
 }

@@ -17,7 +17,6 @@ import javax.persistence.*
     Index(columnList = "email, deletedAt")
   ]
 )
-
 class User(
   @Id
   @GeneratedValue(generator = "hibernate-uuid")

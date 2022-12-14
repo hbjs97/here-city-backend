@@ -18,11 +18,7 @@ class UserMariaAdapter(
     return userRepository.findById(id).get()
   }
 
-  override fun findByEmail(email: String): User? {
-    return userRepository.findByEmail(email) ?: null
-  }
+  override fun findByEmail(email: String): User? = userRepository.findByEmail(email)
 
-  override fun save(user: User): User {
-    return userRepository.save(user)
-  }
+  override fun save(user: User): User = userRepository.save(user)
 }

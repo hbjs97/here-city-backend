@@ -1,89 +1,72 @@
 package com.herecity.region.adapter.mariadb
 
-import com.herecity.region.adapter.dto.CityDto
-import com.herecity.region.adapter.dto.StreetDto
-import com.herecity.region.application.port.output.CityCommandOutputPort
-import com.herecity.region.application.port.output.CityQueryOutputPort
-import com.herecity.region.application.port.output.StreetCommandOutputPort
-import com.herecity.region.application.port.output.StreetQueryOutputPort
-import com.herecity.region.domain.entity.City
-import com.herecity.region.domain.entity.QStreet.street
-import com.herecity.region.domain.entity.Street
+import com.herecity.region.adapter.dto.RegionDto
+import com.herecity.region.application.port.output.RegionCommandOutputPort
+import com.herecity.region.application.port.output.RegionQueryOutputPort
+import com.herecity.region.domain.entity.QRegion.region
+import com.herecity.region.domain.entity.Region
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import mu.KotlinLogging
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 
 private val logger = KotlinLogging.logger {}
 
 @Component
 class RegionMariaAdapter(
-  private val cityRepository: CityRepository,
-  private val streetRepository: StreetRepository,
+  private val regionRepository: RegionRepository,
   private val queryFactory: JPAQueryFactory
-) : CityQueryOutputPort, CityCommandOutputPort, StreetQueryOutputPort, StreetCommandOutputPort {
-
-//  override fun search(searchRegionDto: SearchRegionDto): List<RegionDto> = this.queryFactory
-//    .select(
-//      Projections.constructor(
-//        RegionDto::class.java,
-//        region.id,
-//        region.name,
-//        region.unit.id.`as`("unitId"),
-//        region.unit.name.`as`("unitName")
-//      )
-//    )
-//    .from(region)
-//    .innerJoin(region.unit)
-//    .where(this.eqUnitId(searchRegionDto.unitId))
-//    .fetch()
+) : RegionQueryOutputPort, RegionCommandOutputPort {
 
 
-  override fun getAllCities(): List<CityDto> = this.cityRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).map { CityDto(it.id, it.name) }
+  override fun save(entity: Region): Region = this.regionRepository.save(entity)
 
-  override fun saveCity(entity: City): City = this.cityRepository.save(entity)
+  override fun deleteById(id: Long) = this.regionRepository.deleteById(id);
 
-  override fun deleteCityById(id: Long) = this.cityRepository.deleteById(id)
-
-
-  override fun getCityById(id: Long): City = this.cityRepository.findById(id).orElseThrow()
-
-  override fun findCityById(id: Long): City? = this.cityRepository.findById(id).get()
-
-  override fun findCityByName(name: String): City? = this.cityRepository.findByName(name)
-
-  override fun existsCityByName(name: String): Boolean = this.cityRepository.existsByName(name)
-
-  override fun getStreets(cityId: Long?): List<StreetDto> = this.queryFactory
+  override fun getUpperRegions(): List<RegionDto> = this.queryFactory
     .select(
       Projections.constructor(
-        StreetDto::class.java,
-        street.id,
-        street.name,
-        street.city.id.`as`("cityId"),
-        street.city.name.`as`("cityName")
+        RegionDto::class.java,
+        region.id,
+        region.name
       )
     )
-    .from(street)
-    .innerJoin(street.city)
-    .where(this.eqCityId(cityId))
+    .from(region)
+    .where(this.isNullUpperRegionId())
     .fetch()
 
-  override fun saveStreet(entity: Street): Street = this.streetRepository.save(entity)
 
-  override fun deleteStreetById(id: Long) = this.streetRepository.deleteById(id)
+  override fun getSubRegions(id: Long): List<RegionDto> = this.queryFactory
+    .select(
+      Projections.constructor(
+        RegionDto::class.java,
+        region.id,
+        region.name,
+        region.upperRegion.id.`as`("upperRegionId"),
+        region.upperRegion.name.`as`("upperRegionName")
+      )
+    )
+    .from(region)
+    .innerJoin(region.upperRegion)
+    .where(this.eqUpperRegionId(id))
+    .fetch()
 
 
-  override fun getStreetById(id: Long): Street = this.streetRepository.findById(id).orElseThrow()
+  override fun findById(id: Long): Region? = this.regionRepository.findById(id).get()
 
-  override fun findStreetById(id: Long): Street? = this.streetRepository.findById(id).get()
+  override fun findByName(name: String): Region? = this.regionRepository.findByName(name)
 
-  override fun existsStreetByCityIdAndName(cityId: Long, name: String): Boolean = this.streetRepository.existsByCityIdAndName(cityId, name)
+  override fun existsByName(name: String): Boolean = this.regionRepository.existsByName(name)
 
-  private fun eqCityId(cityId: Long?): BooleanExpression? {
-    if (cityId == null) return null
-    return street.cityId.eq(cityId)
+  override fun getById(id: Long): Region = this.regionRepository.findById(id).orElseThrow()
+
+  private fun eqUpperRegionId(upperRegionId: Long?): BooleanExpression? {
+    if (upperRegionId == null) return null
+    return region.upperRegionId.eq(upperRegionId)
+  }
+
+  private fun isNullUpperRegionId(): BooleanExpression {
+    return region.upperRegionId.isNull
   }
 }

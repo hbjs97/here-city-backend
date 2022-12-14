@@ -76,7 +76,6 @@ class JwtService(
     return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
   }
 
-
   fun resolveToken(request: HttpServletRequest): String? {
     val token = request.getHeader("Authorization")
     return if (token != null && token.indexOf("Bearer ") > -1) token.replace("Bearer ", "") else ""
