@@ -15,5 +15,9 @@ class Unit(
   var id: Long? = null,
 
   @Column(nullable = false, length = 20)
-  var name: String
-) : BaseEntity()
+  var name: String,
+
+  ) : BaseEntity() {
+  @Column(nullable = false, length = 20)
+  var isComposite: Boolean = false
+}

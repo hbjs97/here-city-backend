@@ -40,7 +40,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PatchMapping("{id}")
-  fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto = this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
+  fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto = this.recordUnitUseCase.updateUnit(id, updateUnitDto)
 
   @Operation(summary = "유닛 삭제")
   @ApiResponse(responseCode = "202")

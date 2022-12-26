@@ -2,6 +2,7 @@ package com.herecity.unit.application.port.service
 
 import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import com.herecity.unit.application.dto.UnitDto
+import com.herecity.unit.application.dto.UpdateUnitDto
 import com.herecity.unit.application.port.input.LoadUnitUseCase
 import com.herecity.unit.application.port.input.RecordUnitUseCase
 import com.herecity.unit.application.port.output.UnitCommandOutputPort
@@ -23,9 +24,10 @@ class UnitService(private val unitQueryOutputPort: UnitQueryOutputPort, private 
     return UnitDto(unit)
   }
 
-  override fun updateUnit(id: Long, name: String): UnitDto {
+  override fun updateUnit(id: Long, updateUnitDto: UpdateUnitDto): UnitDto {
     val unit = this.unitQueryOutputPort.getById(id)
-    unit.name = name
+    unit.name = updateUnitDto.name
+    if (updateUnitDto.isComposite != null) unit.isComposite = updateUnitDto.isComposite
     this.unitCommandOutputPort.save(unit)
     return UnitDto(unit)
   }

@@ -14,8 +14,6 @@ plugins {
   id("io.gitlab.arturbosch.detekt") version "1.20.0"
   id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
   id("org.jlleitschuh.gradle.ktlint-idea") version "11.0.0"
-
-
   val kotlinVersion = "1.6.21"
 
   kotlin("jvm") version kotlinVersion
@@ -73,6 +71,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
   implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+
+  implementation("org.hibernate:hibernate-spatial:5.6.12.Final")
 
 //	implementation("org.springframework.boot:spring-boot-starter-batch")
 //	implementation("org.springframework.boot:spring-boot-starter-quartz")
