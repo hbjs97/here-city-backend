@@ -24,7 +24,7 @@ class RegionService(
     val exist = this.regionQueryOutputPort.existsByName(name)
     if (exist) throw DuplicateRegionNameException()
     val region = this.regionCommandOutputPort.save(Region(name = name))
-    return RegionDto(region.id, region.name)
+    return RegionDto(region.id!!, region.name)
   }
 
   override fun addSubRegion(upperRegionId: Long, name: String): RegionDto {

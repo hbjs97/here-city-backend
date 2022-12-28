@@ -6,6 +6,8 @@ import com.herecity.place.application.port.input.LoadPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.place.application.port.output.PlaceCommandOutputPort
 import com.herecity.place.application.port.output.PlaceQueryOutputPort
+import org.springdoc.core.converters.models.Pageable
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,7 +15,7 @@ class PlaceService(
   private val placeQueryOutputPort: PlaceQueryOutputPort,
   private val placeCommandOutputPort: PlaceCommandOutputPort,
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
-  override fun getPlaces(): List<PlaceDto> {
+  override fun getPlaces(pageable: Pageable): Page<PlaceDto> {
     TODO("Not yet implemented")
   }
 

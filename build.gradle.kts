@@ -55,6 +55,7 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
   // springdoc
+  implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
   implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
   implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
 

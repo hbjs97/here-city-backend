@@ -8,6 +8,8 @@ import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import org.springdoc.core.converters.models.Pageable
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -23,7 +25,7 @@ class PlaceController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getPlaces(@ReqUser user: UserDetail): List<PlaceDto> = this.loadPlaceUseCase.getPlaces()
+  fun getPlaces(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceDto> = this.loadPlaceUseCase.getPlaces(pageable)
 
   @Operation(summary = "장소 등록")
   @ApiResponse(responseCode = "201")
