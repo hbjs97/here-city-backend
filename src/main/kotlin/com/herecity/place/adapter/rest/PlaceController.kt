@@ -32,7 +32,7 @@ class PlaceController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createPlace(@RequestParam createPlaceDto: CreatePlaceDto): PlaceDto = this.recordPlaceUseCase.createPlace(createPlaceDto)
+  fun createPlace(@RequestBody createPlaceDto: CreatePlaceDto): PlaceDto = this.recordPlaceUseCase.createPlace(createPlaceDto)
 
   @Operation(summary = "장소 정보 수정")
   @ApiResponse(responseCode = "202")

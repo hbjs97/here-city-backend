@@ -1,20 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
+  val kotlinVersion = "1.6.21"
   dependencies {
     classpath("org.jlleitschuh.gradle:ktlint-gradle:11.0.0")
     classpath("org.springframework.boot:spring-boot-gradle-plugin:2.6.3")
     classpath("io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE")
+    classpath("org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion")
   }
 }
 
 plugins {
+  val kotlinVersion = "1.6.21"
+  
   id("org.springframework.boot") version "2.7.5"
   id("io.spring.dependency-management") version "1.0.15.RELEASE"
   id("io.gitlab.arturbosch.detekt") version "1.20.0"
   id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
   id("org.jlleitschuh.gradle.ktlint-idea") version "11.0.0"
-  val kotlinVersion = "1.6.21"
 
   kotlin("jvm") version kotlinVersion
   kotlin("plugin.spring") version kotlinVersion

@@ -14,6 +14,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import mu.KotlinLogging
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
+import org.webjars.NotFoundException
 
 private val logger = KotlinLogging.logger {}
 
@@ -41,6 +42,12 @@ class ActivityMariaAdapter(
   }
 
   override fun findByName(name: String): Activity? = this.activityRepository.findByName(name)
+  override fun getByIds(ids: List<Long>): List<Activity> {
+    val activities = this.activityRepository.findAllById(ids)
+    val notFoundedIds = ids.subtract(activities.map { v -> v.id }.toSet())
+    if (notFoundedIds.isNotEmpty()) throw NotFoundException("id가 존재하지 않습니다. [${notFoundedIds}]")
+    return activities
+  }
 
   override fun deleteById(id: Long) {
     val activity = this.getById(id)

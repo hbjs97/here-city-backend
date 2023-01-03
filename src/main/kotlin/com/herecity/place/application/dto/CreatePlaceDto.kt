@@ -5,10 +5,13 @@ import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
+import javax.validation.constraints.Size
 import org.springframework.data.geo.Point as Location
 
 
 data class CreatePlaceDto(
+  val unitIds: @Size(min = 1) List<Long>,
+  val activityIds: @Size(min = 1) List<Long>,
   val placeTypeId: Long,
   val regionId: Long,
   val name: String,

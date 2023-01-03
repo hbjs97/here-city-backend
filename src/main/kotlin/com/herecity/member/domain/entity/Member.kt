@@ -22,6 +22,6 @@ class Member(
   var name: String,
 
   @ManyToOne(targetEntity = Unit::class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "unit_id")
+  @JoinColumn(name = "unit_id", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var unit: Unit? = null
 ) : BaseEntity()

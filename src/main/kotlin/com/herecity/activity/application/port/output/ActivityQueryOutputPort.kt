@@ -9,4 +9,5 @@ import com.herecity.common.adapter.mariadb.BaseQueryRepository
 interface ActivityQueryOutputPort : BaseQueryRepository<Activity, Long> {
   fun search(searchActivityDto: SearchActivityDto): List<ActivityDto>
   fun findByName(name: String): Activity?
+  fun getByIds(ids: List<Long>): List<Activity>
 }

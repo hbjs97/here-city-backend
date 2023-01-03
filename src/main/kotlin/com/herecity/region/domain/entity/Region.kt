@@ -26,6 +26,6 @@ class Region(
   var name: String,
 
   @ManyToOne(targetEntity = Region::class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "upperRegionId")
+  @JoinColumn(name = "upperRegionId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var upperRegion: Region? = null
 ) : BaseEntity()

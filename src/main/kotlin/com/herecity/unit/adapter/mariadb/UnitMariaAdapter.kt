@@ -7,6 +7,7 @@ import com.herecity.unit.domain.exception.DuplicateUnitNameException
 import mu.KotlinLogging
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
+import org.webjars.NotFoundException
 
 private val logger = KotlinLogging.logger {}
 
@@ -29,6 +30,12 @@ class UnitMariaAdapter(
   }
 
   override fun findByName(name: String): Unit? = this.unitRepository.findByName(name)
+  override fun getByIds(ids: List<Long>): List<Unit> {
+    val units = this.unitRepository.findAllById(ids)
+    val notFoundedIds = ids.subtract(units.map { v -> v.id }.toSet())
+    if (notFoundedIds.isNotEmpty()) throw NotFoundException("id가 존재하지 않습니다. [${notFoundedIds}]")
+    return units
+  }
 
   override fun deleteById(id: Long) {
     val unit = this.getById(id)
