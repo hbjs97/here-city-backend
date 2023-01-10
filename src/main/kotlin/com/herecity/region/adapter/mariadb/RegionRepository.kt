@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface RegionRepository : JpaRepository<Region, Long> {
   fun findByName(name: String): Region?
   fun existsByName(name: String): Boolean
+  fun existsByUpperRegionIdAndName(upperRegionId: Long, name: String): Boolean
 }

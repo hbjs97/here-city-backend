@@ -10,6 +10,7 @@ interface RegionQueryOutputPort {
   fun findById(id: Long): Region?
   fun findByName(name: String): Region?
   fun existsByName(name: String): Boolean
+  fun existsByUpperRegionIdAndName(upperRegionId: Long, name: String): Boolean
   fun getById(id: Long): Region
 }
 

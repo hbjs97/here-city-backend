@@ -20,6 +20,10 @@ class RegionService(
 
   override fun getSubRegions(upperRegionId: Long): List<RegionDto> = this.regionQueryOutputPort.getSubRegions(upperRegionId)
 
+  /**
+   * @see
+   * 상위지역 이름은 중복될 수 없다.
+   */
   override fun createUpperRegion(name: String): RegionDto {
     val exist = this.regionQueryOutputPort.existsByName(name)
     if (exist) throw DuplicateRegionNameException()
@@ -27,8 +31,18 @@ class RegionService(
     return RegionDto(region.id!!, region.name)
   }
 
+  /**
+   * @see
+   * 하위지역 이름은 같은 상위지역 아래 중복될 수 없다.
+   */
   override fun addSubRegion(upperRegionId: Long, name: String): RegionDto {
-    TODO("Not yet implemented")
+    val exist = this.regionQueryOutputPort.existsByUpperRegionIdAndName(upperRegionId, name)
+    if (exist) throw DuplicateRegionNameException("같은 상위지역 아래 이름이 중복될 수 없습니다.")
+
+    val upperRegion = this.regionQueryOutputPort.getById(upperRegionId)
+
+    val region = this.regionCommandOutputPort.save(Region(upperRegion = upperRegion, name = name))
+    return RegionDto(region.id!!, region.name, upperRegion)
   }
 
   override fun updateRegion(id: Long, updateRegionDto: UpdateRegionDto): RegionDto {

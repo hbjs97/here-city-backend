@@ -58,6 +58,8 @@ class RegionMariaAdapter(
   override fun findByName(name: String): Region? = this.regionRepository.findByName(name)
 
   override fun existsByName(name: String): Boolean = this.regionRepository.existsByName(name)
+  
+  override fun existsByUpperRegionIdAndName(upperRegionId: Long, name: String): Boolean = this.regionRepository.existsByUpperRegionIdAndName(upperRegionId, name)
 
   override fun getById(id: Long): Region = this.regionRepository.findById(id).orElseThrow()
 

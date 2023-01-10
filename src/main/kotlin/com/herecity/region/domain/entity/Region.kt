@@ -11,7 +11,7 @@ import javax.persistence.*
 @Entity
 @Table(
   name = "region", indexes = [
-    Index(columnList = "name, upperRegionId, deletedAt")
+    Index(columnList = "name, upper_region_id, deletedAt")
   ]
 )
 class Region(
@@ -19,13 +19,10 @@ class Region(
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   var id: Long? = null,
 
-  @Column(name = "upperRegionId", insertable = false, updatable = false, nullable = true)
-  var upperRegionId: Long? = null,
-
   @Column(nullable = false, length = 20)
   var name: String,
 
-  @ManyToOne(targetEntity = Region::class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "upperRegionId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "upper_region_id", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var upperRegion: Region? = null
 ) : BaseEntity()
