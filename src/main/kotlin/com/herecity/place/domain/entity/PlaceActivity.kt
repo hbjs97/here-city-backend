@@ -13,12 +13,12 @@ import javax.persistence.*
 @Entity(name = "place_activity")
 class PlaceActivity(
   @Id
-  @ManyToOne(targetEntity = Place::class)
+  @ManyToOne
   @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var place: Place? = null,
 
   @Id
-  @ManyToOne(targetEntity = Activity::class)
+  @ManyToOne
   @JoinColumn(name = "activity_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var activity: Activity? = null
 )

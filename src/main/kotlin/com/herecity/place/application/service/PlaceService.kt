@@ -7,9 +7,10 @@ import com.herecity.place.application.port.input.LoadPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.place.application.port.output.PlaceCommandOutputPort
 import com.herecity.place.application.port.output.PlaceQueryOutputPort
-import com.herecity.place.application.port.output.PlaceTypeCommandOutputPort
 import com.herecity.place.application.port.output.PlaceTypeQueryOutputPort
 import com.herecity.place.domain.entity.Place
+import com.herecity.place.domain.entity.PlaceActivity
+import com.herecity.place.domain.entity.PlaceUnit
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.springdoc.core.converters.models.Pageable
 import org.springframework.data.domain.Page
@@ -23,8 +24,8 @@ class PlaceService(
   private val placeQueryOutputPort: PlaceQueryOutputPort,
   private val placeCommandOutputPort: PlaceCommandOutputPort,
   private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
-  private val placeTypeCommandOutputPort: PlaceTypeCommandOutputPort,
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
+
   override fun getPlaces(pageable: Pageable): Page<PlaceDto> {
     TODO("Not yet implemented")
   }
@@ -42,11 +43,9 @@ class PlaceService(
       point = createPlaceDto.point,
       regionId = createPlaceDto.regionId,
     )
+    place.placeActivities.addAll(acitivities.map { v -> PlaceActivity(place = place, activity = v) })
+    place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })
     this.placeCommandOutputPort.save(place)
-
-//    place.placeActivities.addAll(acitivities.map { v -> PlaceActivity(PlaceActivityId(activityId = v.id, placeId = place.id)) })
-//    place.placeUnits.addAll(units.map { v -> PlaceUnit(PlaceUnitId(unitId = v.id, placeId = place.id)) })
-
     return PlaceDto(place)
   }
 
