@@ -23,8 +23,10 @@ class PlaceTypeMariaAdapter(
     }
   }
 
+
   override fun getById(id: Long): PlaceType = this.placeTypeRepository.findById(id).orElseThrow()
 
   override fun findById(id: Long): PlaceType? = this.placeTypeRepository.findByIdOrNull(id)
 
+  override fun existsByName(name: String): Boolean = this.placeTypeRepository.existsByName(name)
 }
