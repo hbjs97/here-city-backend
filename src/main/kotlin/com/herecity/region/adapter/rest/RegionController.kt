@@ -38,14 +38,14 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createUpperRegion(@RequestParam name: String): RegionDto = this.recordRegionUseCase.createUpperRegion(name)
+  fun createUpperRegion(@RequestBody name: String): RegionDto = this.recordRegionUseCase.createUpperRegion(name)
 
   @Operation(summary = "하위 지역 등록")
   @ApiResponse(responseCode = "201")
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping("{id}")
-  fun addSubRegion(@PathVariable id: Long, @RequestParam name: String): RegionDto = this.recordRegionUseCase.addSubRegion(id, name)
+  fun addSubRegion(@PathVariable id: Long, @RequestBody name: String): RegionDto = this.recordRegionUseCase.addSubRegion(id, name)
 
   @Operation(summary = "지역 정보 수정")
   @ApiResponse(responseCode = "202")
