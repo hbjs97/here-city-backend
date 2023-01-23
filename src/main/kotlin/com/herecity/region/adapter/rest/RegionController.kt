@@ -1,6 +1,7 @@
 package com.herecity.region.adapter.rest
 
 import com.herecity.common.annotation.ReqUser
+import com.herecity.region.adapter.dto.NameDto
 import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
 import com.herecity.region.application.port.input.LoadRegionUseCase
@@ -38,14 +39,14 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createUpperRegion(@RequestBody name: String): RegionDto = this.recordRegionUseCase.createUpperRegion(name)
+  fun createUpperRegion(@RequestBody nameDto: NameDto): RegionDto = this.recordRegionUseCase.createUpperRegion(nameDto.name)
 
   @Operation(summary = "하위 지역 등록")
   @ApiResponse(responseCode = "201")
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping("{id}")
-  fun addSubRegion(@PathVariable id: Long, @RequestBody name: String): RegionDto = this.recordRegionUseCase.addSubRegion(id, name)
+  fun addSubRegion(@PathVariable id: Long, @RequestBody nameDto: NameDto): RegionDto = this.recordRegionUseCase.addSubRegion(id, nameDto.name)
 
   @Operation(summary = "지역 정보 수정")
   @ApiResponse(responseCode = "202")

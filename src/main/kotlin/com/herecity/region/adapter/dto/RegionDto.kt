@@ -22,5 +22,12 @@ data class RegionDto(
     this.upperRegion = RegionDto(id = upperRegion.id!!, name = upperRegion.name)
   }
 
+  constructor(region: Region) : this(region.id!!, region.name) {
+    if (region.upperRegion !== null) {
+      this.upperRegion = RegionDto(id = region.upperRegion!!.id!!, name = region.upperRegion!!.name)
+    }
+  }
+
   constructor(id: Long, name: String, upperRegionId: Long, upperRegionName: String) : this(id, name, RegionDto(upperRegionId, upperRegionName))
+
 }

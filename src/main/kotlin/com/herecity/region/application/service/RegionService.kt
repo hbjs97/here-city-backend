@@ -8,6 +8,7 @@ import com.herecity.region.application.port.output.RegionCommandOutputPort
 import com.herecity.region.application.port.output.RegionQueryOutputPort
 import com.herecity.region.domain.entity.Region
 import com.herecity.region.domain.exception.DuplicateRegionNameException
+import com.herecity.region.domain.exception.ExistSubRegionsException
 import org.springframework.stereotype.Service
 
 @Service
@@ -46,10 +47,19 @@ class RegionService(
   }
 
   override fun updateRegion(id: Long, updateRegionDto: UpdateRegionDto): RegionDto {
-    TODO("Not yet implemented")
+    val region = this.regionQueryOutputPort.getById(id)
+    if (updateRegionDto.upperRegionId !== null) {
+      region.upperRegion = this.regionQueryOutputPort.getById(updateRegionDto.upperRegionId)
+    }
+    this.regionCommandOutputPort.save(region)
+    return RegionDto(region)
   }
 
   override fun deleteRegion(id: Long) {
-    TODO("Not yet implemented")
+    val hasSubRegion = this.regionQueryOutputPort.hasSubRegion(id)
+    if (hasSubRegion) throw ExistSubRegionsException()
+
+    this.regionQueryOutputPort.getById(id)
+    this.regionCommandOutputPort.deleteById(id)
   }
 }

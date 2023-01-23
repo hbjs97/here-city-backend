@@ -22,7 +22,7 @@ class RegionMariaAdapter(
 
   override fun save(entity: Region): Region = this.regionRepository.save(entity)
 
-  override fun deleteById(id: Long) = this.regionRepository.deleteById(id);
+  override fun deleteById(id: Long) = this.regionRepository.deleteById(id)
 
   override fun getUpperRegions(): List<RegionDto> = this.queryFactory
     .select(
@@ -58,17 +58,18 @@ class RegionMariaAdapter(
   override fun findByName(name: String): Region? = this.regionRepository.findByName(name)
 
   override fun existsByName(name: String): Boolean = this.regionRepository.existsByName(name)
-  
+
   override fun existsByUpperRegionIdAndName(upperRegionId: Long, name: String): Boolean = this.regionRepository.existsByUpperRegionIdAndName(upperRegionId, name)
 
   override fun getById(id: Long): Region = this.regionRepository.findById(id).orElseThrow()
+  override fun hasSubRegion(id: Long): Boolean = this.regionRepository.existsByUpperRegionId(id)
 
   private fun eqUpperRegionId(upperRegionId: Long?): BooleanExpression? {
     if (upperRegionId == null) return null
-    return region.upperRegionId.eq(upperRegionId)
+    return region.upperRegion.id.eq(upperRegionId)
   }
 
   private fun isNullUpperRegionId(): BooleanExpression {
-    return region.upperRegionId.isNull
+    return region.upperRegion.id.isNull
   }
 }
