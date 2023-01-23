@@ -6,6 +6,8 @@ import com.herecity.place.application.port.output.PlaceTypeQueryOutputPort
 import com.herecity.place.domain.entity.PlaceType
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
@@ -14,6 +16,7 @@ class PlaceTypeMariaAdapter(
   val placeTypeRepository: PlaceTypeRepository,
   private val queryFactory: JPAQueryFactory,
 ) : PlaceTypeQueryOutputPort, PlaceTypeCommandOutputPort {
+
 
   override fun save(entity: PlaceType): PlaceType {
     try {
@@ -29,4 +32,7 @@ class PlaceTypeMariaAdapter(
   override fun findById(id: Long): PlaceType? = this.placeTypeRepository.findByIdOrNull(id)
 
   override fun existsByName(name: String): Boolean = this.placeTypeRepository.existsByName(name)
+  override fun findByPage(pageable: Pageable): Page<PlaceType> = this.placeTypeRepository.findAll(pageable)
+
+  override fun deleteById(id: Long) = this.placeTypeRepository.deleteById(id)
 }

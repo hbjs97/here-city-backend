@@ -8,8 +8,8 @@ import com.herecity.place.application.port.input.RecordPlaceTypeUseCase
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springdoc.core.converters.models.Pageable
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -39,7 +39,7 @@ class PlaceTypeController(
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PutMapping("{id}")
-  fun updatePlaceType(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.updatePlaceType(id, updatePlaceDto)
+  fun updatePlaceType(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.updatePlaceType(id, updatePlaceDto.name)
 
   @Operation(summary = "장소분류 삭제")
   @ApiResponse(responseCode = "202")

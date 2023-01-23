@@ -17,6 +17,6 @@ class Unit(
   @Column(nullable = false, length = 20)
   var name: String,
 ) : BaseEntity() {
-  @Column(nullable = false, length = 20)
-  var isComposite: Boolean = false
+//  @Column(nullable = false, length = 20)
+//  var isComposite: Boolean = false
 }

@@ -2,5 +2,5 @@ package com.herecity.unit.application.dto
 
 data class UpdateUnitDto(
   val name: String,
-  val isComposite: Boolean?
+//  val isComposite: Boolean?
 )
