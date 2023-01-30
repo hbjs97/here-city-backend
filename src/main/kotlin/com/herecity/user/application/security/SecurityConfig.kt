@@ -15,7 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-class SecurityConfig(private val jwtService: JwtService) : WebSecurityConfigurerAdapter() {
+class SecurityConfig(
+  private val jwtService: JwtService
+) : WebSecurityConfigurerAdapter() {
 
   @Bean
   fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -25,15 +27,10 @@ class SecurityConfig(private val jwtService: JwtService) : WebSecurityConfigurer
 
 
   override fun configure(http: HttpSecurity) {
-    http
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .formLogin().usernameParameter("email").disable()
-      .authorizeRequests()
-      .antMatchers("/api/v1/auth/**").permitAll()
-      .and()
-      .csrf().disable()
-      .cors().disable()
-      .addFilterBefore(JwtAuthenticationFilter(jwtService, passwordEncoder()), UsernamePasswordAuthenticationFilter::class.java)
+    http.httpBasic().disable().csrf().disable().cors().disable()
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    http.formLogin().usernameParameter("email").disable()
+    http.authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+    http.addFilterBefore(JwtAuthenticationFilter(jwtService, passwordEncoder()), UsernamePasswordAuthenticationFilter::class.java)
   }
 }

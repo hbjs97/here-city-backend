@@ -24,13 +24,8 @@ class JwtService(
 ) {
   companion object {
     //    private val secretKey: Key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-
-
     private const val accessTokenValidTime = 86400000L
-
     private const val refreshTokenValidTime = 604800000L
-
-
   }
 
   fun getIdFromToken(token: String): String {

@@ -30,5 +30,4 @@ class JwtAuthenticationFilter(private val jwtService: JwtService, private val pa
     }
     chain.doFilter(request, response)
   }
-
 }
