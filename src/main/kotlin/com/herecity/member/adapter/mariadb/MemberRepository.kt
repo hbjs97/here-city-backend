@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MemberRepository : JpaRepository<Member, Long> {
   fun findByName(name: String): Member?
-  fun findByUnitId(unitId: Long): List<Member>
 }

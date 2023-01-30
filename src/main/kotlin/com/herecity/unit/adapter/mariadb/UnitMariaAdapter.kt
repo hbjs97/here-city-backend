@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 class UnitMariaAdapter(
-  private val unitRepository: UnitRepository
+  private val unitRepository: UnitRepository,
 ) : UnitQueryOutputPort, UnitCommandOutputPort {
   override fun findAll(): List<Unit> = this.unitRepository.findAll()
 

@@ -16,7 +16,17 @@ class Unit(
 
   @Column(nullable = false, length = 20)
   var name: String,
+
+  @OneToMany(mappedBy = "unit", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+  var unitMembers: MutableSet<UnitMember> = mutableSetOf(),
 ) : BaseEntity() {
-//  @Column(nullable = false, length = 20)
-//  var isComposite: Boolean = false
+  fun addMember(member: UnitMember) {
+    unitMembers.add(member)
+    member.unit = this
+  }
+
+  fun removeMember(member: UnitMember) {
+    unitMembers.remove(member)
+    member.unit = null
+  }
 }

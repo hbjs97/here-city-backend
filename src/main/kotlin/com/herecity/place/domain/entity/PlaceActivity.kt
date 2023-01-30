@@ -1,6 +1,7 @@
 package com.herecity.place.domain.entity
 
 import com.herecity.activity.domain.entity.Activity
+import com.herecity.common.domain.entity.BaseEntity
 import com.herecity.place.domain.vo.PlaceActivityId
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
@@ -21,4 +22,4 @@ class PlaceActivity(
   @ManyToOne
   @JoinColumn(name = "activity_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var activity: Activity? = null
-)
+) : BaseEntity()

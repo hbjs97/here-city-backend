@@ -1,5 +1,6 @@
 package com.herecity.place.domain.entity
 
+import com.herecity.common.domain.entity.BaseEntity
 import com.herecity.place.domain.vo.PlaceUnitId
 import com.herecity.unit.domain.entity.Unit
 import org.hibernate.annotations.SQLDelete
@@ -21,4 +22,4 @@ class PlaceUnit(
   @ManyToOne
   @JoinColumn(name = "unit_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var unit: Unit? = null,
-)
+) : BaseEntity()

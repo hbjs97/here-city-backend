@@ -7,6 +7,7 @@ import com.herecity.activity.application.dto.UpdateActivityDto
 import com.herecity.activity.application.port.input.LoadActivityUseCase
 import com.herecity.activity.application.port.input.RecordActivityUseCase
 import com.herecity.common.annotation.ReqUser
+import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -21,6 +22,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("/api/v1/activities")
 class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, private val recordActivityUseCase: RecordActivityUseCase) {
 
+  @Authorize
   @Operation(summary = "활동 목록 조회")
   @ApiResponse(responseCode = "200")
   @ResponseStatus(value = HttpStatus.OK)
@@ -28,6 +30,7 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   @GetMapping
   fun getActivities(@ReqUser user: UserDetail, searchActivityDto: SearchActivityDto): List<ActivityDto> = this.loadActivityUseCase.search(searchActivityDto)
 
+  @Authorize
   @Operation(summary = "활동 등록")
   @ApiResponse(responseCode = "201")
   @ResponseStatus(value = HttpStatus.CREATED)
@@ -35,6 +38,7 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   @PostMapping
   fun createActivity(@RequestBody createActivityDto: CreateActivityDto): ActivityDto = this.recordActivityUseCase.createActivity(createActivityDto.name)
 
+  @Authorize
   @Operation(summary = "활동 수정")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -43,6 +47,7 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   fun updateActivity(@PathVariable id: Long, @RequestBody updateActivityDto: UpdateActivityDto): ActivityDto =
     this.recordActivityUseCase.updateActivity(id, updateActivityDto.name)
 
+  @Authorize
   @Operation(summary = "활동 삭제")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)

@@ -1,11 +1,11 @@
-package com.herecity.place.domain.vo
+package com.herecity.unit.domain.vo
 
 import java.io.Serializable
 import javax.persistence.Embeddable
 
 @Embeddable
-data class PlaceUnitId(
-  var place: Long? = null,
-
+data class UnitMemberId(
   var unit: Long? = null,
+
+  var member: Long? = null,
 ) : Serializable

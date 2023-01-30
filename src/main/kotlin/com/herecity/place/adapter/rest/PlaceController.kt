@@ -5,6 +5,7 @@ import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.LoadPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
+import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -20,6 +21,7 @@ class PlaceController(
   private val loadPlaceUseCase: LoadPlaceUseCase,
   private val recordPlaceUseCase: RecordPlaceUseCase,
 ) {
+  @Authorize
   @Operation(summary = "장소 목록 조회")
   @ApiResponse(responseCode = "200")
   @ResponseStatus(value = HttpStatus.OK)
@@ -27,6 +29,7 @@ class PlaceController(
   @GetMapping
   fun getPlaces(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceDto> = this.loadPlaceUseCase.getPlaces(pageable)
 
+  @Authorize
   @Operation(summary = "장소 등록")
   @ApiResponse(responseCode = "201")
   @ResponseStatus(value = HttpStatus.CREATED)
@@ -34,6 +37,7 @@ class PlaceController(
   @PostMapping
   fun createPlace(@RequestBody createPlaceDto: CreatePlaceDto): PlaceDto = this.recordPlaceUseCase.createPlace(createPlaceDto)
 
+  @Authorize
   @Operation(summary = "장소 정보 수정")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -43,6 +47,7 @@ class PlaceController(
     return this.recordPlaceUseCase.updatePlace(id, updatePlaceDto)
   }
 
+  @Authorize
   @Operation(summary = "장소 삭제")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)

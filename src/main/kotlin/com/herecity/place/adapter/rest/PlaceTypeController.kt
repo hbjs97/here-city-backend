@@ -5,6 +5,7 @@ import com.herecity.place.application.dto.CreatePlaceTypeDto
 import com.herecity.place.application.dto.PlaceTypeDto
 import com.herecity.place.application.port.input.LoadPlaceTypeUseCase
 import com.herecity.place.application.port.input.RecordPlaceTypeUseCase
+import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -20,6 +21,7 @@ class PlaceTypeController(
   private val loadPlaceTypeUseCase: LoadPlaceTypeUseCase,
   private val recordPlaceTypeUseCase: RecordPlaceTypeUseCase
 ) {
+  @Authorize
   @Operation(summary = "장소분류 목록 조회")
   @ApiResponse(responseCode = "200")
   @ResponseStatus(value = HttpStatus.OK)
@@ -27,6 +29,7 @@ class PlaceTypeController(
   @GetMapping
   fun getPlaceTypes(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceTypeDto> = this.loadPlaceTypeUseCase.getPlaceTypes(pageable)
 
+  @Authorize
   @Operation(summary = "장소분류 등록")
   @ApiResponse(responseCode = "201")
   @ResponseStatus(value = HttpStatus.CREATED)
@@ -34,6 +37,7 @@ class PlaceTypeController(
   @PostMapping
   fun createPlaceType(@RequestBody createPlaceTypeDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.createPlaceType(createPlaceTypeDto)
 
+  @Authorize
   @Operation(summary = "장소분류 정보 수정")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -41,6 +45,7 @@ class PlaceTypeController(
   @PutMapping("{id}")
   fun updatePlaceType(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.updatePlaceType(id, updatePlaceDto.name)
 
+  @Authorize
   @Operation(summary = "장소분류 삭제")
   @ApiResponse(responseCode = "202")
   @ResponseStatus(value = HttpStatus.ACCEPTED)

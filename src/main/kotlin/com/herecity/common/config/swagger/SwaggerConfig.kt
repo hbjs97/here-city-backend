@@ -1,23 +1,21 @@
 package com.herecity.common.config.swagger
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@io.swagger.v3.oas.annotations.security.SecurityScheme(
-  name = "Bearer Authentication",
-  type = SecuritySchemeType.HTTP,
-  bearerFormat = "JWT",
-  scheme = "bearer"
-)
 class SwaggerConfig {
   @Bean
   fun api(): OpenAPI {
-    return OpenAPI().info(
-      Info().title("HereCity API Docs").version("0.0.1-SNAPSHOT")
-    )
+    val info = Info().title("HereCity API Docs").version("0.0.1-SNAPSHOT")
+    val securityScheme = SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT").`in`(SecurityScheme.In.HEADER).name("Authorization")
+
+    return OpenAPI()
+      .components(Components().addSecuritySchemes("BearerToken", securityScheme))
+      .info(info)
   }
 }
