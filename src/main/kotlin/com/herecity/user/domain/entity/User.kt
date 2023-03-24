@@ -13,7 +13,8 @@ import javax.persistence.*
 @SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
 @Entity
 @Table(
-  name = "user", indexes = [
+  name = "user",
+  indexes = [
     Index(columnList = "email, deletedAt"),
     Index(columnList = "fcmToken, deletedAt")
   ]

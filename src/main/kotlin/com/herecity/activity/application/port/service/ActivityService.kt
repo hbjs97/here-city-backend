@@ -29,5 +29,4 @@ class ActivityService(private val activityQueryOutputPort: ActivityQueryOutputPo
   }
 
   override fun deleteActivity(id: Long) = this.activityCommandOutputPort.deleteById(id)
-
 }

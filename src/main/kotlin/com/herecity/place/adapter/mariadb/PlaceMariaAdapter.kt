@@ -26,5 +26,4 @@ class PlaceMariaAdapter(
   override fun getById(id: Long): Place = this.placeRepository.findById(id).orElseThrow()
 
   override fun findById(id: Long): Place? = this.placeRepository.findByIdOrNull(id)
-
 }

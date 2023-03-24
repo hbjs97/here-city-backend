@@ -56,5 +56,4 @@ class PlaceService(
   override fun deletePlace(id: Long) {
     TODO("Not yet implemented")
   }
-
 }

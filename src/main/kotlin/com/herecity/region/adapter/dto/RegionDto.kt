@@ -4,7 +4,6 @@ import com.herecity.region.domain.entity.Region
 import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.Size
 
-
 data class RegionDto(
   val id: Long,
 
@@ -29,5 +28,4 @@ data class RegionDto(
   }
 
   constructor(id: Long, name: String, upperRegionId: Long, upperRegionName: String) : this(id, name, RegionDto(upperRegionId, upperRegionName))
-
 }

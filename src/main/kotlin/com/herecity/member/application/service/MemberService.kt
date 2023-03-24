@@ -25,7 +25,6 @@ class MemberService(private val memberQueryOutputPort: MemberQueryOutputPort, pr
     return MemberDto(member.id, member.name)
   }
 
-
   override fun updateMember(id: Long, name: String): MemberDto {
     val member = this.memberQueryOutputPort.getById(id)
     member.name = name
@@ -34,5 +33,4 @@ class MemberService(private val memberQueryOutputPort: MemberQueryOutputPort, pr
   }
 
   override fun deleteMember(id: Long) = this.memberCommandOutputPort.deleteById(id)
-
 }

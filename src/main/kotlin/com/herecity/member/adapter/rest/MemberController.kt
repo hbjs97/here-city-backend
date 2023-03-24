@@ -43,7 +43,6 @@ class MemberController(
   @PatchMapping("{id}")
   fun updateMember(@PathVariable id: Long, @RequestBody nameDto: NameDto): MemberDto = this.recordMemberUseCase.updateMember(id, nameDto.name)
 
-
   @Authorize
   @Operation(summary = "멤버 삭제")
   @ApiResponse(responseCode = "202")

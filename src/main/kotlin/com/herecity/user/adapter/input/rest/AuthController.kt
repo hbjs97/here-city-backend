@@ -23,4 +23,3 @@ class AuthController(private val fakeSignUseCase: FakeSignUseCase) {
     return fakeSignUseCase.fakeSignIn(fakeSignInDto.role)
   }
 }
-

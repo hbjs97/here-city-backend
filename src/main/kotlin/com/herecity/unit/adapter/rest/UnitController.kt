@@ -1,6 +1,5 @@
 package com.herecity.unit.adapter.rest
 
-
 import com.herecity.common.annotation.ReqUser
 import com.herecity.member.application.dto.AddMemberDto
 import com.herecity.unit.adapter.dto.UnitMemberDto
@@ -72,4 +71,3 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @DeleteMapping("{id}")
   fun deleteUnit(@PathVariable id: Long) = this.recordUnitUseCase.deleteUnit(id)
 }
-

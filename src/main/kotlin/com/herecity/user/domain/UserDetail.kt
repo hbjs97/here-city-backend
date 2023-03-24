@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 
-
 class UserDetail(
   private val user: User,
   private val passwordEncoder: PasswordEncoder

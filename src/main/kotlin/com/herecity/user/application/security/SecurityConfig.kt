@@ -25,7 +25,6 @@ class SecurityConfig(
   @Bean
   override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
 
-
   override fun configure(http: HttpSecurity) {
     http.httpBasic().disable().csrf().disable().cors().disable()
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

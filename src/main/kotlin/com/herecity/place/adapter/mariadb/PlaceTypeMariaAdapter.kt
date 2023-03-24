@@ -17,7 +17,6 @@ class PlaceTypeMariaAdapter(
   private val queryFactory: JPAQueryFactory,
 ) : PlaceTypeQueryOutputPort, PlaceTypeCommandOutputPort {
 
-
   override fun save(entity: PlaceType): PlaceType {
     try {
       return this.placeTypeRepository.save(entity)
@@ -25,7 +24,6 @@ class PlaceTypeMariaAdapter(
       throw DuplicateActivityNameException()
     }
   }
-
 
   override fun getById(id: Long): PlaceType = this.placeTypeRepository.findById(id).orElseThrow()
 

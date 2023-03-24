@@ -31,7 +31,6 @@ class AuthService(
     TODO("Not yet implemented")
   }
 
-
   fun signOut(): Any {
     TODO("Not yet implemented")
   }
@@ -49,7 +48,6 @@ class AuthService(
     try {
       val userDetail = userSecurityService.loadUserByUsername(user.email)
       authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userDetail, "", userDetail.authorities))
-
     } catch (e: AuthenticationException) {
       logger.error { e.message }
       throw SignInFailException()

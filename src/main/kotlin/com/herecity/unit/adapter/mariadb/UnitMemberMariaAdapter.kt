@@ -37,9 +37,7 @@ class UnitMemberMariaAdapter(
     return this.unitMemberRepository.save(entity)
   }
 
-
   override fun getById(id: UnitMemberId): UnitMember = this.unitMemberRepository.findById(id).orElseThrow()
 
   override fun findById(id: UnitMemberId): UnitMember? = this.unitMemberRepository.findById(id).get()
-
 }

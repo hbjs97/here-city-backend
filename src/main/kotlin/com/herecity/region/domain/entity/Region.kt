@@ -10,7 +10,8 @@ import javax.persistence.*
 @SQLDelete(sql = "UPDATE region SET deleted_at = NOW() WHERE id = ?")
 @Entity
 @Table(
-  name = "region", indexes = [
+  name = "region",
+  indexes = [
     Index(columnList = "name, upper_region_id, deletedAt")
   ]
 )

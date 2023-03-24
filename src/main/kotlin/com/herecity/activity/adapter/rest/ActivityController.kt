@@ -55,4 +55,3 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   @DeleteMapping("{id}")
   fun deleteActivity(@PathVariable id: Long) = this.recordActivityUseCase.deleteActivity(id)
 }
-

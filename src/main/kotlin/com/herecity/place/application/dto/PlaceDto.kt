@@ -3,7 +3,6 @@ package com.herecity.place.application.dto
 import com.herecity.place.domain.entity.Place
 import javax.validation.constraints.Size
 
-
 data class PlaceDto(
   val id: Long?,
 

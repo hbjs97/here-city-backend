@@ -16,7 +16,6 @@ import java.security.Key
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
-
 @Component
 class JwtService(
   @Value("\${jwt.token.secret}") private val secretKey: String,
@@ -35,7 +34,6 @@ class JwtService(
   private fun getSigningKey(): Key {
     return Keys.hmacShaKeyFor(secretKey.toByteArray())
   }
-
 
   fun createAccessToken(userDto: UserDto): String {
 

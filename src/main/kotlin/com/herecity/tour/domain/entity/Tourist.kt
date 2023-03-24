@@ -7,7 +7,6 @@ import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 import javax.persistence.*
 
-
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE tour_place SET deleted_at = NOW() WHERE tour_id = ? AND user_id = ?")
 @IdClass(TouristId::class)

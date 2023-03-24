@@ -73,5 +73,4 @@ class RegionController(
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deleteCity(@PathVariable id: Long) = this.recordRegionUseCase.deleteRegion(id)
-
 }

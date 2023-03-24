@@ -19,7 +19,6 @@ class RegionMariaAdapter(
   private val queryFactory: JPAQueryFactory
 ) : RegionQueryOutputPort, RegionCommandOutputPort {
 
-
   override fun save(entity: Region): Region = this.regionRepository.save(entity)
 
   override fun deleteById(id: Long) = this.regionRepository.deleteById(id)
@@ -36,7 +35,6 @@ class RegionMariaAdapter(
     .where(this.isNullUpperRegionId())
     .fetch()
 
-
   override fun getSubRegions(id: Long): List<RegionDto> = this.queryFactory
     .select(
       Projections.constructor(
@@ -51,7 +49,6 @@ class RegionMariaAdapter(
     .innerJoin(region.upperRegion)
     .where(this.eqUpperRegionId(id))
     .fetch()
-
 
   override fun findById(id: Long): Region? = this.regionRepository.findById(id).get()
 

@@ -1,6 +1,5 @@
 package com.herecity.member.domain.entity
 
-
 import com.herecity.common.domain.entity.BaseEntity
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
