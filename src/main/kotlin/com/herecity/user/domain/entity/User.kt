@@ -14,7 +14,8 @@ import javax.persistence.*
 @Entity
 @Table(
   name = "user", indexes = [
-    Index(columnList = "email, deletedAt")
+    Index(columnList = "email, deletedAt"),
+    Index(columnList = "fcmToken, deletedAt")
   ]
 )
 class User(
@@ -34,5 +35,8 @@ class User(
   var twitterId: String,
 
   @Enumerated(EnumType.STRING)
-  var role: UserRole = UserRole.USER
+  var role: UserRole = UserRole.USER,
+
+  @Column(length = 200, nullable = true)
+  var fcmToken: String? = null
 ) : BaseEntity()

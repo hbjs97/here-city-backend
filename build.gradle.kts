@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
   val kotlinVersion = "1.6.21"
-  
+
   id("org.springframework.boot") version "2.7.5"
   id("io.spring.dependency-management") version "1.0.15.RELEASE"
   id("io.gitlab.arturbosch.detekt") version "1.20.0"
@@ -31,6 +31,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
+  google()
   mavenCentral()
   maven {
     url = uri("https://plugins.gradle.org/m2/")
@@ -68,8 +69,8 @@ dependencies {
   runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
   // firebase-admin
+  implementation("com.google.firebase:firebase-admin:8.1.0")
   runtimeOnly("com.google.firebase:firebase-admin:8.1.0")
-
 
   // db
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")

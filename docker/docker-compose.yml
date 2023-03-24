@@ -14,12 +14,10 @@ services:
     env_file:
       - ./mariadb/.env
   
-  redis-stack:
-    container_name: redis-stack
-    image: 'redis/redis-stack:latest'
+  redis:
+    container_name: redis
+    image: redis:alpine
     ports:
       - '7001:6379'
-    environment:
-      - 'REDIS_ARGS=--appendonly yes'
     volumes:
       - ./redis/data:/data
