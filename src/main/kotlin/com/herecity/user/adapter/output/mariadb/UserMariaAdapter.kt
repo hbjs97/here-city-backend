@@ -20,5 +20,5 @@ class UserMariaAdapter(
 
   override fun findByEmail(email: String): User? = userRepository.findByEmail(email)
 
-  override fun save(user: User): User = userRepository.save(user)
+  override fun save(entity: User): User = userRepository.save(entity)
 }

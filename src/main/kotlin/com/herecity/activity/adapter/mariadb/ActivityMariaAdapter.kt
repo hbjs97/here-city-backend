@@ -33,9 +33,9 @@ class ActivityMariaAdapter(
 
   override fun findById(id: Long): Activity? = this.activityRepository.findById(id).get()
 
-  override fun save(activity: Activity): Activity {
+  override fun save(entity: Activity): Activity {
     try {
-      return this.activityRepository.save(activity)
+      return this.activityRepository.save(entity)
     } catch (e: DataIntegrityViolationException) {
       throw DuplicateActivityNameException()
     }
@@ -45,7 +45,7 @@ class ActivityMariaAdapter(
   override fun getByIds(ids: List<Long>): List<Activity> {
     val activities = this.activityRepository.findAllById(ids)
     val notFoundedIds = ids.subtract(activities.map { v -> v.id }.toSet())
-    if (notFoundedIds.isNotEmpty()) throw NotFoundException("id가 존재하지 않습니다. [${notFoundedIds}]")
+    if (notFoundedIds.isNotEmpty()) throw NotFoundException("id가 존재하지 않습니다. [$notFoundedIds]")
     return activities
   }
 
