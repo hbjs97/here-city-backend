@@ -26,8 +26,17 @@ class Place(
   @Column(nullable = false, length = 255)
   var address: String,
 
+  @Column(nullable = false, length = 600)
+  var desc: String,
+
+  @Column(nullable = false)
+  var rating: Double,
+
   @Column(nullable = false)
   var point: Point,
+
+  @ElementCollection
+  val images: List<String> = listOf(),
 
   @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
   var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),

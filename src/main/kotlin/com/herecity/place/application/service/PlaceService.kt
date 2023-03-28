@@ -2,6 +2,7 @@ package com.herecity.place.application.service
 
 import com.herecity.activity.application.port.output.ActivityQueryOutputPort
 import com.herecity.place.application.dto.CreatePlaceDto
+import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.LoadPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
@@ -26,7 +27,7 @@ class PlaceService(
   private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
 
-  override fun getPlaces(pageable: Pageable): Page<PlaceDto> {
+  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
     TODO("Not yet implemented")
   }
 
@@ -42,6 +43,8 @@ class PlaceService(
       address = createPlaceDto.address,
       point = createPlaceDto.point,
       regionId = createPlaceDto.regionId,
+      desc = createPlaceDto.desc,
+      rating = 0.0,
     )
     place.placeActivities.addAll(acitivities.map { v -> PlaceActivity(place = place, activity = v) })
     place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })

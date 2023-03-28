@@ -15,6 +15,7 @@ data class CreatePlaceDto(
   val regionId: Long,
   val name: String,
   val address: String,
+  val desc: String,
   val location: Location
 ) {
   @Schema(hidden = true)

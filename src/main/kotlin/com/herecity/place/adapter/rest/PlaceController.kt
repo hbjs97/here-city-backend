@@ -2,6 +2,7 @@ package com.herecity.place.adapter.rest
 
 import com.herecity.common.annotation.ReqUser
 import com.herecity.place.application.dto.CreatePlaceDto
+import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.LoadPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springdoc.core.converters.models.Pageable
 import org.springframework.data.domain.Page
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -27,7 +29,8 @@ class PlaceController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getPlaces(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceDto> = this.loadPlaceUseCase.getPlaces(pageable)
+  fun getPlaces(@ReqUser user: UserDetail, @PageableDefault(page = 0, size = 10) pageable: Pageable, getPlacesDto: GetPlacesDto): Page<PlaceDto> =
+    this.loadPlaceUseCase.getPlaces(getPlacesDto, pageable)
 
   @Authorize
   @Operation(summary = "장소 등록")
