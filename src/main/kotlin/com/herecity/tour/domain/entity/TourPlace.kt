@@ -23,10 +23,10 @@ class TourPlace(
   @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   var place: Place? = null,
 
-  @Column(nullable = false)
+  @Column(nullable = false, name = "`from`")
   var from: LocalDateTime,
 
-  @Column(nullable = false)
+  @Column(nullable = false, name = "`to`")
   var to: LocalDateTime,
 
   @Column(nullable = false)

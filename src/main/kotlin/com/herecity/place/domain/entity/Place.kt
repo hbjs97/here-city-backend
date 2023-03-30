@@ -1,5 +1,6 @@
 package com.herecity.place.domain.entity
 
+import StringListConverter
 import com.herecity.common.domain.entity.BaseEntity
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
@@ -27,7 +28,7 @@ class Place(
   var address: String,
 
   @Column(nullable = false, length = 600)
-  var desc: String,
+  var description: String,
 
   @Column(nullable = false)
   var rating: Double,
@@ -35,8 +36,12 @@ class Place(
   @Column(nullable = false)
   var point: Point,
 
-  @ElementCollection
-  val images: List<String> = listOf(),
+  @Column(nullable = false, length = 8, columnDefinition = "char(8)")
+  var visitDate: String,
+
+  @Convert(converter = StringListConverter::class)
+  @Column(nullable = false, length = 1000)
+  var images: List<String> = listOf(),
 
   @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
   var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),

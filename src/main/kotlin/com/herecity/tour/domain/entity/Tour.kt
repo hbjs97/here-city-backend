@@ -26,10 +26,10 @@ class Tour(
   @Enumerated(EnumType.STRING)
   var scope: Scope,
 
-  @Column(nullable = false)
+  @Column(nullable = false, name = "`from`")
   var from: LocalDateTime,
 
-  @Column(nullable = false)
+  @Column(nullable = false, name = "`to`")
   var to: LocalDateTime,
 
   @Column(nullable = false)

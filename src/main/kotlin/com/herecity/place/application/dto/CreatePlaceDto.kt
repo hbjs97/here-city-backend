@@ -5,6 +5,7 @@ import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
+import javax.validation.constraints.Max
 import javax.validation.constraints.Size
 import org.springframework.data.geo.Point as Location
 
@@ -16,7 +17,9 @@ data class CreatePlaceDto(
   val name: String,
   val address: String,
   val desc: String,
-  val location: Location
+  val location: Location,
+  val images: List<String> = listOf(),
+  val visitDate: @Max(value = 8) String
 ) {
   @Schema(hidden = true)
   val point: Point = GeometryFactory(PrecisionModel(), 4326).createPoint(Coordinate(this.location.x, this.location.y))

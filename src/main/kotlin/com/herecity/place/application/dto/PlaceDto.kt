@@ -25,7 +25,7 @@ data class PlaceDto(
   constructor(place: Place) : this(
     id = place.id,
     name = place.name,
-    desc = place.desc,
+    desc = place.description,
     address = place.address,
     point = place.point,
     rating = place.rating,

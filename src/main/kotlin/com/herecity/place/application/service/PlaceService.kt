@@ -33,20 +33,21 @@ class PlaceService(
 
   @Transactional
   override fun createPlace(createPlaceDto: CreatePlaceDto): PlaceDto {
-    val acitivities = this.activityQueryOutputPort.getByIds(createPlaceDto.activityIds)
+    val activities = this.activityQueryOutputPort.getByIds(createPlaceDto.activityIds)
     val units = this.unitQueryOutputPort.getByIds(createPlaceDto.unitIds)
     val placeType = this.placeTypeQueryOutputPort.getById(createPlaceDto.placeTypeId)
     val place = Place(
       name = createPlaceDto.name,
       placeTypeId = placeType.id!!,
-      placeType = placeType,
       address = createPlaceDto.address,
       point = createPlaceDto.point,
       regionId = createPlaceDto.regionId,
-      desc = createPlaceDto.desc,
+      description = createPlaceDto.desc,
+      images = createPlaceDto.images,
+      visitDate = createPlaceDto.visitDate,
       rating = 0.0,
     )
-    place.placeActivities.addAll(acitivities.map { v -> PlaceActivity(place = place, activity = v) })
+    place.placeActivities.addAll(activities.map { v -> PlaceActivity(place = place, activity = v) })
     place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })
     this.placeCommandOutputPort.save(place)
     return PlaceDto(place)
