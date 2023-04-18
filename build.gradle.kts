@@ -69,8 +69,8 @@ dependencies {
   runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
   // firebase-admin
-  implementation("com.google.firebase:firebase-admin:8.1.0")
-  runtimeOnly("com.google.firebase:firebase-admin:8.1.0")
+  implementation("com.google.firebase:firebase-admin:9.1.1")
+  runtimeOnly("com.google.firebase:firebase-admin:9.1.1")
 
   // db
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -87,7 +87,7 @@ dependencies {
 //	testImplementation("org.springframework.batch:spring-batch-test")
 
   // logging
-  implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+  implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -103,11 +103,11 @@ dependencies {
   kapt("org.springframework.boot:spring-boot-configuration-processor")
 
   // gson
-  implementation("com.google.code.gson:gson:2.10")
+  implementation("com.google.code.gson:gson:2.10.1")
 
   // mockk
-  testImplementation("io.mockk:mockk:1.13.2")
-  testImplementation("com.ninja-squad:springmockk:3.1.1")
+  testImplementation("io.mockk:mockk:1.13.4")
+  testImplementation("com.ninja-squad:springmockk:4.0.2")
 
   // kotest
   testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
@@ -118,6 +118,9 @@ dependencies {
 
   // kotlin-faker
   implementation("io.github.serpro69:kotlin-faker:1.12.0")
+
+  api("com.querydsl:querydsl-jpa")
+  kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
 }
 
 kotlin.sourceSets.main {

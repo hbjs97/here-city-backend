@@ -14,6 +14,7 @@ data class CreatePlaceDto(
   val activityIds: @Size(min = 1) List<Long>,
   val placeTypeId: Long,
   val regionId: Long,
+  val title: String,
   val name: String,
   val address: String,
   val desc: String,

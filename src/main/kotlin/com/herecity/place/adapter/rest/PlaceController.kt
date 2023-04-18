@@ -10,8 +10,9 @@ import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springdoc.core.converters.models.Pageable
+
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize

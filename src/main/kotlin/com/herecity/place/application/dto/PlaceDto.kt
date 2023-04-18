@@ -5,32 +5,25 @@ import org.locationtech.jts.geom.Point
 
 data class PlaceDto(
   val id: Long?,
-
+  val title: String,
   val name: String,
-
-  val desc: String?,
-
+  val description: String?,
   val address: String,
-
   val point: Point,
-
   val rating: Double,
-//
 //  val liked: Boolean = false,
-//
-//  val distance: Int, // (m)
-//
   val images: List<String> = emptyList(),
+//  val distance: String?, // (m)
 ) {
   constructor(place: Place) : this(
     id = place.id,
+    title = place.title,
     name = place.name,
-    desc = place.description,
+    description = place.description,
     address = place.address,
     point = place.point,
     rating = place.rating,
-//    liked = place.liked,
-//    distance = place.distance,
+//    distance = null,
     images = place.images
   )
 }

@@ -13,8 +13,8 @@ import com.herecity.place.domain.entity.Place
 import com.herecity.place.domain.entity.PlaceActivity
 import com.herecity.place.domain.entity.PlaceUnit
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
-import org.springdoc.core.converters.models.Pageable
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -28,7 +28,8 @@ class PlaceService(
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
 
   override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
-    TODO("Not yet implemented")
+    val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
+    return places
   }
 
   @Transactional
@@ -37,6 +38,7 @@ class PlaceService(
     val units = this.unitQueryOutputPort.getByIds(createPlaceDto.unitIds)
     val placeType = this.placeTypeQueryOutputPort.getById(createPlaceDto.placeTypeId)
     val place = Place(
+      title = createPlaceDto.title,
       name = createPlaceDto.name,
       placeTypeId = placeType.id!!,
       address = createPlaceDto.address,
@@ -45,7 +47,7 @@ class PlaceService(
       description = createPlaceDto.desc,
       images = createPlaceDto.images,
       visitDate = createPlaceDto.visitDate,
-      rating = 0.0,
+      rating = 0.0
     )
     place.placeActivities.addAll(activities.map { v -> PlaceActivity(place = place, activity = v) })
     place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })

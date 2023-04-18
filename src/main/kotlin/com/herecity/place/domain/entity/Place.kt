@@ -2,13 +2,26 @@ package com.herecity.place.domain.entity
 
 import StringListConverter
 import com.herecity.common.domain.entity.BaseEntity
+import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 import org.locationtech.jts.geom.Point
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.ConstraintMode
+import javax.persistence.Convert
+import javax.persistence.Entity
+import javax.persistence.ForeignKey
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE place SET deleted_at = NOW() WHERE id = ?")
+@DynamicInsert
 @Entity(name = "place")
 class Place(
   @Id
@@ -20,6 +33,9 @@ class Place(
 
   @Column(nullable = false)
   var regionId: Long,
+
+  @Column(nullable = false, length = 100)
+  var title: String,
 
   @Column(nullable = false, length = 100)
   var name: String,
