@@ -38,7 +38,6 @@ class PlaceService(
         val inputPoint = PositionVO(getPlacesDto.point)
         v.distance = calculator.measure(inputPoint, PositionVO(v.point))
       }
-
     }
     return places
   }

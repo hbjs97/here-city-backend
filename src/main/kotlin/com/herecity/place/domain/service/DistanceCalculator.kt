@@ -7,7 +7,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-
 @Service
 class DistanceCalculator {
   private val KOREA_RADIUS = 6371000.0 // Earth's radius for Korea in meters
