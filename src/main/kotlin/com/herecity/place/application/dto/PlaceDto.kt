@@ -33,8 +33,7 @@ data class PlaceDto(
     rating = rating,
     images = images
   )
-
-
+  
   constructor(place: Place) : this(
     id = place.id,
     title = place.title,

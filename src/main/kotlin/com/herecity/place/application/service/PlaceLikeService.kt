@@ -12,5 +12,4 @@ class PlaceLikeService() : PlaceLikeUseCase {
   override fun disLike(placeId: Long): Boolean {
     TODO("Not yet implemented")
   }
-
 }
