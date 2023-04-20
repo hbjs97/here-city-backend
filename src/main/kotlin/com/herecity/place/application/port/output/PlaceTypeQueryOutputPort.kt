@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable
 interface PlaceTypeQueryOutputPort : BaseQueryRepository<PlaceType, Long> {
   fun existsByName(name: String): Boolean
   fun findByPage(pageable: Pageable): Page<PlaceType>
+  fun getByIds(ids: List<Long>): List<PlaceType>
 }

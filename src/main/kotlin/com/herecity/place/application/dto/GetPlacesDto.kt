@@ -20,6 +20,6 @@ data class GetPlacesDto(
   val y: Double?,
 ) {
   @Schema(hidden = true)
-  val point: Point = GeometryFactory(PrecisionModel(), 4326).createPoint(Coordinate(this.x!!, this.y!!))
+  val point: Point? = if (this.x == null || this.y == null) null else GeometryFactory(PrecisionModel(), 4326).createPoint(Coordinate(this.x, this.y))
   fun coordinates(): Coordinate = Coordinate(this.x!!, this.y!!)
 }

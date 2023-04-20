@@ -38,6 +38,7 @@ class PlaceMariaAdapter(
         Projections.constructor(
           PlaceDto::class.java,
           place.id,
+          place.title,
           place.name,
           place.description,
           place.address,
@@ -58,7 +59,7 @@ class PlaceMariaAdapter(
     }
 
     if (getPlacesDto.placeTypeId != null) {
-      qb.where(place.placeType.id.eq(getPlacesDto.placeTypeId))
+      qb.innerJoin(place.placeTypes).where(place.placeTypes.any().type.id.eq(getPlacesDto.placeTypeId))
     }
 
     if (getPlacesDto.unitId != null) {
@@ -69,6 +70,7 @@ class PlaceMariaAdapter(
       .orderBy(place.rating.desc())
       .offset(pageable.offset)
       .limit(pageable.pageSize.toLong())
+      .distinct()
       .fetch()
 
     val count = qb.fetchCount()

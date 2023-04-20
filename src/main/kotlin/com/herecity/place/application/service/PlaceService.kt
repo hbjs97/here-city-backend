@@ -11,6 +11,7 @@ import com.herecity.place.application.port.output.PlaceQueryOutputPort
 import com.herecity.place.application.port.output.PlaceTypeQueryOutputPort
 import com.herecity.place.domain.entity.Place
 import com.herecity.place.domain.entity.PlaceActivity
+import com.herecity.place.domain.entity.PlaceTypeGroup
 import com.herecity.place.domain.entity.PlaceUnit
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.springframework.data.domain.Page
@@ -27,30 +28,27 @@ class PlaceService(
   private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
 
-  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
-    val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
-    return places
-  }
+  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> = this.placeQueryOutputPort.search(getPlacesDto, pageable)
 
   @Transactional
   override fun createPlace(createPlaceDto: CreatePlaceDto): PlaceDto {
     val activities = this.activityQueryOutputPort.getByIds(createPlaceDto.activityIds)
     val units = this.unitQueryOutputPort.getByIds(createPlaceDto.unitIds)
-    val placeType = this.placeTypeQueryOutputPort.getById(createPlaceDto.placeTypeId)
+    val placeTypes = this.placeTypeQueryOutputPort.getByIds(createPlaceDto.placeTypeIds)
     val place = Place(
       title = createPlaceDto.title,
       name = createPlaceDto.name,
-      placeTypeId = placeType.id!!,
       address = createPlaceDto.address,
       point = createPlaceDto.point,
       regionId = createPlaceDto.regionId,
-      description = createPlaceDto.desc,
+      description = createPlaceDto.description,
       images = createPlaceDto.images,
       visitDate = createPlaceDto.visitDate,
       rating = 0.0
     )
     place.placeActivities.addAll(activities.map { v -> PlaceActivity(place = place, activity = v) })
     place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })
+    place.placeTypes.addAll(placeTypes.map { v -> PlaceTypeGroup(place = place, type = v) })
     this.placeCommandOutputPort.save(place)
     return PlaceDto(place)
   }

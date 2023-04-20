@@ -12,12 +12,12 @@ import org.springframework.data.geo.Point as Location
 data class CreatePlaceDto(
   val unitIds: @Size(min = 1) List<Long>,
   val activityIds: @Size(min = 1) List<Long>,
-  val placeTypeId: Long,
+  val placeTypeIds: @Size(min = 1) List<Long>,
   val regionId: Long,
   val title: String,
   val name: String,
   val address: String,
-  val desc: String,
+  val description: String,
   val location: Location,
   val images: List<String> = listOf(),
   val visitDate: @Max(value = 8) String

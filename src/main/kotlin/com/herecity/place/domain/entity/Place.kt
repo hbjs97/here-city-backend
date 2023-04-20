@@ -8,15 +8,11 @@ import org.hibernate.annotations.Where
 import org.locationtech.jts.geom.Point
 import javax.persistence.CascadeType
 import javax.persistence.Column
-import javax.persistence.ConstraintMode
 import javax.persistence.Convert
 import javax.persistence.Entity
-import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 @Where(clause = "deleted_at IS NULL")
@@ -28,13 +24,10 @@ class Place(
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   var id: Long? = null,
 
-  @Column(name = "place_type_id")
-  var placeTypeId: Long,
-
   @Column(nullable = false)
   var regionId: Long,
 
-  @Column(nullable = false, length = 100)
+  @Column(nullable = false, length = 200)
   var title: String,
 
   @Column(nullable = false, length = 100)
@@ -60,12 +53,11 @@ class Place(
   var images: List<String> = listOf(),
 
   @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+  var placeTypes: MutableSet<PlaceTypeGroup> = mutableSetOf(),
+
+  @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
   var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),
 
   @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-  var placeActivities: MutableSet<PlaceActivity> = mutableSetOf(),
-
-  @ManyToOne(targetEntity = PlaceType::class)
-  @JoinColumn(name = "place_type_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var placeType: PlaceType? = null
+  var placeActivities: MutableSet<PlaceActivity> = mutableSetOf()
 ) : BaseEntity()
