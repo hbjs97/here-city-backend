@@ -13,6 +13,8 @@ import com.herecity.place.domain.entity.Place
 import com.herecity.place.domain.entity.PlaceActivity
 import com.herecity.place.domain.entity.PlaceTypeGroup
 import com.herecity.place.domain.entity.PlaceUnit
+import com.herecity.place.domain.service.DistanceCalculator
+import com.herecity.place.domain.vo.PositionVO
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,9 +28,20 @@ class PlaceService(
   private val placeQueryOutputPort: PlaceQueryOutputPort,
   private val placeCommandOutputPort: PlaceCommandOutputPort,
   private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
+  private val calculator: DistanceCalculator
 ) : LoadPlaceUseCase, RecordPlaceUseCase {
 
-  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> = this.placeQueryOutputPort.search(getPlacesDto, pageable)
+  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
+    val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
+    if (getPlacesDto.point != null) {
+      places.content.forEach { v ->
+        val inputPoint = PositionVO(getPlacesDto.point)
+        v.distance = calculator.measure(inputPoint, PositionVO(v.point))
+      }
+
+    }
+    return places
+  }
 
   @Transactional
   override fun createPlace(createPlaceDto: CreatePlaceDto): PlaceDto {

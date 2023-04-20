@@ -13,6 +13,7 @@ data class PlaceDto(
   val point: Coordinate,
   val rating: Double,
   val images: List<String> = emptyList(),
+  var distance: Double? = null
 ) {
   constructor(
     id: Long,
@@ -22,7 +23,7 @@ data class PlaceDto(
     address: String,
     point: Point,
     rating: Double,
-    images: List<String>
+    images: List<String>,
   ) : this(
     id = id,
     title = title,
