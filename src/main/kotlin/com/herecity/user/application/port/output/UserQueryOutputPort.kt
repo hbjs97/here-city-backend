@@ -6,4 +6,5 @@ import java.util.*
 
 interface UserQueryOutputPort : BaseQueryRepository<User, UUID> {
   fun findByEmail(email: String): User?
+  fun findAllById(ids: List<UUID>): List<User>
 }

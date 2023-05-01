@@ -15,7 +15,7 @@ import javax.persistence.Id
 class PlaceType(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var id: Long? = null,
+  var id: Long = 0L,
 
   @Column(nullable = false, length = 50)
   var name: String,

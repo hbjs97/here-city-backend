@@ -4,7 +4,7 @@ import com.herecity.common.annotation.ReqUser
 import com.herecity.region.adapter.dto.NameDto
 import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
-import com.herecity.region.application.port.input.LoadRegionUseCase
+import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.region.application.port.input.RecordRegionUseCase
 import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
@@ -18,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/v1/regions")
 class RegionController(
-  private val loadRegionUseCase: LoadRegionUseCase,
+  private val fetchRegionUseCase: FetchRegionUseCase,
   private val recordRegionUseCase: RecordRegionUseCase
 ) {
   @Authorize
@@ -27,7 +27,7 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getUpperRegions(@ReqUser user: UserDetail): List<RegionDto> = this.loadRegionUseCase.getUpperRegions()
+  fun getUpperRegions(@ReqUser user: UserDetail): List<RegionDto> = this.fetchRegionUseCase.getUpperRegions()
 
   @Authorize
   @Operation(summary = "하위 지역 목록 조회")
@@ -35,7 +35,8 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping("{id}")
-  fun getSubRegions(@ReqUser user: UserDetail, @PathVariable id: Long): List<RegionDto> = this.loadRegionUseCase.getSubRegions(id)
+  fun getSubRegions(@ReqUser user: UserDetail, @PathVariable id: Long): List<RegionDto> =
+    this.fetchRegionUseCase.getSubRegions(id)
 
   @Authorize
   @Operation(summary = "상위 지역 등록")
@@ -43,7 +44,8 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createUpperRegion(@RequestBody nameDto: NameDto): RegionDto = this.recordRegionUseCase.createUpperRegion(nameDto.name)
+  fun createUpperRegion(@RequestBody nameDto: NameDto): RegionDto =
+    this.recordRegionUseCase.createUpperRegion(nameDto.name)
 
   @Authorize
   @Operation(summary = "하위 지역 등록")
@@ -51,7 +53,8 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping("{id}")
-  fun addSubRegion(@PathVariable id: Long, @RequestBody nameDto: NameDto): RegionDto = this.recordRegionUseCase.addSubRegion(id, nameDto.name)
+  fun addSubRegion(@PathVariable id: Long, @RequestBody nameDto: NameDto): RegionDto =
+    this.recordRegionUseCase.addSubRegion(id, nameDto.name)
 
   @Authorize
   @Operation(summary = "지역 정보 수정")

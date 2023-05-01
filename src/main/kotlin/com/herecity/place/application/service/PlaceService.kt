@@ -4,7 +4,7 @@ import com.herecity.activity.application.port.output.ActivityQueryOutputPort
 import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
-import com.herecity.place.application.port.input.LoadPlaceUseCase
+import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.place.application.port.output.PlaceCommandOutputPort
 import com.herecity.place.application.port.output.PlaceQueryOutputPort
@@ -29,7 +29,7 @@ class PlaceService(
   private val placeCommandOutputPort: PlaceCommandOutputPort,
   private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
   private val calculator: DistanceCalculator
-) : LoadPlaceUseCase, RecordPlaceUseCase {
+) : FetchPlaceUseCase, RecordPlaceUseCase {
 
   override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
     val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
@@ -40,6 +40,13 @@ class PlaceService(
       }
     }
     return places
+  }
+
+  override fun fetchPlace(id: Long): PlaceDto = PlaceDto(this.placeQueryOutputPort.getById(id))
+
+  override fun fetchPlaces(ids: List<Long>): List<PlaceDto> {
+    val places = this.placeQueryOutputPort.findAllById(ids)
+    return places.map { v -> PlaceDto(v) }
   }
 
   @Transactional

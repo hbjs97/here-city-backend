@@ -5,7 +5,7 @@ import com.herecity.user.domain.vo.UserRole
 import java.util.*
 
 data class UserDto(
-  val id: UUID?,
+  val id: UUID,
   val email: String,
   val displayName: String,
   val role: UserRole

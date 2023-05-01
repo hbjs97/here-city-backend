@@ -9,4 +9,5 @@ import org.springframework.data.domain.Pageable
 
 interface PlaceQueryOutputPort : BaseQueryRepository<Place, Long> {
   fun search(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto>
+  fun findAllById(ids: List<Long>): List<Place>
 }

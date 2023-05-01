@@ -2,9 +2,11 @@ package com.herecity.tour.domain.entity
 
 import com.herecity.common.domain.entity.BaseEntity
 import com.herecity.tour.domain.vo.TouristId
-import com.herecity.user.domain.entity.User
+import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Type
 import org.hibernate.annotations.Where
+import java.util.*
 import javax.persistence.*
 
 @Where(clause = "deleted_at IS NULL")
@@ -13,12 +15,17 @@ import javax.persistence.*
 @Entity(name = "tourist")
 class Tourist(
   @Id
-  @ManyToOne
-  @JoinColumn(name = "tour_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var tour: Tour? = null,
+  @GenericGenerator(name = "uuid4", strategy = "uuid4")
+  @Type(type = "uuid-char")
+  var userId: UUID? = null,
 
   @Id
   @ManyToOne
-  @JoinColumn(name = "user_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var user: User? = null
+  @JoinColumn(
+    name = "tour_id",
+    insertable = false,
+    updatable = false,
+    foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+  )
+  var tour: Tour? = null,
 ) : BaseEntity()

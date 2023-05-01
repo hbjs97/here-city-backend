@@ -13,7 +13,7 @@ buildscript {
 plugins {
   val kotlinVersion = "1.6.21"
 
-  id("org.springframework.boot") version "2.7.5"
+  id("org.springframework.boot") version "2.6.3"
   id("io.spring.dependency-management") version "1.0.15.RELEASE"
   id("io.gitlab.arturbosch.detekt") version "1.20.0"
   id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
@@ -107,7 +107,7 @@ dependencies {
 
   // mockk
   testImplementation("io.mockk:mockk:1.13.4")
-  testImplementation("com.ninja-squad:springmockk:4.0.2")
+  testImplementation("com.ninja-squad:springmockk:3.1.1")
 
   // kotest
   testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
@@ -115,6 +115,7 @@ dependencies {
   testImplementation("io.kotest:kotest-property:$kotestVersion")
   // testImplementation("io.kotest:kotest-framework-datatest:5.3.0")
   testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
 
   // kotlin-faker
   implementation("io.github.serpro69:kotlin-faker:1.12.0")
@@ -124,7 +125,7 @@ dependencies {
 }
 
 kotlin.sourceSets.main {
-  setBuildDir("$buildDir")
+  setBuildDir("$buildDir/generated/source/kapt/main")
 }
 
 tasks.withType<KotlinCompile> {

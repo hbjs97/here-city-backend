@@ -6,5 +6,5 @@ import java.util.*
 data class TouristId(
   var tour: Long? = null,
 
-  var user: UUID? = null,
+  var userId: UUID? = null,
 ) : Serializable

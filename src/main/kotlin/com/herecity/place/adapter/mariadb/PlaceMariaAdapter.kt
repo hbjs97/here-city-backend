@@ -78,6 +78,8 @@ class PlaceMariaAdapter(
     return PageImpl(places, pageable, count)
   }
 
+  override fun findAllById(ids: List<Long>): List<Place> = placeRepository.findAllById(ids)
+
   override fun getById(id: Long): Place = this.placeRepository.findById(id).orElseThrow()
 
   override fun findById(id: Long): Place? = this.placeRepository.findByIdOrNull(id)

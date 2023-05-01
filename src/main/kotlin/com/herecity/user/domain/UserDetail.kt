@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.*
 
 class UserDetail(
   private val user: User,
@@ -27,6 +28,8 @@ class UserDetail(
   override fun isCredentialsNonExpired(): Boolean = true
 
   override fun isEnabled(): Boolean = true
+
+  fun getId(): UUID = user.id
 
   fun getEmail(): String = user.email
 

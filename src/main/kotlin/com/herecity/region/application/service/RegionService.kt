@@ -2,7 +2,7 @@ package com.herecity.region.application.service
 
 import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
-import com.herecity.region.application.port.input.LoadRegionUseCase
+import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.region.application.port.input.RecordRegionUseCase
 import com.herecity.region.application.port.output.RegionCommandOutputPort
 import com.herecity.region.application.port.output.RegionQueryOutputPort
@@ -16,10 +16,16 @@ class RegionService(
   private val regionQueryOutputPort: RegionQueryOutputPort,
   private val regionCommandOutputPort: RegionCommandOutputPort
 ) :
-  LoadRegionUseCase, RecordRegionUseCase {
+  FetchRegionUseCase, RecordRegionUseCase {
   override fun getUpperRegions(): List<RegionDto> = this.regionQueryOutputPort.getUpperRegions()
 
-  override fun getSubRegions(upperRegionId: Long): List<RegionDto> = this.regionQueryOutputPort.getSubRegions(upperRegionId)
+  override fun getSubRegions(upperRegionId: Long): List<RegionDto> =
+    this.regionQueryOutputPort.getSubRegions(upperRegionId)
+
+  override fun getById(id: Long): RegionDto {
+    val region = this.regionQueryOutputPort.getById(id)
+    return RegionDto(region)
+  }
 
   /**
    * @see

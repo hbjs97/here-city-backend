@@ -24,7 +24,7 @@ class User(
   @GeneratedValue(generator = "hibernate-uuid")
   @GenericGenerator(name = "uuid4", strategy = "uuid4")
   @Type(type = "uuid-char")
-  var id: UUID? = null,
+  var id: UUID = UUID.randomUUID(),
 
   @Column(length = 100, nullable = false, unique = true)
   var email: String,

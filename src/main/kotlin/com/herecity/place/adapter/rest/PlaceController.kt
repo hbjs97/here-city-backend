@@ -4,7 +4,7 @@ import com.herecity.common.annotation.ReqUser
 import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
-import com.herecity.place.application.port.input.LoadPlaceUseCase
+import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/places")
 class PlaceController(
-  private val loadPlaceUseCase: LoadPlaceUseCase,
+  private val fetchPlaceUseCase: FetchPlaceUseCase,
   private val recordPlaceUseCase: RecordPlaceUseCase,
 ) {
   @Authorize
@@ -30,8 +30,12 @@ class PlaceController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getPlaces(@ReqUser user: UserDetail, @PageableDefault(page = 0, size = 10) pageable: Pageable, getPlacesDto: GetPlacesDto): Page<PlaceDto> =
-    this.loadPlaceUseCase.getPlaces(getPlacesDto, pageable)
+  fun getPlaces(
+    @ReqUser user: UserDetail,
+    @PageableDefault(page = 0, size = 10) pageable: Pageable,
+    getPlacesDto: GetPlacesDto
+  ): Page<PlaceDto> =
+    this.fetchPlaceUseCase.getPlaces(getPlacesDto, pageable)
 
   @Authorize
   @Operation(summary = "장소 등록")
@@ -39,7 +43,8 @@ class PlaceController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createPlace(@RequestBody createPlaceDto: CreatePlaceDto): PlaceDto = this.recordPlaceUseCase.createPlace(createPlaceDto)
+  fun createPlace(@RequestBody createPlaceDto: CreatePlaceDto): PlaceDto =
+    this.recordPlaceUseCase.createPlace(createPlaceDto)
 
   @Authorize
   @Operation(summary = "장소 정보 수정")
