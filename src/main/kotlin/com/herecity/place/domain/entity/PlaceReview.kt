@@ -16,7 +16,6 @@ import javax.persistence.Id
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
-
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE place_review SET deleted_at = NOW() WHERE id = ?")
 @Entity(name = "place_review")
