@@ -89,4 +89,6 @@ class Tour(
     this.tourNotifications =
       createTourDto.notifications.map { TourNotification(scheduledAt = it.scheduledAt, tour = this) }.toList()
   }
+
+  fun isHost(id: UUID): Boolean = this.createdBy == id
 }
