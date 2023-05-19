@@ -3,5 +3,5 @@
 
 export SPRING_PROFILES_ACTIVE=prod
 ./gradlew build -x detekt -x test
-nohup java -jar build/libs/here-city-backend-0.0.1-SNAPSHOT.jar > app.log &
+nohup java -jar build/generated/source/kapt/main/libs/here-city-backend-0.0.1-SNAPSHOT.jar > app.log &
 Private-0.0.1-SNAPSHOT.jar > app.log &
