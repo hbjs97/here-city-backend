@@ -20,7 +20,10 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/api/v1/activities")
-class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, private val recordActivityUseCase: RecordActivityUseCase) {
+class ActivityController(
+  private val loadActivityUseCase: LoadActivityUseCase,
+  private val recordActivityUseCase: RecordActivityUseCase,
+) {
 
   @Authorize
   @Operation(summary = "활동 목록 조회")
@@ -28,7 +31,8 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"USER\",\"ADMIN\")")
   @GetMapping
-  fun getActivities(@ReqUser user: UserDetail, searchActivityDto: SearchActivityDto): List<ActivityDto> = this.loadActivityUseCase.search(searchActivityDto)
+  fun getActivities(@ReqUser user: UserDetail, searchActivityDto: SearchActivityDto): List<ActivityDto> =
+    this.loadActivityUseCase.search(searchActivityDto)
 
   @Authorize
   @Operation(summary = "활동 등록")
@@ -36,12 +40,13 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createActivity(@RequestBody createActivityDto: CreateActivityDto): ActivityDto = this.recordActivityUseCase.createActivity(createActivityDto.name)
+  fun createActivity(@RequestBody createActivityDto: CreateActivityDto): ActivityDto =
+    this.recordActivityUseCase.createActivity(createActivityDto.name)
 
   @Authorize
   @Operation(summary = "활동 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PatchMapping("{id}")
   fun updateActivity(@PathVariable id: Long, @RequestBody updateActivityDto: UpdateActivityDto): ActivityDto =
@@ -49,8 +54,8 @@ class ActivityController(private val loadActivityUseCase: LoadActivityUseCase, p
 
   @Authorize
   @Operation(summary = "활동 삭제")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deleteActivity(@PathVariable id: Long) = this.recordActivityUseCase.deleteActivity(id)

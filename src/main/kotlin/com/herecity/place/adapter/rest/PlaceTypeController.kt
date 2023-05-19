@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/places/types")
 class PlaceTypeController(
   private val loadPlaceTypeUseCase: LoadPlaceTypeUseCase,
-  private val recordPlaceTypeUseCase: RecordPlaceTypeUseCase
+  private val recordPlaceTypeUseCase: RecordPlaceTypeUseCase,
 ) {
   @Authorize
   @Operation(summary = "장소분류 목록 조회")
@@ -27,7 +27,8 @@ class PlaceTypeController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getPlaceTypes(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceTypeDto> = this.loadPlaceTypeUseCase.getPlaceTypes(pageable)
+  fun getPlaceTypes(@ReqUser user: UserDetail, pageable: Pageable): Page<PlaceTypeDto> =
+    this.loadPlaceTypeUseCase.getPlaceTypes(pageable)
 
   @Authorize
   @Operation(summary = "장소분류 등록")
@@ -35,20 +36,22 @@ class PlaceTypeController(
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createPlaceType(@RequestBody createPlaceTypeDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.createPlaceType(createPlaceTypeDto)
+  fun createPlaceType(@RequestBody createPlaceTypeDto: CreatePlaceTypeDto): PlaceTypeDto =
+    this.recordPlaceTypeUseCase.createPlaceType(createPlaceTypeDto)
 
   @Authorize
   @Operation(summary = "장소분류 정보 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PutMapping("{id}")
-  fun updatePlaceType(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceTypeDto): PlaceTypeDto = this.recordPlaceTypeUseCase.updatePlaceType(id, updatePlaceDto.name)
+  fun updatePlaceType(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceTypeDto): PlaceTypeDto =
+    this.recordPlaceTypeUseCase.updatePlaceType(id, updatePlaceDto.name)
 
   @Authorize
   @Operation(summary = "장소분류 삭제")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deletePlaceType(@PathVariable id: Long) = this.recordPlaceTypeUseCase.deletePlaceType(id)

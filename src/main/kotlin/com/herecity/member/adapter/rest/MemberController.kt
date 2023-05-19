@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/members")
 class MemberController(
   private val loadMemberUseCase: LoadMemberUseCase,
-  private val recordMemberUseCase: RecordMemberUseCase
+  private val recordMemberUseCase: RecordMemberUseCase,
 ) {
   @Authorize
   @Operation(summary = "멤버 목록 조회")
@@ -37,16 +37,17 @@ class MemberController(
 
   @Authorize
   @Operation(summary = "멤버 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PatchMapping("{id}")
-  fun updateMember(@PathVariable id: Long, @RequestBody nameDto: NameDto): MemberDto = this.recordMemberUseCase.updateMember(id, nameDto.name)
+  fun updateMember(@PathVariable id: Long, @RequestBody nameDto: NameDto): MemberDto =
+    this.recordMemberUseCase.updateMember(id, nameDto.name)
 
   @Authorize
   @Operation(summary = "멤버 삭제")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deleteMember(@PathVariable id: Long) = this.recordMemberUseCase.deleteMember(id)

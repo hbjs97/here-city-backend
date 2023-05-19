@@ -1,13 +1,11 @@
 package com.herecity.region.adapter.rest
 
-import com.herecity.common.annotation.ReqUser
 import com.herecity.region.adapter.dto.NameDto
 import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.region.application.port.input.RecordRegionUseCase
 import com.herecity.user.application.security.Authorize
-import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -19,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException
 @RequestMapping("/api/v1/regions")
 class RegionController(
   private val fetchRegionUseCase: FetchRegionUseCase,
-  private val recordRegionUseCase: RecordRegionUseCase
+  private val recordRegionUseCase: RecordRegionUseCase,
 ) {
   @Authorize
   @Operation(summary = "상위 지역 목록 조회")
@@ -27,7 +25,7 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping
-  fun getUpperRegions(@ReqUser user: UserDetail): List<RegionDto> = this.fetchRegionUseCase.getUpperRegions()
+  fun getUpperRegions(): List<RegionDto> = this.fetchRegionUseCase.getUpperRegions()
 
   @Authorize
   @Operation(summary = "하위 지역 목록 조회")
@@ -35,7 +33,7 @@ class RegionController(
   @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
   @GetMapping("{id}")
-  fun getSubRegions(@ReqUser user: UserDetail, @PathVariable id: Long): List<RegionDto> =
+  fun getSubRegions(@PathVariable id: Long): List<RegionDto> =
     this.fetchRegionUseCase.getSubRegions(id)
 
   @Authorize
@@ -58,8 +56,8 @@ class RegionController(
 
   @Authorize
   @Operation(summary = "지역 정보 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PatchMapping("{id}")
   fun updateCity(@PathVariable id: Long, @RequestBody updateRegionDto: UpdateRegionDto): RegionDto {
@@ -71,8 +69,8 @@ class RegionController(
 
   @Authorize
   @Operation(summary = "지역 삭제", description = "하위 지역이 존재하면 삭제할 수 없습니다.")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deleteCity(@PathVariable id: Long) = this.recordRegionUseCase.deleteRegion(id)

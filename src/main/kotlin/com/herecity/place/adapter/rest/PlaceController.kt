@@ -33,7 +33,7 @@ class PlaceController(
   fun getPlaces(
     @ReqUser user: UserDetail,
     @PageableDefault(page = 0, size = 10) pageable: Pageable,
-    getPlacesDto: GetPlacesDto
+    getPlacesDto: GetPlacesDto,
   ): Page<PlaceDto> =
     this.fetchPlaceUseCase.getPlaces(getPlacesDto, pageable)
 
@@ -48,8 +48,8 @@ class PlaceController(
 
   @Authorize
   @Operation(summary = "장소 정보 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PutMapping("{id}")
   fun updatePlace(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceDto): PlaceDto {
@@ -58,8 +58,8 @@ class PlaceController(
 
   @Authorize
   @Operation(summary = "장소 삭제")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deletePlace(@PathVariable id: Long) = this.recordPlaceUseCase.deletePlace(id)

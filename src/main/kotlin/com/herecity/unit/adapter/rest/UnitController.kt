@@ -45,7 +45,8 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping
-  fun createUnit(@RequestBody createUnitDto: CreateUnitDto): UnitDto = this.recordUnitUseCase.createUnit(createUnitDto.name)
+  fun createUnit(@RequestBody createUnitDto: CreateUnitDto): UnitDto =
+    this.recordUnitUseCase.createUnit(createUnitDto.name)
 
   @Authorize
   @Operation(summary = "유닛에 멤버 추가")
@@ -53,20 +54,22 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
   @ResponseStatus(value = HttpStatus.CREATED)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PostMapping("{unitId}/members/{memberId}")
-  fun addMember(@PathVariable unitId: Long, @PathVariable memberId: Long): UnitMemberDto = this.recordUnitUseCase.addUnitMember(AddMemberDto(unitId, memberId))
+  fun addMember(@PathVariable unitId: Long, @PathVariable memberId: Long): UnitMemberDto =
+    this.recordUnitUseCase.addUnitMember(AddMemberDto(unitId, memberId))
 
   @Authorize
   @Operation(summary = "유닛 수정")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @PatchMapping("{id}")
-  fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto = this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
+  fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto =
+    this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
 
   @Authorize
   @Operation(summary = "유닛 삭제")
-  @ApiResponse(responseCode = "202")
-  @ResponseStatus(value = HttpStatus.ACCEPTED)
+  @ApiResponse(responseCode = "200")
+  @ResponseStatus(value = HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
   @DeleteMapping("{id}")
   fun deleteUnit(@PathVariable id: Long) = this.recordUnitUseCase.deleteUnit(id)
