@@ -23,60 +23,60 @@ import javax.transaction.Transactional
 
 @Service
 class PlaceService(
-  private val activityQueryOutputPort: ActivityQueryOutputPort,
-  private val unitQueryOutputPort: UnitQueryOutputPort,
-  private val placeQueryOutputPort: PlaceQueryOutputPort,
-  private val placeCommandOutputPort: PlaceCommandOutputPort,
-  private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
-  private val calculator: DistanceCalculator
+    private val activityQueryOutputPort: ActivityQueryOutputPort,
+    private val unitQueryOutputPort: UnitQueryOutputPort,
+    private val placeQueryOutputPort: PlaceQueryOutputPort,
+    private val placeCommandOutputPort: PlaceCommandOutputPort,
+    private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
+    private val calculator: DistanceCalculator,
 ) : FetchPlaceUseCase, RecordPlaceUseCase {
 
-  override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
-    val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
-    if (getPlacesDto.point != null) {
-      places.content.forEach { v ->
-        val inputPoint = PositionVO(getPlacesDto.point)
-        v.distance = calculator.measure(inputPoint, PositionVO(v.point))
-      }
+    override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
+        val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
+        if (getPlacesDto.point != null) {
+            places.content.forEach { v ->
+                val inputPoint = PositionVO(getPlacesDto.point)
+                v.distance = calculator.measure(inputPoint, PositionVO(v.point))
+            }
+        }
+        return places
     }
-    return places
-  }
 
-  override fun fetchPlace(id: Long): PlaceDto = PlaceDto(this.placeQueryOutputPort.getById(id))
+    override fun fetchPlace(id: Long): PlaceDto = PlaceDto(this.placeQueryOutputPort.getById(id))
 
-  override fun fetchPlaces(ids: List<Long>): List<PlaceDto> {
-    val places = this.placeQueryOutputPort.findAllById(ids)
-    return places.map { v -> PlaceDto(v) }
-  }
+    override fun fetchPlaces(ids: List<Long>): List<PlaceDto> {
+        val places = this.placeQueryOutputPort.findAllById(ids)
+        return places.map { v -> PlaceDto(v) }
+    }
 
-  @Transactional
-  override fun createPlace(createPlaceDto: CreatePlaceDto): PlaceDto {
-    val activities = this.activityQueryOutputPort.getByIds(createPlaceDto.activityIds)
-    val units = this.unitQueryOutputPort.getByIds(createPlaceDto.unitIds)
-    val placeTypes = this.placeTypeQueryOutputPort.getByIds(createPlaceDto.placeTypeIds)
-    val place = Place(
-      title = createPlaceDto.title,
-      name = createPlaceDto.name,
-      address = createPlaceDto.address,
-      point = createPlaceDto.point,
-      regionId = createPlaceDto.regionId,
-      description = createPlaceDto.description,
-      images = createPlaceDto.images,
-      visitDate = createPlaceDto.visitDate,
-      rating = 0.0
-    )
-    place.placeActivities.addAll(activities.map { v -> PlaceActivity(place = place, activity = v) })
-    place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })
-    place.placeTypes.addAll(placeTypes.map { v -> PlaceTypeGroup(place = place, type = v) })
-    this.placeCommandOutputPort.save(place)
-    return PlaceDto(place)
-  }
+    @Transactional
+    override fun createPlace(createPlaceDto: CreatePlaceDto): PlaceDto {
+        val activities = this.activityQueryOutputPort.getByIds(createPlaceDto.activityIds)
+        val units = this.unitQueryOutputPort.getByIds(createPlaceDto.unitIds)
+        val placeTypes = this.placeTypeQueryOutputPort.getByIds(createPlaceDto.placeTypeIds)
+        val place = Place(
+            title = createPlaceDto.title,
+            name = createPlaceDto.name,
+            address = createPlaceDto.address,
+            point = createPlaceDto.point,
+            regionId = createPlaceDto.regionId,
+            description = createPlaceDto.description,
+            images = createPlaceDto.images,
+            visitDate = createPlaceDto.visitDate,
+            rating = 0.0
+        )
+        place.placeActivities.addAll(activities.map { v -> PlaceActivity(place = place, activity = v) })
+        place.placeUnits.addAll(units.map { v -> PlaceUnit(place = place, unit = v) })
+        place.placeTypes.addAll(placeTypes.map { v -> PlaceTypeGroup(place = place, type = v) })
+        this.placeCommandOutputPort.save(place)
+        return PlaceDto(place)
+    }
 
-  override fun updatePlace(id: Long, updatePlaceDto: CreatePlaceDto): PlaceDto {
-    TODO("Not yet implemented")
-  }
+    override fun updatePlace(id: Long, updatePlaceDto: CreatePlaceDto): PlaceDto {
+        TODO("Not yet implemented")
+    }
 
-  override fun deletePlace(id: Long) {
-    TODO("Not yet implemented")
-  }
+    override fun deletePlace(id: Long) {
+        TODO("Not yet implemented")
+    }
 }

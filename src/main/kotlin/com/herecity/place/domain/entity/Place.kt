@@ -20,44 +20,44 @@ import javax.persistence.OneToMany
 @DynamicInsert
 @Entity(name = "place")
 class Place(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var id: Long? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
 
-  @Column(nullable = false)
-  var regionId: Long,
+    @Column(nullable = false)
+    var regionId: Long,
 
-  @Column(nullable = false, length = 200)
-  var title: String,
+    @Column(nullable = false, length = 200)
+    var title: String,
 
-  @Column(nullable = false, length = 100)
-  var name: String,
+    @Column(nullable = false, length = 100)
+    var name: String,
 
-  @Column(nullable = false, length = 255)
-  var address: String,
+    @Column(nullable = false, length = 255)
+    var address: String,
 
-  @Column(nullable = false, length = 600)
-  var description: String,
+    @Column(nullable = false, length = 600)
+    var description: String,
 
-  @Column(nullable = false)
-  var rating: Double,
+    @Column(nullable = false)
+    var rating: Double,
 
-  @Column(nullable = false)
-  var point: Point,
+    @Column(nullable = false)
+    var point: Point,
 
-  @Column(nullable = false, length = 8, columnDefinition = "char(8)")
-  var visitDate: String,
+    @Column(nullable = false, length = 8, columnDefinition = "char(8)")
+    var visitDate: String,
 
-  @Convert(converter = StringListConverter::class)
-  @Column(nullable = false, length = 1000)
-  var images: List<String> = listOf(),
+    @Convert(converter = StringListConverter::class)
+    @Column(nullable = false, length = 1000)
+    var images: List<String> = listOf(),
 
-  @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-  var placeTypes: MutableSet<PlaceTypeGroup> = mutableSetOf(),
+    @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+    var placeTypes: MutableSet<PlaceTypeGroup> = mutableSetOf(),
 
-  @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-  var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),
+    @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+    var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),
 
-  @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-  var placeActivities: MutableSet<PlaceActivity> = mutableSetOf()
+    @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+    var placeActivities: MutableSet<PlaceActivity> = mutableSetOf()
 ) : BaseEntity()

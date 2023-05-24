@@ -14,18 +14,18 @@ import javax.persistence.*
 @IdClass(TouristId::class)
 @Entity(name = "tourist")
 class Tourist(
-  @Id
-  @GenericGenerator(name = "uuid4", strategy = "uuid4")
-  @Type(type = "uuid-char")
-  var userId: UUID? = null,
+    @Id
+    @GenericGenerator(name = "uuid4", strategy = "uuid4")
+    @Type(type = "uuid-char")
+    var userId: UUID? = null,
 
-  @Id
-  @ManyToOne
-  @JoinColumn(
-    name = "tour_id",
-    insertable = false,
-    updatable = false,
-    foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
-  )
-  var tour: Tour? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(
+        name = "tour_id",
+        insertable = false,
+        updatable = false,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var tour: Tour? = null,
 ) : BaseEntity()

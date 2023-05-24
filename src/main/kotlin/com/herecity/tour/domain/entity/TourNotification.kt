@@ -20,22 +20,22 @@ import javax.persistence.Table
 @Entity
 @Table(name = "tour_notification")
 class TourNotification(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var id: Long = 0L,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L,
 
-  @ManyToOne
-  @JoinColumn(
-    name = "tour_id",
-    insertable = true,
-    updatable = true,
-    foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
-  )
-  var tour: Tour? = null,
+    @ManyToOne
+    @JoinColumn(
+        name = "tour_id",
+        insertable = true,
+        updatable = true,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var tour: Tour? = null,
 
-  @Column
-  var scheduledAt: LocalDateTime,
+    @Column
+    var scheduledAt: LocalDateTime,
 
-  @Column
-  var sendedAt: LocalDateTime? = null,
+    @Column
+    var sendedAt: LocalDateTime? = null,
 ) : BaseEntity()
