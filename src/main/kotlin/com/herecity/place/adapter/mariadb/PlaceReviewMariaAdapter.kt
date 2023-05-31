@@ -18,6 +18,14 @@ class PlaceReviewMariaAdapter(
     private val placeReviewRepository: PlaceReviewRepository,
     private val queryFactory: JPAQueryFactory,
 ) : PlaceReviewQueryOutputPort, PlaceReviewCommandOutputPort {
+    override fun getAverageRating(placeId: Long): Double =
+        queryFactory
+            .select(placeReview.rating.avg())
+            .from(placeReview)
+            .where(placeReview.placeId.eq(placeId))
+            .fetchOne()
+            .let { return it ?: 0.0 }
+
     override fun save(entity: PlaceReview): PlaceReview = placeReviewRepository.save(entity)
 
     override fun fetchReviewsPage(getReviewsDto: GetReviewsDto, pageable: Pageable): Page<PlaceReviewDto> {

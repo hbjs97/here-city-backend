@@ -55,7 +55,8 @@ class TourController(
     fun updateTourPlan(
         @PathVariable tourId: Long,
         @ReqUser user: UserDetail,
-        @RequestBody @Valid updateTourDto: UpdateTourDto,
+        @RequestBody @Valid
+        updateTourDto: UpdateTourDto,
     ): TourPlanDto {
         authorizeTourUseCase.checkHost(tourId, user.getId())
         return this.saveTourUseCase.updateTour(tourId, updateTourDto)

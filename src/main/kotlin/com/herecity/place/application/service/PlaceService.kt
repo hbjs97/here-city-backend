@@ -76,6 +76,13 @@ class PlaceService(
         TODO("Not yet implemented")
     }
 
+    override fun savePlaceRating(id: Long, rating: Double): PlaceDto {
+        val place = this.placeQueryOutputPort.getById(id)
+        place.rating = rating
+        this.placeCommandOutputPort.save(place)
+        return PlaceDto(place)
+    }
+
     override fun deletePlace(id: Long) {
         TODO("Not yet implemented")
     }
