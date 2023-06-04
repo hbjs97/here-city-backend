@@ -13,31 +13,31 @@ import javax.persistence.*
 @SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
 @Entity
 @Table(
-  name = "user",
-  indexes = [
-    Index(columnList = "email, deletedAt"),
-    Index(columnList = "fcmToken, deletedAt")
-  ]
+    name = "user",
+    indexes = [
+        Index(columnList = "email, deletedAt"),
+        Index(columnList = "fcmToken, deletedAt")
+    ]
 )
 class User(
-  @Id
-  @GeneratedValue(generator = "hibernate-uuid")
-  @GenericGenerator(name = "uuid4", strategy = "uuid4")
-  @Type(type = "uuid-char")
-  var id: UUID = UUID.randomUUID(),
+    @Id
+    @GeneratedValue(generator = "hibernate-uuid")
+    @GenericGenerator(name = "uuid4", strategy = "uuid4")
+    @Type(type = "uuid-char")
+    var id: UUID = UUID.randomUUID(),
 
-  @Column(length = 100, nullable = false, unique = true)
-  var email: String,
+    @Column(length = 100, nullable = false, unique = true)
+    var email: String,
 
-  @Column(length = 30, nullable = false, unique = true)
-  var displayName: String,
+    @Column(length = 30, nullable = false, unique = true)
+    var displayName: String,
 
-  @Column(length = 30, nullable = true, unique = true)
-  var twitterId: String,
+    @Column(length = 30, nullable = true, unique = true)
+    var twitterId: String,
 
-  @Enumerated(EnumType.STRING)
-  var role: UserRole = UserRole.USER,
+    @Enumerated(EnumType.STRING)
+    var role: UserRole = UserRole.USER,
 
-  @Column(length = 200, nullable = true)
-  var fcmToken: String? = null
+    @Column(length = 200, nullable = true)
+    var fcmToken: String? = null
 ) : BaseEntity()

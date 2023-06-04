@@ -4,7 +4,6 @@ import StringListConverter
 import com.herecity.common.domain.entity.BaseEntity
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 import org.locationtech.jts.geom.Point
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -15,7 +14,6 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 
-@Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE place SET deleted_at = NOW() WHERE id = ?")
 @DynamicInsert
 @Entity(name = "place")
@@ -59,5 +57,5 @@ class Place(
     var placeUnits: MutableSet<PlaceUnit> = mutableSetOf(),
 
     @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-    var placeActivities: MutableSet<PlaceActivity> = mutableSetOf()
+    var placeActivities: MutableSet<PlaceActivity> = mutableSetOf(),
 ) : BaseEntity()

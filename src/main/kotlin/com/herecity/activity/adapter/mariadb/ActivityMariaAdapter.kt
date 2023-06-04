@@ -11,17 +11,14 @@ import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.util.StringUtils
 import com.querydsl.jpa.impl.JPAQueryFactory
-import mu.KotlinLogging
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
 import org.webjars.NotFoundException
 
-private val logger = KotlinLogging.logger {}
-
 @Component
 class ActivityMariaAdapter(
     private val activityRepository: ActivityRepository,
-    private val queryFactory: JPAQueryFactory
+    private val queryFactory: JPAQueryFactory,
 ) : ActivityQueryOutputPort, ActivityCommandOutputPort {
     override fun search(searchActivityDto: SearchActivityDto): List<ActivityDto> = this.queryFactory
         .select(QActivityDto(activity.id, activity.name))

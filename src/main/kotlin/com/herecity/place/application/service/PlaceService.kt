@@ -30,7 +30,6 @@ class PlaceService(
     private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
     private val calculator: DistanceCalculator,
 ) : FetchPlaceUseCase, RecordPlaceUseCase {
-
     override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
         val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
         if (getPlacesDto.point != null) {

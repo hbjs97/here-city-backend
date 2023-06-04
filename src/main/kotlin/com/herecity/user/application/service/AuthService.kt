@@ -9,38 +9,35 @@ import com.herecity.user.application.security.JwtService
 import com.herecity.user.domain.entity.User
 import com.herecity.user.domain.vo.UserRole
 import io.github.serpro69.kfaker.Faker
-import mu.KotlinLogging
 import org.springframework.stereotype.Service
-import java.util.*
-
-private val logger = KotlinLogging.logger {}
+import java.util.UUID
 
 @Service
 class AuthService(
-  private val userCommand: UserCommandOutputPort,
-  private val jwtService: JwtService,
+    private val userCommand: UserCommandOutputPort,
+    private val jwtService: JwtService,
 ) : FakeSignUseCase {
-  fun signIn(email: String, password: String): UserDto {
-    TODO("Not yet implemented")
-  }
+    fun signIn(email: String, password: String): UserDto {
+        TODO("Not yet implemented")
+    }
 
-  fun signOut(): Any {
-    TODO("Not yet implemented")
-  }
+    fun signOut(): Any {
+        TODO("Not yet implemented")
+    }
 
-  override fun fakeSignIn(role: UserRole): AuthenticatedPayloadDto {
-    val user = userCommand.save(
-      User(
-        id = UUID.randomUUID(),
-        email = Faker().internet.unique.email(),
-        displayName = Faker().name.name().chunked(30).first(),
-        role = role,
-        twitterId = Faker().name.name().chunked(30).first(),
-      )
-    )
+    override fun fakeSignIn(role: UserRole): AuthenticatedPayloadDto {
+        val user = userCommand.save(
+            User(
+                id = UUID.randomUUID(),
+                email = Faker().internet.unique.email(),
+                displayName = Faker().name.name().chunked(30).first(),
+                role = role,
+                twitterId = Faker().name.name().chunked(30).first(),
+            )
+        )
 
-    val accessToken = jwtService.createAccessToken(UserDto(user))
-    val refreshToken = jwtService.createRefreshToken(accessToken)
-    return AuthenticatedPayloadDto(JwtToken(accessToken, refreshToken), UserDto(user))
-  }
+        val accessToken = jwtService.createAccessToken(UserDto(user))
+        val refreshToken = jwtService.createRefreshToken(accessToken)
+        return AuthenticatedPayloadDto(JwtToken(accessToken, refreshToken), UserDto(user))
+    }
 }
