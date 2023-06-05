@@ -29,11 +29,9 @@ class PlaceController(
     private val fetchPlaceUseCase: FetchPlaceUseCase,
     private val recordPlaceUseCase: RecordPlaceUseCase,
 ) {
-    @Authorize
     @Operation(summary = "장소 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
     @GetMapping
     fun getPlaces(
         @PageableDefault(page = 0, size = 10) pageable: Pageable,

@@ -22,11 +22,9 @@ class PlaceReviewController(
     private val fetchPlaceReviewUseCase: FetchPlaceReviewUseCase,
     private val recordPlaceReviewUseCase: RecordPlaceReviewUseCase,
 ) {
-    @Authorize
     @Operation(summary = "리뷰 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
     @GetMapping
     fun getPlaceReviews(
         getReviewsDto: GetReviewsDto,
