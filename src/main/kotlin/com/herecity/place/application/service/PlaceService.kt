@@ -4,6 +4,7 @@ import com.herecity.activity.application.port.output.ActivityQueryOutputPort
 import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
+import com.herecity.place.application.port.input.FetchPlaceLikeQuery
 import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.place.application.port.output.PlaceCommandOutputPort
@@ -19,6 +20,7 @@ import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.UUID
 import javax.transaction.Transactional
 
 @Service
@@ -28,9 +30,10 @@ class PlaceService(
     private val placeQueryOutputPort: PlaceQueryOutputPort,
     private val placeCommandOutputPort: PlaceCommandOutputPort,
     private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
+    private val fetchPlaceLikeQuery: FetchPlaceLikeQuery,
     private val calculator: DistanceCalculator,
 ) : FetchPlaceUseCase, RecordPlaceUseCase {
-    override fun getPlaces(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
+    override fun getPlaces(userId: UUID, getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto> {
         val places = this.placeQueryOutputPort.search(getPlacesDto, pageable)
         if (getPlacesDto.point != null) {
             places.content.forEach { v ->
@@ -38,11 +41,19 @@ class PlaceService(
                 v.distance = calculator.measure(inputPoint, PositionVO(v.point))
             }
         }
+        val placeLikes = this.fetchPlaceLikeQuery.fetchPlaceLike(
+            FetchPlaceLikeQuery.In(
+                userId = userId,
+                placeId = places.content.map { v -> v.id }
+            )
+        )
+        placeLikes.forEach { v ->
+            places.content.find { p -> p.id == v.placeId }?.liked = v.liked
+        }
         return places
     }
 
     override fun fetchPlace(id: Long): PlaceDto = PlaceDto(this.placeQueryOutputPort.getById(id))
-
     override fun fetchPlaces(ids: List<Long>): List<PlaceDto> {
         val places = this.placeQueryOutputPort.findAllById(ids)
         return places.map { v -> PlaceDto(v) }

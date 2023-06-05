@@ -5,7 +5,7 @@ import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Point
 
 data class PlaceDto(
-    val id: Long?,
+    val id: Long,
     val title: String,
     val name: String,
     val description: String?,
@@ -13,8 +13,10 @@ data class PlaceDto(
     val point: Coordinate,
     val rating: Double,
     val images: List<String> = emptyList(),
-    var distance: Double? = null
+    var distance: Double? = null,
 ) {
+    var liked: Boolean = false
+
     constructor(
         id: Long,
         title: String,

@@ -28,9 +28,7 @@ class PlaceLikeController(
     fun likePlace(
         @PathVariable id: Long,
         @ReqUser user: UserDetail,
-    ): LikePlaceResponse = placeLikeCommand.like(PlaceLikeCommand.In(id, user.getId())).let {
-        LikePlaceResponse(it.liked)
-    }
+    ): LikePlaceResponse = LikePlaceResponse(placeLikeCommand.like(PlaceLikeCommand.In(id, user.getId())).liked)
 
     @Authorize
     @Operation(summary = "장소 좋아요 취소")

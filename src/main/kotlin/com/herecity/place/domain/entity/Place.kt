@@ -20,7 +20,7 @@ import javax.persistence.OneToMany
 class Place(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    var id: Long = 0L,
 
     @Column(nullable = false)
     var regionId: Long,

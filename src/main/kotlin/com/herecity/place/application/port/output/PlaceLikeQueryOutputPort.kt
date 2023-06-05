@@ -4,4 +4,6 @@ import com.herecity.common.adapter.mariadb.BaseQueryRepository
 import com.herecity.place.domain.entity.PlaceLike
 import com.herecity.place.domain.vo.PlaceLikeId
 
-interface PlaceLikeQueryOutputPort : BaseQueryRepository<PlaceLike, PlaceLikeId>
+interface PlaceLikeQueryOutputPort : BaseQueryRepository<PlaceLike, PlaceLikeId> {
+    fun findAllByIds(ids: List<PlaceLikeId>): List<PlaceLike>
+}

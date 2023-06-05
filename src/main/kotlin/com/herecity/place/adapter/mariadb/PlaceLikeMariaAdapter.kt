@@ -13,4 +13,5 @@ class PlaceLikeMariaAdapter(
     override fun save(entity: PlaceLike): PlaceLike = placeLikeRepository.save(entity)
     override fun getById(id: PlaceLikeId): PlaceLike = placeLikeRepository.getById(id)
     override fun findById(id: PlaceLikeId): PlaceLike? = placeLikeRepository.findById(id).orElse(null)
+    override fun findAllByIds(ids: List<PlaceLikeId>): List<PlaceLike> = placeLikeRepository.findAllById(ids)
 }
