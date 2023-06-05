@@ -6,13 +6,12 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
-import java.util.*
+import java.util.UUID
 
 class UserDetail(
-    private val user: User,
-    private val passwordEncoder: PasswordEncoder
+    val user: User,
+    private val passwordEncoder: PasswordEncoder,
 ) : UserDetails {
-
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf<GrantedAuthority>(
         SimpleGrantedAuthority(user.role.toString())
     )
@@ -36,4 +35,15 @@ class UserDetail(
     fun getDisplayName(): String = user.displayName
 
     fun getRole(): UserRole = user.role
+
+    companion object {
+        private val ANONYMOUS_USER = User(
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            "anonymous",
+            "anonymous",
+            "anonymous",
+        )
+
+        fun getAnonymousUserDetail(passwordEncoder: PasswordEncoder) = UserDetail(ANONYMOUS_USER, passwordEncoder)
+    }
 }

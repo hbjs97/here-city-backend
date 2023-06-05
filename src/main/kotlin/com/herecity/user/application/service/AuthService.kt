@@ -37,7 +37,7 @@ class AuthService(
         )
 
         val accessToken = jwtService.createAccessToken(UserDto(user))
-        val refreshToken = jwtService.createRefreshToken(accessToken)
-        return AuthenticatedPayloadDto(JwtToken(accessToken, refreshToken), UserDto(user))
+//        val refreshToken = jwtService.createRefreshToken(accessToken)
+        return AuthenticatedPayloadDto(JwtToken(accessToken, ""), UserDto(user))
     }
 }

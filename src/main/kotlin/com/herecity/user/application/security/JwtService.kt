@@ -3,6 +3,7 @@ package com.herecity.user.application.security
 import com.herecity.user.application.dto.UserDto
 import com.herecity.user.application.port.output.UserQueryOutputPort
 import com.herecity.user.domain.UserDetail
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -14,74 +15,57 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 @Component
 class JwtService(
-  @Value("\${jwt.token.secret}") private val secretKey: String,
-  private val userQueryOutputPort: UserQueryOutputPort
+    @Value("\${jwt.token.secret}") private val secretKey: String,
+    private val userQueryOutputPort: UserQueryOutputPort,
 ) {
-  companion object {
-    //    private val secretKey: Key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-    private const val accessTokenValidTime = 86400000L
-    private const val refreshTokenValidTime = 604800000L
-  }
+    private fun getBodyFromToken(token: String, key: String): Claims =
+        Jwts.parserBuilder().setSigningKey(key.toByteArray()).build().parseClaimsJws(token).body
 
-  fun getIdFromToken(token: String): String {
-    return Jwts.parserBuilder().setSigningKey(secretKey.toByteArray()).build().parseClaimsJws(token).body.subject
-  }
+    private fun getSigningKey(): Key = Keys.hmacShaKeyFor(secretKey.toByteArray())
 
-  private fun getSigningKey(): Key {
-    return Keys.hmacShaKeyFor(secretKey.toByteArray())
-  }
+    fun createAccessToken(userDto: UserDto): String {
+        val claims: Claims = Jwts.claims().setSubject(userDto.id.toString())
+        claims["id"] = userDto.id.toString()
+        claims["email"] = userDto.email
+        claims["displayName"] = userDto.displayName
+        claims["role"] = userDto.role.name
 
-  fun createAccessToken(userDto: UserDto): String {
-
-    val claims = HashMap<String, String>()
-    claims["id"] = userDto.id.toString()
-    claims["email"] = userDto.email
-    claims["displayName"] = userDto.displayName
-    claims["role"] = userDto.role.name
-
-    val now = Date()
-    return Jwts.builder()
-      .setClaims(claims)
-      .setSubject(userDto.id.toString())
-      .setIssuedAt(now)
-      .setExpiration(Date(now.time + accessTokenValidTime))
-      .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-      .compact()
-  }
-
-  fun createRefreshToken(accessToken: String): String {
-    val now = Date()
-    return Jwts.builder()
-      .setSubject(accessToken)
-      .setIssuedAt(now)
-      .setExpiration(Date(now.time + refreshTokenValidTime))
-      .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-      .compact()
-  }
-
-  fun getAuthentication(token: String, passwordEncoder: PasswordEncoder): Authentication {
-    val user = userQueryOutputPort.getById(UUID.fromString(getIdFromToken(token)))
-    val userDetails = UserDetail(user, passwordEncoder)
-    return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
-  }
-
-  fun resolveToken(request: HttpServletRequest): String? {
-    val token = request.getHeader("Authorization")
-    return if (token != null && token.indexOf("Bearer ") > -1) token.replace("Bearer ", "") else ""
-  }
-
-  fun validateToken(token: String?): Boolean {
-    return try {
-      val claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
-      !claims.body.expiration.before(Date())
-    } catch (e: JwtException) {
-      false
-    } catch (e: IllegalArgumentException) {
-      false
+        val now = Date()
+        return Jwts.builder()
+            .setClaims(claims)
+            .setSubject(userDto.id.toString())
+            .setIssuedAt(now)
+            .setExpiration(Date(now.time + ACCESS_TOKEN_VALID_TIME))
+            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+            .compact()
     }
-  }
+
+    fun getAuthentication(token: String, passwordEncoder: PasswordEncoder, key: String = secretKey): Authentication {
+        getBodyFromToken(token, key).let {
+            val user = userQueryOutputPort.getById(UUID.fromString(it["id"].toString()))
+            val userDetails = UserDetail(user, passwordEncoder)
+            return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
+        }
+    }
+
+    fun resolveToken(token: String): String {
+        return if (token.indexOf(BEARER_PREFIX) > -1) token.replace(BEARER_PREFIX, "") else ""
+    }
+
+    fun validateToken(token: String) {
+        runCatching {
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+        }.onFailure {
+            throw JwtException(it.message)
+        }
+    }
+
+    companion object {
+        private const val ACCESS_TOKEN_VALID_TIME = 86400000L // 1 day
+        private const val BEARER_PREFIX = "Bearer "
+        const val AUTHORIZATION_HEADER_KEY = "Authorization"
+    }
 }
