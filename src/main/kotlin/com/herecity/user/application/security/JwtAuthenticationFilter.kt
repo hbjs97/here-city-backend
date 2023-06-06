@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
-    private val passwordEncoder: PasswordEncoder,
 ) : OncePerRequestFilter() {
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
@@ -36,7 +34,7 @@ class JwtAuthenticationFilter(
                 if (this == null) return@runCatching
                 val token = jwtService.resolveToken(this)
                 jwtService.validateToken(token)
-                SecurityContextHolder.getContext().authentication = jwtService.getAuthentication(token, passwordEncoder)
+                SecurityContextHolder.getContext().authentication = jwtService.getAuthentication(token)
             }.onFailure {
                 log.error(it.message, it)
                 response.sendError(HttpStatus.UNAUTHORIZED.value(), it.message)
@@ -46,7 +44,7 @@ class JwtAuthenticationFilter(
 
         if (SecurityContextHolder.getContext().authentication == null) {
             val context = SecurityContextHolder.createEmptyContext()
-            val userDetail = UserDetail.getAnonymousUserDetail(passwordEncoder)
+            val userDetail = UserDetail.getAnonymousUserDetail()
             context.let {
                 it.authentication =
                     UsernamePasswordAuthenticationToken(userDetail, "", userDetail.authorities)

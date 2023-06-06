@@ -1,6 +1,7 @@
 package com.herecity.user.domain.entity
 
 import com.herecity.common.domain.entity.BaseEntity
+import com.herecity.user.domain.vo.ProviderType
 import com.herecity.user.domain.vo.UserRole
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.SQLDelete
@@ -26,18 +27,27 @@ class User(
     @Type(type = "uuid-char")
     var id: UUID = UUID.randomUUID(),
 
+    @Column(length = 100)
+    var providerId: String,
+
     @Column(length = 100, nullable = false, unique = true)
     var email: String,
+
+    @Column(length = 30)
+    var name: String?,
 
     @Column(length = 30, nullable = false, unique = true)
     var displayName: String,
 
-    @Column(length = 30, nullable = true, unique = true)
-    var twitterId: String,
-
     @Enumerated(EnumType.STRING)
     var role: UserRole = UserRole.USER,
 
+    @Enumerated(EnumType.STRING)
+    var provider: ProviderType,
+
+    @Column
+    var thumbnail: String?,
+
     @Column(length = 200, nullable = true)
-    var fcmToken: String? = null
+    var fcmToken: String? = null,
 ) : BaseEntity()

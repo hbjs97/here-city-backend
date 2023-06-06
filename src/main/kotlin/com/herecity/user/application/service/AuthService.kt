@@ -7,6 +7,7 @@ import com.herecity.user.application.port.input.FakeSignUseCase
 import com.herecity.user.application.port.output.UserCommandOutputPort
 import com.herecity.user.application.security.JwtService
 import com.herecity.user.domain.entity.User
+import com.herecity.user.domain.vo.ProviderType
 import com.herecity.user.domain.vo.UserRole
 import io.github.serpro69.kfaker.Faker
 import org.springframework.stereotype.Service
@@ -29,10 +30,13 @@ class AuthService(
         val user = userCommand.save(
             User(
                 id = UUID.randomUUID(),
-                email = Faker().internet.unique.email(),
+                providerId = Faker().random.randomString(10),
+                name = "",
                 displayName = Faker().name.name().chunked(30).first(),
+                email = Faker().internet.unique.email(),
+                provider = ProviderType.GOOGLE,
                 role = role,
-                twitterId = Faker().name.name().chunked(30).first(),
+                thumbnail = "",
             )
         )
 

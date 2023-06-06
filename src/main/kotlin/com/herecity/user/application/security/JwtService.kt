@@ -1,5 +1,6 @@
 package com.herecity.user.application.security
 
+import com.herecity.common.config.app.AppProperties
 import com.herecity.user.application.dto.UserDto
 import com.herecity.user.application.port.output.UserQueryOutputPort
 import com.herecity.user.domain.UserDetail
@@ -8,23 +9,23 @@ import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.security.Key
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 @Component
 class JwtService(
-    @Value("\${jwt.token.secret}") private val secretKey: String,
+    private val appProperties: AppProperties,
     private val userQueryOutputPort: UserQueryOutputPort,
 ) {
     private fun getBodyFromToken(token: String, key: String): Claims =
         Jwts.parserBuilder().setSigningKey(key.toByteArray()).build().parseClaimsJws(token).body
 
-    private fun getSigningKey(): Key = Keys.hmacShaKeyFor(secretKey.toByteArray())
+    private fun getSigningKey(): Key = Keys.hmacShaKeyFor(appProperties.auth.accessTokenSecret.toByteArray())
 
     fun createAccessToken(userDto: UserDto): String {
         val claims: Claims = Jwts.claims().setSubject(userDto.id.toString())
@@ -38,15 +39,15 @@ class JwtService(
             .setClaims(claims)
             .setSubject(userDto.id.toString())
             .setIssuedAt(now)
-            .setExpiration(Date(now.time + ACCESS_TOKEN_VALID_TIME))
+            .setExpiration(Date(now.time + appProperties.auth.accessTokenTtlMsec))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)
             .compact()
     }
 
-    fun getAuthentication(token: String, passwordEncoder: PasswordEncoder, key: String = secretKey): Authentication {
+    fun getAuthentication(token: String, key: String = appProperties.auth.accessTokenSecret): Authentication {
         getBodyFromToken(token, key).let {
             val user = userQueryOutputPort.getById(UUID.fromString(it["id"].toString()))
-            val userDetails = UserDetail(user, passwordEncoder)
+            val userDetails = UserDetail(user)
             return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
         }
     }
@@ -59,12 +60,13 @@ class JwtService(
         runCatching {
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
         }.onFailure {
+            log.error(it.message, it)
             throw JwtException(it.message)
         }
     }
 
     companion object {
-        private const val ACCESS_TOKEN_VALID_TIME = 86400000L // 1 day
+        private val log = LoggerFactory.getLogger(this::class.java)
         private const val BEARER_PREFIX = "Bearer "
         const val AUTHORIZATION_HEADER_KEY = "Authorization"
     }
