@@ -1,10 +1,8 @@
 package com.herecity.user.application.security
 
-import com.herecity.user.domain.UserDetail
 import io.jsonwebtoken.io.IOException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -42,15 +40,15 @@ class JwtAuthenticationFilter(
             }
         }
 
-        if (SecurityContextHolder.getContext().authentication == null) {
-            val context = SecurityContextHolder.createEmptyContext()
-            val userDetail = UserDetail.getAnonymousUserDetail()
-            context.let {
-                it.authentication =
-                    UsernamePasswordAuthenticationToken(userDetail, "", userDetail.authorities)
-                SecurityContextHolder.setContext(it)
-            }
-        }
+//        if (SecurityContextHolder.getContext().authentication == null) {
+//            val context = SecurityContextHolder.createEmptyContext()
+//            val userDetail = UserDetail.getAnonymousUserDetail()
+//            context.let {
+//                it.authentication =
+//                    UsernamePasswordAuthenticationToken(userDetail, "", userDetail.authorities)
+//                SecurityContextHolder.setContext(it)
+//            }
+//        }
 
         chain.doFilter(request, response)
     }

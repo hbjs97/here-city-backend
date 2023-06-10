@@ -33,9 +33,6 @@ class User(
     @Column(length = 100, unique = true)
     var email: String?,
 
-    @Column(length = 30)
-    var name: String?,
-
     @Column(length = 30, nullable = false, unique = true)
     var displayName: String,
 

@@ -19,6 +19,11 @@ enum class ProviderType {
     },
     KAKAO {
         override fun toOauth2UserInfo(attributes: Map<String, Any>): OAuth2UserInfo = KakaoOAuth2UserInfo(attributes)
+    },
+    NONE {
+        override fun toOauth2UserInfo(attributes: Map<String, Any>): OAuth2UserInfo {
+            throw IllegalArgumentException("NONE is not supported")
+        }
     };
 
     abstract fun toOauth2UserInfo(attributes: Map<String, Any>): OAuth2UserInfo

@@ -6,7 +6,6 @@ import com.herecity.user.domain.UserDetail
 import com.herecity.user.domain.entity.User
 import com.herecity.user.domain.exception.OAuth2AuthenticationProcessingException
 import com.herecity.user.domain.vo.ProviderType
-import io.github.serpro69.kfaker.Faker
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -21,7 +20,6 @@ class CustomOAuth2UserService(
     private val userQueryOutputPort: UserQueryOutputPort,
     private val userCommandOutputPort: UserCommandOutputPort,
 ) : DefaultOAuth2UserService() {
-
     @Throws(OAuth2AuthenticationException::class)
     override fun loadUser(oAuth2UserRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User = super.loadUser(oAuth2UserRequest)
@@ -54,7 +52,7 @@ class CustomOAuth2UserService(
                         "Please use your ${user.provider} account to login."
                 )
             }
-            UserDetail(updateExistingUser(user, oAuth2UserInfo)).apply {
+            UserDetail(user).apply {
                 this.attributes = oAuth2User.attributes
             }
         } else {
@@ -70,17 +68,10 @@ class CustomOAuth2UserService(
                 id = UUID.randomUUID(),
                 providerId = oAuth2UserInfo.getId(),
                 provider = ProviderType.valueOf(oAuth2UserRequest.clientRegistration.registrationId.uppercase()),
-                name = oAuth2UserInfo.getName(),
-                displayName = Faker().random.randomString(10),
+                displayName = oAuth2UserInfo.getName(),
                 email = oAuth2UserInfo.getEmail(),
                 thumbnail = oAuth2UserInfo.getImageUrl()
             )
         )
-    }
-
-    private fun updateExistingUser(existingUser: User, oAuth2UserInfo: OAuth2UserInfo): User {
-        existingUser.name = oAuth2UserInfo.getName()
-        existingUser.thumbnail = oAuth2UserInfo.getImageUrl()
-        return userCommandOutputPort.save(existingUser)
     }
 }

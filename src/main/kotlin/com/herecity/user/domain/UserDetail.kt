@@ -46,17 +46,17 @@ class UserDetail(
     }
 
     companion object {
-        private val ANONYMOUS_USER = User(
-            id = UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            providerId = "",
-            name = "",
-            email = "anonymous",
-            displayName = "anonymous",
-            role = UserRole.ANONYMOUS,
-            provider = ProviderType.GOOGLE,
-            thumbnail = ""
+        @JvmStatic
+        fun getAnonymousUserDetail() = UserDetail(
+            User(
+                id = UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                providerId = "anonymous",
+                email = "anonymous",
+                displayName = "anonymous",
+                role = UserRole.ANONYMOUS,
+                provider = ProviderType.NONE,
+                thumbnail = ""
+            )
         )
-
-        fun getAnonymousUserDetail() = UserDetail(ANONYMOUS_USER)
     }
 }

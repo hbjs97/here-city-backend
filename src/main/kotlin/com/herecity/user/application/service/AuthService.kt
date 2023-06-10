@@ -31,7 +31,6 @@ class AuthService(
             User(
                 id = UUID.randomUUID(),
                 providerId = Faker().random.randomString(10),
-                name = "",
                 displayName = Faker().name.name().chunked(30).first(),
                 email = Faker().internet.unique.email(),
                 provider = ProviderType.GOOGLE,
