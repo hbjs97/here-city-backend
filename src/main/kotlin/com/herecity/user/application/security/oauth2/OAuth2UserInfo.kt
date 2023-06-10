@@ -8,7 +8,7 @@ abstract class OAuth2UserInfo(private var _attributes: Map<String, Any> = mapOf(
 
     abstract fun getName(): String
 
-    abstract fun getEmail(): String
+    abstract fun getEmail(): String?
 
     abstract fun getImageUrl(): String
 }

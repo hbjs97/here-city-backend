@@ -62,7 +62,7 @@ class OAuth2AuthenticationSuccessHandler(
         val authToken = authentication as OAuth2AuthenticationToken
         val providerType = ProviderType.valueOf(authToken.authorizedClientRegistrationId.uppercase(Locale.getDefault()))
         val userInfo = getOAuth2UserInfo(providerType.toString(), authentication.principal.attributes)
-        val user = userQueryOutputPort.findByEmail(userInfo.getEmail()) ?: throw NoSuchElementException(
+        val user = userQueryOutputPort.findByProviderId(userInfo.getId()) ?: throw NoSuchElementException(
             "해당 유저가 존재하지 않습니다."
         )
         val accessToken = jwtService.createAccessToken(

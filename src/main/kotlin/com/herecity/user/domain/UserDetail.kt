@@ -20,7 +20,7 @@ class UserDetail(
 
     override fun getPassword(): String = ""
 
-    override fun getUsername(): String = user.email
+    override fun getUsername(): String = user.providerId
 
     override fun isAccountNonExpired(): Boolean = true
 
@@ -32,7 +32,7 @@ class UserDetail(
 
     fun getId(): UUID = user.id
 
-    fun getEmail(): String = user.email
+    fun getEmail(): String? = user.email
     fun getDisplayName(): String = user.displayName
 
     fun getRole(): UserRole = user.role

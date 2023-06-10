@@ -41,12 +41,14 @@ class CustomOAuth2UserService(
                 oAuth2UserRequest.clientRegistration.registrationId,
                 oAuth2User.attributes
             )
-        if (oAuth2UserInfo.getEmail().isEmpty()) {
-            throw OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider")
+        if (oAuth2UserInfo.getId().isEmpty()) {
+            throw OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider")
         }
-        val user = userQueryOutputPort.findByEmail(oAuth2UserInfo.getEmail())
+        val user = userQueryOutputPort.findByProviderId(oAuth2UserInfo.getId())
         return if (user != null) {
-            if (user.provider != ProviderType.valueOf(oAuth2UserRequest.clientRegistration.registrationId.uppercase())) {
+            if (
+                user.provider != ProviderType.valueOf(oAuth2UserRequest.clientRegistration.registrationId.uppercase())
+            ) {
                 throw OAuth2AuthenticationProcessingException(
                     "Looks like you're signed up with ${user.provider} account." +
                         "Please use your ${user.provider} account to login."

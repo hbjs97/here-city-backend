@@ -6,7 +6,7 @@ import java.util.UUID
 
 data class UserDto(
     val id: UUID,
-    val email: String,
+    val email: String?,
     val displayName: String,
     val role: UserRole,
 ) {

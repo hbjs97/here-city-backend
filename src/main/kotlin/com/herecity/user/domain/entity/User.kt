@@ -16,7 +16,7 @@ import javax.persistence.*
 @Table(
     name = "user",
     indexes = [
-        Index(columnList = "email, deletedAt"),
+        Index(columnList = "providerId, deletedAt"),
         Index(columnList = "fcmToken, deletedAt")
     ]
 )
@@ -27,11 +27,11 @@ class User(
     @Type(type = "uuid-char")
     var id: UUID = UUID.randomUUID(),
 
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     var providerId: String,
 
-    @Column(length = 100, nullable = false, unique = true)
-    var email: String,
+    @Column(length = 100, unique = true)
+    var email: String?,
 
     @Column(length = 30)
     var name: String?,
