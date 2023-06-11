@@ -51,7 +51,7 @@ class PlaceMariaAdapter(
             .where(this.containsName(getPlacesDto.name))
 
         if (getPlacesDto.name != null) {
-            qb.where(place.name.contains(getPlacesDto.name))
+            qb.where(place.name.contains(getPlacesDto.name).or(place.title.contains(getPlacesDto.name)))
         }
 
         if (getPlacesDto.activityId != null) {

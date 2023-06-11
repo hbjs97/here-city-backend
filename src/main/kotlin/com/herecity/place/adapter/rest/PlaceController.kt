@@ -1,6 +1,7 @@
 package com.herecity.place.adapter.rest
 
 import com.herecity.common.annotation.Authorize
+import com.herecity.common.annotation.ReqUser
 import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -37,7 +37,7 @@ class PlaceController(
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping
     fun getPlaces(
-        @AuthenticationPrincipal user: UserDetail,
+        @ReqUser user: UserDetail,
         @PageableDefault(page = 0, size = 10) pageable: Pageable,
         getPlacesDto: GetPlacesDto,
     ): Page<PlaceDto> = this.fetchPlaceUseCase.getPlaces(user.getId(), getPlacesDto, pageable)
