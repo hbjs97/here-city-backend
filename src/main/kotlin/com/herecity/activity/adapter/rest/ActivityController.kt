@@ -6,8 +6,8 @@ import com.herecity.activity.application.dto.CreateActivityDto
 import com.herecity.activity.application.dto.UpdateActivityDto
 import com.herecity.activity.application.port.input.LoadActivityUseCase
 import com.herecity.activity.application.port.input.RecordActivityUseCase
+import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
-import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

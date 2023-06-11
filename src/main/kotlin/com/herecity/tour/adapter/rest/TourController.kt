@@ -1,5 +1,6 @@
 package com.herecity.tour.adapter.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.tour.application.dto.CreateTourDto
 import com.herecity.tour.application.dto.TourPlaceDto
@@ -9,7 +10,6 @@ import com.herecity.tour.application.dto.UpdateTourPlaceDto
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
 import com.herecity.tour.application.port.input.FetchTourUseCase
 import com.herecity.tour.application.port.input.SaveTourUseCase
-import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

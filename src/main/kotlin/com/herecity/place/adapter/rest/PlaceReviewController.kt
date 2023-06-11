@@ -1,12 +1,12 @@
 package com.herecity.place.adapter.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.place.application.dto.CreateReviewDto
 import com.herecity.place.application.dto.GetReviewsDto
 import com.herecity.place.application.dto.PlaceReviewDto
 import com.herecity.place.application.port.input.FetchPlaceReviewUseCase
 import com.herecity.place.application.port.input.RecordPlaceReviewUseCase
-import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

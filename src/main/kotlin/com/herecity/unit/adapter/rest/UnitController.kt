@@ -1,5 +1,6 @@
 package com.herecity.unit.adapter.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.member.application.dto.AddMemberDto
 import com.herecity.unit.adapter.dto.UnitMemberDto
 import com.herecity.unit.application.dto.CreateUnitDto
@@ -7,7 +8,6 @@ import com.herecity.unit.application.dto.UnitDto
 import com.herecity.unit.application.dto.UpdateUnitDto
 import com.herecity.unit.application.port.input.LoadUnitUseCase
 import com.herecity.unit.application.port.input.RecordUnitUseCase
-import com.herecity.user.application.security.Authorize
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus

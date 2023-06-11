@@ -1,11 +1,11 @@
 package com.herecity.region.adapter.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.region.adapter.dto.NameDto
 import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.region.application.port.input.RecordRegionUseCase
-import com.herecity.user.application.security.Authorize
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus

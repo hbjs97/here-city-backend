@@ -1,11 +1,11 @@
 package com.herecity.place.adapter.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.place.adapter.rest.response.DisLikePlaceResponse
 import com.herecity.place.adapter.rest.response.LikePlaceResponse
 import com.herecity.place.application.port.input.PlaceDisLikeCommand
 import com.herecity.place.application.port.input.PlaceLikeCommand
-import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

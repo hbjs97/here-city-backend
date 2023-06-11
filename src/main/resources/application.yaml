@@ -1,21 +1,27 @@
 spring:
-  profiles:
-    active: prod
+    application:
+        name: here-city-api
+    profiles:
+        active: prod
+    sleuth:
+        enabled: true
+        sampler:
+            probability: 1.0
+        trace-id128: true
+        baggage:
+            correlation-enabled: true
 
 ---
 
 spring:
-  profiles:
-    active: dev
-
----
-
-spring:
-  profiles:
-    active: local
-
----
-
-logging:
-  config: classpath:logback.xml
-
+    application:
+        name: here-city-api
+    profiles:
+        active: local
+    sleuth:
+        enabled: true
+        sampler:
+            probability: 1.0
+        trace-id128: true
+        baggage:
+            correlation-enabled: true

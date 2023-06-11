@@ -9,7 +9,6 @@ import com.herecity.user.application.security.oauth2.OAuth2UserInfoFactory.getOA
 import com.herecity.user.domain.vo.ProviderType
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
@@ -100,17 +99,9 @@ class OAuth2AuthenticationSuccessHandler(
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response)
     }
 
-    private fun hasAuthority(authorities: Collection<GrantedAuthority> = emptyList(), authority: String): Boolean {
-        for (grantedAuthority in authorities) {
-            if (authority == grantedAuthority.authority) {
-                return true
-            }
-        }
-        return false
-    }
-
     private fun isAuthorizedRedirectUri(uri: String): Boolean {
         val clientRedirectUri = URI.create(uri)
+        log.info("[Oauth2][CheckAuthorizedRedirectUri] uri: {}", clientRedirectUri)
         return appProperties.oauth2.authorizedRedirectUris
             .stream()
             .anyMatch {
@@ -121,6 +112,7 @@ class OAuth2AuthenticationSuccessHandler(
                 ) {
                     return@anyMatch true
                 }
+                log.error("[Oauth2][CheckAuthorizedRedirectUri] uri: {} is not authorized", clientRedirectUri)
                 false
             }
     }

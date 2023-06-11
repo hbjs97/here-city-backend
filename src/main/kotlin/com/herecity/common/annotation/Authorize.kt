@@ -1,4 +1,4 @@
-package com.herecity.user.application.security
+package com.herecity.common.annotation
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import java.lang.annotation.Inherited

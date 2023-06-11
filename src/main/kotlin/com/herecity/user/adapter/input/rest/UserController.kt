@@ -1,9 +1,9 @@
 package com.herecity.user.adapter.input.rest
 
+import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.user.application.dto.UserDto
 import com.herecity.user.application.port.input.FetchUserUseCase
-import com.herecity.user.application.security.Authorize
 import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
