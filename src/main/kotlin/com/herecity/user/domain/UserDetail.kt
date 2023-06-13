@@ -6,12 +6,13 @@ import com.herecity.user.domain.vo.UserRole
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.oauth2.core.user.OAuth2User
 import java.util.UUID
 
 class UserDetail(
     val user: User,
-) : OAuth2User, UserDetails {
+) :
+//    OAuth2User,
+    UserDetails {
     private var attributes: Map<String, Any> = mapOf()
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf<GrantedAuthority>(
@@ -20,7 +21,7 @@ class UserDetail(
 
     override fun getPassword(): String = ""
 
-    override fun getUsername(): String = user.providerId
+    override fun getUsername(): String = user.email
 
     override fun isAccountNonExpired(): Boolean = true
 
@@ -37,9 +38,9 @@ class UserDetail(
 
     fun getRole(): UserRole = user.role
 
-    override fun getName(): String = user.id.toString()
-
-    override fun getAttributes(): Map<String, Any> = attributes
+//    override fun getName(): String = user.id.toString()
+//
+//    override fun getAttributes(): Map<String, Any> = attributes
 
     fun setAttributes(attributes: Map<String, Any>) {
         this.attributes = attributes
@@ -52,10 +53,11 @@ class UserDetail(
                 id = UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 providerId = "anonymous",
                 email = "anonymous",
+                password = "",
                 displayName = "anonymous",
                 role = UserRole.ANONYMOUS,
                 provider = ProviderType.NONE,
-                thumbnail = ""
+                thumbnail = "",
             )
         )
     }

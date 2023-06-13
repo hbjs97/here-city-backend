@@ -1,4 +1,4 @@
-package com.herecity.user.adapter.input.rest
+package com.herecity.user.adapter.input
 
 import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser

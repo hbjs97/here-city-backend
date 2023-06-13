@@ -28,22 +28,25 @@ class User(
     var id: UUID = UUID.randomUUID(),
 
     @Column(length = 100, unique = true)
-    var providerId: String,
+    var providerId: String? = null,
 
     @Column(length = 100, unique = true)
-    var email: String?,
+    var email: String,
 
-    @Column(length = 30, nullable = false, unique = true)
+    @Column(length = 255)
+    var password: String,
+
+    @Column(length = 30, nullable = false)
     var displayName: String,
 
     @Enumerated(EnumType.STRING)
     var role: UserRole = UserRole.USER,
 
     @Enumerated(EnumType.STRING)
-    var provider: ProviderType,
+    var provider: ProviderType? = null,
 
     @Column
-    var thumbnail: String?,
+    var thumbnail: String? = null,
 
     @Column(length = 200, nullable = true)
     var fcmToken: String? = null,

@@ -9,6 +9,13 @@ data class UserDto(
     val email: String?,
     val displayName: String,
     val role: UserRole,
+    val thumbnail: String?,
 ) {
-    constructor(user: User) : this(id = user.id, email = user.email, displayName = user.displayName, role = user.role)
+    constructor(user: User) : this(
+        id = user.id,
+        email = user.email,
+        displayName = user.displayName,
+        role = user.role,
+        thumbnail = user.thumbnail
+    )
 }
