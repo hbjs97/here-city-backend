@@ -1,14 +1,19 @@
-package com.herecity.tour.adapter.rest
+package com.herecity.tour.adapter.input
 
 import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
+import com.herecity.common.dto.OffSetPageable
+import com.herecity.tour.adapter.input.request.FetchToursRequest
+import com.herecity.tour.adapter.input.response.FetchTourPlanResponse
+import com.herecity.tour.adapter.input.response.FetchToursResponse
 import com.herecity.tour.application.dto.CreateTourDto
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.dto.TourPlanDto
 import com.herecity.tour.application.dto.UpdateTourDto
 import com.herecity.tour.application.dto.UpdateTourPlaceDto
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
-import com.herecity.tour.application.port.input.FetchTourUseCase
+import com.herecity.tour.application.port.input.FetchTourPlanQuery
+import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.SaveTourUseCase
 import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
@@ -28,15 +33,47 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/api/v1/tours")
 class TourController(
-    private val fetchTourUseCase: FetchTourUseCase,
+    private val fetchTourPlanQuery: FetchTourPlanQuery,
+    private val fetchToursQuery: FetchToursQuery,
     private val saveTourUseCase: SaveTourUseCase,
     private val authorizeTourUseCase: AuthorizeTourUseCase,
 ) {
+    @Operation(summary = "투어목록 조회", description = "투어목록을 조회합니다. 평점 순으로 조회됩니다.")
+    @ApiResponse(responseCode = "200")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping
+    fun fetchTours(
+        @Valid fetchToursRequest: FetchToursRequest,
+        @Valid offSetPageable: OffSetPageable,
+    ): FetchToursResponse = fetchToursQuery.fetchTours(
+        fetchToursRequest.toDomain(offSetPageable)
+    ).let {
+        FetchToursResponse(
+            content = it.tours,
+            meta = it.meta,
+        )
+    }
+
     @Operation(summary = "투어일정 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("{tourId}/plan")
-    fun fetchTourPlan(@PathVariable tourId: Long): TourPlanDto = this.fetchTourUseCase.fetchTourPlan(tourId)
+    fun fetchTourPlan(@PathVariable tourId: Long): FetchTourPlanResponse =
+        this.fetchTourPlanQuery.fetchTourPlan(
+            FetchTourPlanQuery.In(id = tourId)
+        ).let {
+            FetchTourPlanResponse(
+                id = it.id,
+                ownerName = it.ownerName,
+                tourName = it.tourName,
+                regionName = it.regionName,
+                scope = it.scope,
+                from = it.from,
+                to = it.to,
+                notifications = it.notifications,
+                tourPlaces = it.tourPlaces,
+            )
+        }
 
     @Authorize
     @Operation(summary = "투어 생성")
@@ -44,7 +81,10 @@ class TourController(
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority(\"USER\")")
     @PostMapping
-    fun createPlace(@ReqUser user: UserDetail, @RequestBody @Valid createTourDto: CreateTourDto): TourPlanDto =
+    fun createPlace(
+        @ReqUser user: UserDetail,
+        @RequestBody @Valid createTourDto: CreateTourDto,
+    ): TourPlanDto =
         this.saveTourUseCase.createTour(createTourDto, user.getId())
 
     @Authorize
