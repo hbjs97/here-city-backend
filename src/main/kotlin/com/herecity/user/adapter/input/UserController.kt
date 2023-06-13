@@ -4,7 +4,7 @@ import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.user.application.dto.UserDto
 import com.herecity.user.application.port.input.FetchUserUseCase
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus

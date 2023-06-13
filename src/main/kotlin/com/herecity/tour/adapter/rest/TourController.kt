@@ -10,7 +10,7 @@ import com.herecity.tour.application.dto.UpdateTourPlaceDto
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
 import com.herecity.tour.application.port.input.FetchTourUseCase
 import com.herecity.tour.application.port.input.SaveTourUseCase
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus

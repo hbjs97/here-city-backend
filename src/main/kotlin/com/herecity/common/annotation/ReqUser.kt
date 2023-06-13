@@ -6,6 +6,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 @Retention(AnnotationRetention.RUNTIME)
 @Repeatable
 @AuthenticationPrincipal(
-    expression = "#this == 'anonymousUser' ? T(com.herecity.user.domain).getAnonymousUserDetail() : #this"
+    expression = "#this == 'anonymousUser' ? T(com.herecity.user.domain.vo.UserDetail).getAnonymousUserDetail() : #this"
 )
 annotation class ReqUser

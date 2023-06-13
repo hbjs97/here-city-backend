@@ -6,7 +6,7 @@ import com.herecity.place.adapter.rest.response.DisLikePlaceResponse
 import com.herecity.place.adapter.rest.response.LikePlaceResponse
 import com.herecity.place.application.port.input.PlaceDisLikeCommand
 import com.herecity.place.application.port.input.PlaceLikeCommand
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus

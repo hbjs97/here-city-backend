@@ -7,7 +7,7 @@ import com.herecity.place.application.dto.GetReviewsDto
 import com.herecity.place.application.dto.PlaceReviewDto
 import com.herecity.place.application.port.input.FetchPlaceReviewUseCase
 import com.herecity.place.application.port.input.RecordPlaceReviewUseCase
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.data.domain.Page

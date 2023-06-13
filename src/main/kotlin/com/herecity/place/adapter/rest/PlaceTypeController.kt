@@ -6,7 +6,7 @@ import com.herecity.place.application.dto.CreatePlaceTypeDto
 import com.herecity.place.application.dto.PlaceTypeDto
 import com.herecity.place.application.port.input.FetchPlaceTypeUseCase
 import com.herecity.place.application.port.input.RecordPlaceTypeUseCase
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.data.domain.Page

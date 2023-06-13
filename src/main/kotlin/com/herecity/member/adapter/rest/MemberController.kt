@@ -1,12 +1,10 @@
 package com.herecity.member.adapter.rest
 
 import com.herecity.common.annotation.Authorize
-import com.herecity.common.annotation.ReqUser
 import com.herecity.member.adapter.dto.MemberDto
 import com.herecity.member.application.port.input.LoadMemberUseCase
 import com.herecity.member.application.port.input.RecordMemberUseCase
 import com.herecity.region.adapter.dto.NameDto
-import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -25,7 +23,7 @@ class MemberController(
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
     @GetMapping
-    fun getAllMembers(@ReqUser user: UserDetail): List<MemberDto> = this.loadMemberUseCase.getMembers()
+    fun getAllMembers(): List<MemberDto> = this.loadMemberUseCase.getMembers()
 
     @Authorize
     @Operation(summary = "멤버 생성")

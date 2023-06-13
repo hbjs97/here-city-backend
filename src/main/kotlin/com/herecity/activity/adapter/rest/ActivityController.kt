@@ -7,8 +7,6 @@ import com.herecity.activity.application.dto.UpdateActivityDto
 import com.herecity.activity.application.port.input.LoadActivityUseCase
 import com.herecity.activity.application.port.input.RecordActivityUseCase
 import com.herecity.common.annotation.Authorize
-import com.herecity.common.annotation.ReqUser
-import com.herecity.user.domain.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -21,14 +19,10 @@ class ActivityController(
     private val loadActivityUseCase: LoadActivityUseCase,
     private val recordActivityUseCase: RecordActivityUseCase,
 ) {
-
-    @Authorize
     @Operation(summary = "활동 목록 조회")
-    @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"USER\",\"ADMIN\")")
     @GetMapping
-    fun getActivities(@ReqUser user: UserDetail, searchActivityDto: SearchActivityDto): List<ActivityDto> =
+    fun getActivities(searchActivityDto: SearchActivityDto): List<ActivityDto> =
         this.loadActivityUseCase.search(searchActivityDto)
 
     @Authorize

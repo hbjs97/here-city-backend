@@ -7,7 +7,7 @@ import com.herecity.place.application.dto.GetPlacesDto
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
-import com.herecity.user.domain.UserDetail
+import com.herecity.user.domain.vo.UserDetail
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.data.domain.Page
@@ -31,7 +31,6 @@ class PlaceController(
     private val fetchPlaceUseCase: FetchPlaceUseCase,
     private val recordPlaceUseCase: RecordPlaceUseCase,
 ) {
-    @Authorize
     @Operation(summary = "장소 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)

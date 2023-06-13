@@ -1,15 +1,13 @@
-package com.herecity.user.domain
+package com.herecity.user.domain.vo
 
 import com.herecity.user.domain.entity.User
-import com.herecity.user.domain.vo.ProviderType
-import com.herecity.user.domain.vo.UserRole
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.UUID
 
 class UserDetail(
-    val user: User,
+    private val user: User,
 ) :
 //    OAuth2User,
     UserDetails {
