@@ -6,6 +6,7 @@ import com.herecity.region.adapter.dto.RegionDto
 import com.herecity.region.application.dto.UpdateRegionDto
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.region.application.port.input.RecordRegionUseCase
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -36,7 +37,7 @@ class RegionController(
     @Operation(summary = "상위 지역 등록")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping
     fun createUpperRegion(@RequestBody nameDto: NameDto): RegionDto =
         this.recordRegionUseCase.createUpperRegion(nameDto.name)
@@ -45,7 +46,7 @@ class RegionController(
     @Operation(summary = "하위 지역 등록")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping("{id}")
     fun addSubRegion(@PathVariable id: Long, @RequestBody nameDto: NameDto): RegionDto =
         this.recordRegionUseCase.addSubRegion(id, nameDto.name)
@@ -54,7 +55,7 @@ class RegionController(
     @Operation(summary = "지역 정보 수정")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PatchMapping("{id}")
     fun updateCity(@PathVariable id: Long, @RequestBody updateRegionDto: UpdateRegionDto): RegionDto {
         if (updateRegionDto.upperRegionId == null && updateRegionDto.name == null) {
@@ -67,7 +68,7 @@ class RegionController(
     @Operation(summary = "지역 삭제", description = "하위 지역이 존재하면 삭제할 수 없습니다.")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @DeleteMapping("{id}")
     fun deleteCity(@PathVariable id: Long) = this.recordRegionUseCase.deleteRegion(id)
 }

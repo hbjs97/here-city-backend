@@ -8,6 +8,7 @@ import com.herecity.place.application.dto.PlaceReviewDto
 import com.herecity.place.application.port.input.FetchPlaceReviewUseCase
 import com.herecity.place.application.port.input.RecordPlaceReviewUseCase
 import com.herecity.user.domain.vo.UserDetail
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.data.domain.Page
@@ -36,7 +37,7 @@ class PlaceReviewController(
     @Operation(summary = "리뷰 작성")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
+    @PreAuthorize(UserRole.Authority.hasAllRoles)
     @PostMapping
     fun review(
         @ReqUser user: UserDetail,

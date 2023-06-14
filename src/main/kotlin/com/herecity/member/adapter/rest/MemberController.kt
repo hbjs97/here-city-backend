@@ -5,6 +5,7 @@ import com.herecity.member.adapter.dto.MemberDto
 import com.herecity.member.application.port.input.LoadMemberUseCase
 import com.herecity.member.application.port.input.RecordMemberUseCase
 import com.herecity.region.adapter.dto.NameDto
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -21,7 +22,7 @@ class MemberController(
     @Operation(summary = "멤버 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
+    @PreAuthorize(UserRole.Authority.hasAllRoles)
     @GetMapping
     fun getAllMembers(): List<MemberDto> = this.loadMemberUseCase.getMembers()
 
@@ -29,7 +30,7 @@ class MemberController(
     @Operation(summary = "멤버 생성")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping
     fun createMember(@RequestBody nameDto: NameDto): MemberDto = this.recordMemberUseCase.createMember(nameDto.name)
 
@@ -37,7 +38,7 @@ class MemberController(
     @Operation(summary = "멤버 수정")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PatchMapping("{id}")
     fun updateMember(@PathVariable id: Long, @RequestBody nameDto: NameDto): MemberDto =
         this.recordMemberUseCase.updateMember(id, nameDto.name)
@@ -46,7 +47,7 @@ class MemberController(
     @Operation(summary = "멤버 삭제")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @DeleteMapping("{id}")
     fun deleteMember(@PathVariable id: Long) = this.recordMemberUseCase.deleteMember(id)
 }

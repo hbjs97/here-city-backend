@@ -8,6 +8,7 @@ import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.user.domain.vo.UserDetail
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.data.domain.Page
@@ -45,7 +46,7 @@ class PlaceController(
     @Operation(summary = "장소 등록")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping
     fun createPlace(@RequestBody createPlaceDto: CreatePlaceDto): PlaceDto =
         this.recordPlaceUseCase.createPlace(createPlaceDto)
@@ -54,7 +55,7 @@ class PlaceController(
     @Operation(summary = "장소 정보 수정")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PutMapping("{id}")
     fun updatePlace(@PathVariable id: Long, @RequestBody updatePlaceDto: CreatePlaceDto): PlaceDto {
         return this.recordPlaceUseCase.updatePlace(id, updatePlaceDto)
@@ -64,7 +65,7 @@ class PlaceController(
     @Operation(summary = "장소 삭제")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @DeleteMapping("{id}")
     fun deletePlace(@PathVariable id: Long) = this.recordPlaceUseCase.deletePlace(id)
 }

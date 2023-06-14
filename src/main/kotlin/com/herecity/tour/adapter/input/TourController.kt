@@ -3,7 +3,9 @@ package com.herecity.tour.adapter.input
 import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
 import com.herecity.common.dto.OffSetPageable
+import com.herecity.tour.adapter.input.request.FetchMyToursRequest
 import com.herecity.tour.adapter.input.request.FetchToursRequest
+import com.herecity.tour.adapter.input.response.FetchMyToursResponse
 import com.herecity.tour.adapter.input.response.FetchTourPlanResponse
 import com.herecity.tour.adapter.input.response.FetchToursResponse
 import com.herecity.tour.application.dto.CreateTourDto
@@ -12,10 +14,12 @@ import com.herecity.tour.application.dto.TourPlanDto
 import com.herecity.tour.application.dto.UpdateTourDto
 import com.herecity.tour.application.dto.UpdateTourPlaceDto
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
+import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.SaveTourUseCase
 import com.herecity.user.domain.vo.UserDetail
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -35,6 +39,7 @@ import javax.validation.Valid
 class TourController(
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchToursQuery: FetchToursQuery,
+    private val fetchMyToursQuery: FetchMyToursQuery,
     private val saveTourUseCase: SaveTourUseCase,
     private val authorizeTourUseCase: AuthorizeTourUseCase,
 ) {
@@ -49,6 +54,28 @@ class TourController(
         fetchToursRequest.toDomain(offSetPageable)
     ).let {
         FetchToursResponse(
+            content = it.tours,
+            meta = it.meta,
+        )
+    }
+
+    @Authorize
+    @Operation(summary = "나의 투어목록 조회", description = "나의 투어목록을 조회합니다.")
+    @ApiResponse(responseCode = "200")
+    @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize(UserRole.Authority.hasUserRole)
+    @GetMapping("me")
+    fun fetchMyTours(
+        @ReqUser user: UserDetail,
+        @Valid fetchMyToursRequest: FetchMyToursRequest,
+        @Valid offSetPageable: OffSetPageable,
+    ): FetchMyToursResponse = fetchMyToursQuery.fetchMyTours(
+        fetchMyToursRequest.toDomain(
+            userId = user.getId(),
+            offSetPageable = offSetPageable
+        )
+    ).let {
+        FetchMyToursResponse(
             content = it.tours,
             meta = it.meta,
         )
@@ -79,7 +106,7 @@ class TourController(
     @Operation(summary = "투어 생성")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"USER\")")
+    @PreAuthorize(UserRole.Authority.hasUserRole)
     @PostMapping
     fun createPlace(
         @ReqUser user: UserDetail,

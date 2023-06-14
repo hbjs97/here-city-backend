@@ -4,6 +4,7 @@ import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.tour.application.dto.TourNotificationDto
 import com.herecity.tour.application.dto.TourPlaceDto
+import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.ShareTourUseCase
@@ -18,7 +19,7 @@ class TourQueryService(
     private val fetchRegionUseCase: FetchRegionUseCase,
     private val fetchUserUseCase: FetchUserUseCase,
     private val fetchPlaceUseCase: FetchPlaceUseCase,
-) : ShareTourUseCase, FetchTourPlanQuery, FetchToursQuery {
+) : ShareTourUseCase, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
     override fun shareJoinCode(id: Long): String = tourOutputPort.getById(id).joinCode.toString()
 
     override fun fetchTours(query: FetchToursQuery.In): FetchToursQuery.Out {
@@ -53,5 +54,18 @@ class TourQueryService(
             notifications = tour.tourNotifications.map { TourNotificationDto(it) },
             tourPlaces = tourPlaces
         )
+    }
+
+    override fun fetchMyTours(query: FetchMyToursQuery.In): FetchMyToursQuery.Out {
+        tourOutputPort.findMyTours(
+            userId = query.userId,
+            offSetPageable = query.offSetPageable,
+            isPast = query.isPast,
+        ).let {
+            return FetchMyToursQuery.Out(
+                tours = it.content,
+                meta = it.meta,
+            )
+        }
     }
 }

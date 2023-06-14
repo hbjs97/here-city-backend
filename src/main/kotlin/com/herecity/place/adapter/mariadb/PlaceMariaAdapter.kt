@@ -54,9 +54,9 @@ class PlaceMariaAdapter(
             qb.where(place.name.contains(getPlacesDto.name).or(place.title.contains(getPlacesDto.name)))
         }
 
-        if (getPlacesDto.activityId != null) {
+        if (getPlacesDto.activityId.isNotEmpty()) {
             qb.innerJoin(place.placeActivities).where(
-                place.placeActivities.any().activity.id.eq(getPlacesDto.activityId)
+                place.placeActivities.any().activity.id.`in`(getPlacesDto.activityId)
             )
         }
 
@@ -64,8 +64,8 @@ class PlaceMariaAdapter(
             qb.innerJoin(place.placeTypes).where(place.placeTypes.any().type.id.eq(getPlacesDto.placeTypeId))
         }
 
-        if (getPlacesDto.unitId != null) {
-            qb.innerJoin(place.placeUnits).where(place.placeUnits.any().unit.id.eq(getPlacesDto.unitId))
+        if (getPlacesDto.unitId.isNotEmpty()) {
+            qb.innerJoin(place.placeUnits).where(place.placeUnits.any().unit.id.`in`(getPlacesDto.unitId))
         }
 
         val places = qb

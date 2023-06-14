@@ -8,6 +8,7 @@ import com.herecity.unit.application.dto.UnitDto
 import com.herecity.unit.application.dto.UpdateUnitDto
 import com.herecity.unit.application.port.input.LoadUnitUseCase
 import com.herecity.unit.application.port.input.RecordUnitUseCase
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -25,11 +26,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/units")
 class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val recordUnitUseCase: RecordUnitUseCase) {
-    @Authorize
     @Operation(summary = "유닛 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
     @GetMapping
     fun getUnits(): List<UnitDto> = this.loadUnitUseCase.getAllUnits()
 
@@ -37,7 +36,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @Operation(summary = "유닛멤버 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\", \"USER\")")
+    @PreAuthorize(UserRole.Authority.hasAllRoles)
     @GetMapping("{id}/members")
     fun getUnitMembers(@PathVariable id: Long): List<UnitMemberDto> = this.loadUnitUseCase.getUnitMembers(id)
 
@@ -45,7 +44,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @Operation(summary = "유닛 등록")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping
     fun createUnit(@RequestBody createUnitDto: CreateUnitDto): UnitDto =
         this.recordUnitUseCase.createUnit(createUnitDto.name)
@@ -54,7 +53,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @Operation(summary = "유닛에 멤버 추가")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping("{unitId}/members/{memberId}")
     fun addMember(@PathVariable unitId: Long, @PathVariable memberId: Long): UnitMemberDto =
         this.recordUnitUseCase.addUnitMember(AddMemberDto(unitId, memberId))
@@ -63,7 +62,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @Operation(summary = "유닛 수정")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PatchMapping("{id}")
     fun updateUnit(@PathVariable id: Long, @RequestBody updateUnitDto: UpdateUnitDto): UnitDto =
         this.recordUnitUseCase.updateUnit(id, updateUnitDto.name)
@@ -72,7 +71,7 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @Operation(summary = "유닛 삭제")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize(UserRole.Authority.hasAdminRole)
     @DeleteMapping("{id}")
     fun deleteUnit(@PathVariable id: Long) = this.recordUnitUseCase.deleteUnit(id)
 }

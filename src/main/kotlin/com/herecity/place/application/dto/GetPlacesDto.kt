@@ -8,8 +8,8 @@ import org.locationtech.jts.geom.PrecisionModel
 
 data class GetPlacesDto(
     val placeTypeId: Long?,
-    val activityId: Long?,
-    val unitId: Long?,
+    val activityId: List<Long> = emptyList(),
+    val unitId: List<Long> = emptyList(),
     val name: String?,
     val x: Double?,
     val y: Double?,

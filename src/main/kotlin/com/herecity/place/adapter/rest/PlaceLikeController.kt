@@ -7,6 +7,7 @@ import com.herecity.place.adapter.rest.response.LikePlaceResponse
 import com.herecity.place.application.port.input.PlaceDisLikeCommand
 import com.herecity.place.application.port.input.PlaceLikeCommand
 import com.herecity.user.domain.vo.UserDetail
+import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
@@ -23,7 +24,7 @@ class PlaceLikeController(
     @Operation(summary = "장소 좋아요")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"USER\")")
+    @PreAuthorize(UserRole.Authority.hasUserRole)
     @PostMapping("{id}/like")
     fun likePlace(
         @PathVariable id: Long,
@@ -34,7 +35,7 @@ class PlaceLikeController(
     @Operation(summary = "장소 좋아요 취소")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(\"USER\")")
+    @PreAuthorize(UserRole.Authority.hasUserRole)
     @PostMapping("{id}/dislike")
     fun disLikePlace(
         @PathVariable id: Long,
