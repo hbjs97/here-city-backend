@@ -1,4 +1,4 @@
-package com.herecity.place.adapter.mariadb
+package com.herecity.place.adapter.output
 
 import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import com.herecity.place.application.dto.GetPlacesDto
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class PlaceMariaAdapter(
-    val placeRepository: PlaceRepository,
+    private val placeRepository: PlaceRepository,
     private val queryFactory: JPAQueryFactory,
 ) : PlaceQueryOutputPort, PlaceCommandOutputPort {
 

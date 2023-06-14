@@ -1,4 +1,4 @@
-package com.herecity.place.adapter.mariadb
+package com.herecity.place.adapter.output
 
 import com.herecity.place.application.dto.GetReviewsDto
 import com.herecity.place.application.dto.PlaceReviewDto

@@ -1,4 +1,4 @@
-package com.herecity.place.adapter.rest.response
+package com.herecity.place.adapter.input.response
 
 data class LikePlaceResponse(
     val liked: Boolean,

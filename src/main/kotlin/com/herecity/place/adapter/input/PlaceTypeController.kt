@@ -1,4 +1,4 @@
-package com.herecity.place.adapter.rest
+package com.herecity.place.adapter.input
 
 import com.herecity.common.annotation.Authorize
 import com.herecity.place.application.dto.CreatePlaceTypeDto
