@@ -2,6 +2,7 @@ package com.herecity.place.application.service
 
 import com.herecity.place.application.dto.CreateReviewDto
 import com.herecity.place.application.dto.PlaceReviewDto
+import com.herecity.place.application.port.input.FetchMyReviewsQuery
 import com.herecity.place.application.port.input.FetchPlaceUseCase
 import com.herecity.place.application.port.input.FetchReviewsQuery
 import com.herecity.place.application.port.input.RecordPlaceReviewUseCase
@@ -23,14 +24,29 @@ class PlaceReviewService(
     private val recordPlaceUseCase: RecordPlaceUseCase,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchUserUseCase: FetchUserUseCase,
-) : FetchReviewsQuery, RecordPlaceReviewUseCase {
+) : FetchReviewsQuery, FetchMyReviewsQuery, RecordPlaceReviewUseCase {
     override fun fetchReviews(query: FetchReviewsQuery.In): FetchReviewsQuery.Out {
         return placeReviewQueryOutputPort.fetchReviews(
             offSetPageable = query.offSetPageable,
+            userId = null,
             placeId = query.placeId,
             tourId = query.tourId,
         ).let {
             FetchReviewsQuery.Out(
+                reviews = it.content,
+                meta = it.meta,
+            )
+        }
+    }
+
+    override fun fetchMyReviews(query: FetchMyReviewsQuery.In): FetchMyReviewsQuery.Out {
+        return placeReviewQueryOutputPort.fetchReviews(
+            offSetPageable = query.offSetPageable,
+            userId = query.userId,
+            placeId = query.placeId,
+            tourId = query.tourId,
+        ).let {
+            FetchMyReviewsQuery.Out(
                 reviews = it.content,
                 meta = it.meta,
             )

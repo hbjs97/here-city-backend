@@ -14,6 +14,7 @@ import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class PlaceReviewMariaAdapter(
@@ -32,6 +33,7 @@ class PlaceReviewMariaAdapter(
 
     override fun fetchReviews(
         offSetPageable: OffSetPageable,
+        userId: UUID?,
         placeId: Long?,
         tourId: Long?,
     ): OffsetPaginated<PlaceReviewDto> {
@@ -55,6 +57,7 @@ class PlaceReviewMariaAdapter(
             .where(
                 eqPlaceId(placeId),
                 eqTourId(tourId),
+                eqCreatedBy(userId),
             )
             .innerJoin(user).on(user.id.eq(placeReview.createdBy))
             .innerJoin(place).on(place.id.eq(placeReview.placeId))
@@ -91,6 +94,11 @@ class PlaceReviewMariaAdapter(
 
     private fun eqTourId(tourId: Long?): BooleanExpression? {
         if (tourId != null) return placeReview.tourId.eq(tourId)
+        return null
+    }
+
+    private fun eqCreatedBy(userId: UUID?): BooleanExpression? {
+        if (userId != null) return placeReview.createdBy.eq(userId)
         return null
     }
 }
