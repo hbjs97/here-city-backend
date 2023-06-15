@@ -1,4 +1,4 @@
-package com.herecity.tour.adapter.output.mariadb
+package com.herecity.tour.adapter.output
 
 
 import com.herecity.tour.domain.entity.Tour

@@ -7,7 +7,7 @@ import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
-import com.herecity.tour.application.port.input.ShareTourUseCase
+import com.herecity.tour.application.port.input.ShareTourQuery
 import com.herecity.tour.application.port.output.TourOutputPort
 import com.herecity.user.application.port.input.FetchUserUseCase
 import org.springframework.stereotype.Service
@@ -19,8 +19,13 @@ class TourQueryService(
     private val fetchRegionUseCase: FetchRegionUseCase,
     private val fetchUserUseCase: FetchUserUseCase,
     private val fetchPlaceUseCase: FetchPlaceUseCase,
-) : ShareTourUseCase, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
-    override fun shareJoinCode(id: Long): String = tourOutputPort.getById(id).joinCode.toString()
+) : ShareTourQuery, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
+    override fun shareJoinCode(query: ShareTourQuery.In): ShareTourQuery.Out =
+        tourOutputPort.getById(query.id).let {
+            ShareTourQuery.Out(
+                joinCode = it.joinCode.toString(),
+            )
+        }
 
     override fun fetchTours(query: FetchToursQuery.In): FetchToursQuery.Out {
         tourOutputPort.findTours(

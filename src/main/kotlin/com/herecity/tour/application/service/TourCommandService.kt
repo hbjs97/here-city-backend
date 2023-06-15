@@ -52,7 +52,7 @@ class TourCommandService(
         updateTourDto.from?.let { tour.from = it }
         updateTourDto.to?.let { tour.to = it }
         tourOutputPort.save(tour)
-        
+
         fetchTourPlanQuery.fetchTourPlan(FetchTourPlanQuery.In(id = tour.id)).let {
             return TourPlanDto(
                 id = it.id,

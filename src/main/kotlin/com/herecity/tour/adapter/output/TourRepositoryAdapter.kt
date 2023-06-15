@@ -1,4 +1,4 @@
-package com.herecity.tour.adapter.output.mariadb
+package com.herecity.tour.adapter.output
 
 import com.herecity.common.dto.OffSetPageable
 import com.herecity.common.dto.OffsetPageMeta
@@ -7,6 +7,7 @@ import com.herecity.region.domain.entity.QRegion.region
 import com.herecity.tour.application.dto.TourThumbnailDto
 import com.herecity.tour.application.port.output.TourOutputPort
 import com.herecity.tour.domain.entity.QTour.tour
+import com.herecity.tour.domain.entity.QTourist.tourist
 import com.herecity.tour.domain.entity.Tour
 import com.herecity.tour.domain.vo.Scope
 import com.querydsl.core.types.Projections
@@ -78,9 +79,10 @@ class TourRepositoryAdapter(
                     Expressions.asString("").`as`("thumbnail"),
                 )
             )
-            .from(tour)
-            .where(tour.createdBy.eq(userId))
+            .from(tourist)
+            .where(tourist.userId.eq(userId))
             .innerJoin(region).on(tour.regionId.eq(region.id))
+            .innerJoin(tourist.tour)
 
         when (isPast) {
             false -> {
