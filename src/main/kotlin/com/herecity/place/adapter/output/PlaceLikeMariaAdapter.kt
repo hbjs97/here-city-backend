@@ -48,10 +48,8 @@ class PlaceLikeMariaAdapter(
             .offset(offSetPageable.offset())
             .limit(offSetPageable.limit)
             .fetch()
-            .apply {
-                forEach {
-                    it.liked = true
-                }
+            .onEach {
+                it.liked = true
             }
 
         val count = qb.clone().fetchCount()

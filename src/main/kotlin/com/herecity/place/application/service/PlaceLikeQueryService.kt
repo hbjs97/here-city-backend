@@ -32,11 +32,11 @@ class PlaceLikeQueryService(
             userId = query.userId,
             offSetPageable = query.offSetPageable,
         ).let {
-            it.content.forEach {
+            it.content.forEach { place ->
                 if (query.x == null || query.y == null) {
                     return@forEach
                 }
-                it.distance = calculator.measure(PositionVO(query.x, query.y), PositionVO(it.point))
+                place.distance = calculator.measure(PositionVO(query.x, query.y), PositionVO(place.point))
             }
             FetchMyPlacesQuery.Out(
                 places = it.content,

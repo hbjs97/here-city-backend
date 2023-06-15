@@ -13,59 +13,59 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegionService(
-  private val regionQueryOutputPort: RegionQueryOutputPort,
-  private val regionCommandOutputPort: RegionCommandOutputPort
+    private val regionQueryOutputPort: RegionQueryOutputPort,
+    private val regionCommandOutputPort: RegionCommandOutputPort,
 ) :
-  FetchRegionUseCase, RecordRegionUseCase {
-  override fun getUpperRegions(): List<RegionDto> = this.regionQueryOutputPort.getUpperRegions()
+    FetchRegionUseCase, RecordRegionUseCase {
+    override fun getUpperRegions(): List<RegionDto> = this.regionQueryOutputPort.getUpperRegions()
 
-  override fun getSubRegions(upperRegionId: Long): List<RegionDto> =
-    this.regionQueryOutputPort.getSubRegions(upperRegionId)
+    override fun getSubRegions(upperRegionId: Long): List<RegionDto> =
+        this.regionQueryOutputPort.getSubRegions(upperRegionId)
 
-  override fun getById(id: Long): RegionDto {
-    val region = this.regionQueryOutputPort.getById(id)
-    return RegionDto(region)
-  }
-
-  /**
-   * @see
-   * 상위지역 이름은 중복될 수 없다.
-   */
-  override fun createUpperRegion(name: String): RegionDto {
-    val exist = this.regionQueryOutputPort.existsByName(name)
-    if (exist) throw DuplicateRegionNameException()
-    val region = this.regionCommandOutputPort.save(Region(name = name))
-    return RegionDto(region.id!!, region.name)
-  }
-
-  /**
-   * @see
-   * 하위지역 이름은 같은 상위지역 아래 중복될 수 없다.
-   */
-  override fun addSubRegion(upperRegionId: Long, name: String): RegionDto {
-    val exist = this.regionQueryOutputPort.existsByUpperRegionIdAndName(upperRegionId, name)
-    if (exist) throw DuplicateRegionNameException("같은 상위지역 아래 이름이 중복될 수 없습니다.")
-
-    val upperRegion = this.regionQueryOutputPort.getById(upperRegionId)
-
-    val region = this.regionCommandOutputPort.save(Region(upperRegion = upperRegion, name = name))
-    return RegionDto(region.id!!, region.name, upperRegion)
-  }
-
-  override fun updateRegion(id: Long, updateRegionDto: UpdateRegionDto): RegionDto {
-    val region = this.regionQueryOutputPort.getById(id)
-    if (updateRegionDto.upperRegionId !== null) {
-      region.upperRegion = this.regionQueryOutputPort.getById(updateRegionDto.upperRegionId)
+    override fun getById(id: Long): RegionDto {
+        val region = this.regionQueryOutputPort.getById(id)
+        return RegionDto(region)
     }
-    this.regionCommandOutputPort.save(region)
-    return RegionDto(region)
-  }
 
-  override fun deleteRegion(id: Long) {
-    val hasSubRegion = this.regionQueryOutputPort.hasSubRegion(id)
-    if (hasSubRegion) throw ExistSubRegionsException()
+    /**
+     * @see
+     * 상위지역 이름은 중복될 수 없다.
+     */
+    override fun createUpperRegion(name: String): RegionDto {
+        val exist = this.regionQueryOutputPort.existsByName(name)
+        if (exist) throw DuplicateRegionNameException()
+        val region = this.regionCommandOutputPort.save(Region(name = name))
+        return RegionDto(region.id, region.name)
+    }
 
-    this.regionQueryOutputPort.getById(id)
-    this.regionCommandOutputPort.deleteById(id)
-  }
+    /**
+     * @see
+     * 하위지역 이름은 같은 상위지역 아래 중복될 수 없다.
+     */
+    override fun addSubRegion(upperRegionId: Long, name: String): RegionDto {
+        val exist = this.regionQueryOutputPort.existsByUpperRegionIdAndName(upperRegionId, name)
+        if (exist) throw DuplicateRegionNameException("같은 상위지역 아래 이름이 중복될 수 없습니다.")
+
+        val upperRegion = this.regionQueryOutputPort.getById(upperRegionId)
+
+        val region = this.regionCommandOutputPort.save(Region(upperRegion = upperRegion, name = name))
+        return RegionDto(region.id, region.name, upperRegion)
+    }
+
+    override fun updateRegion(id: Long, updateRegionDto: UpdateRegionDto): RegionDto {
+        val region = this.regionQueryOutputPort.getById(id)
+        if (updateRegionDto.upperRegionId !== null) {
+            region.upperRegion = this.regionQueryOutputPort.getById(updateRegionDto.upperRegionId)
+        }
+        this.regionCommandOutputPort.save(region)
+        return RegionDto(region)
+    }
+
+    override fun deleteRegion(id: Long) {
+        val hasSubRegion = this.regionQueryOutputPort.hasSubRegion(id)
+        if (hasSubRegion) throw ExistSubRegionsException()
+
+        this.regionQueryOutputPort.getById(id)
+        this.regionCommandOutputPort.deleteById(id)
+    }
 }
