@@ -14,7 +14,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.validation.constraints.Size
 
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE place_review SET deleted_at = NOW() WHERE id = ?")
@@ -35,9 +34,8 @@ class PlaceReview(
     @Type(type = "uuid-char")
     var createdBy: UUID,
 
-    @Size(min = 1, max = 5)
     @Column
-    val rating: Int,
+    val rating: Double,
 
     @Column(length = 50)
     val content: String,

@@ -1,16 +1,18 @@
 package com.herecity.place.adapter.output
 
-import com.herecity.place.application.dto.GetReviewsDto
+import com.herecity.common.dto.OffSetPageable
+import com.herecity.common.dto.OffsetPageMeta
+import com.herecity.common.dto.OffsetPaginated
 import com.herecity.place.application.dto.PlaceReviewDto
 import com.herecity.place.application.port.output.PlaceReviewCommandOutputPort
 import com.herecity.place.application.port.output.PlaceReviewQueryOutputPort
 import com.herecity.place.domain.entity.PlaceReview
+import com.herecity.place.domain.entity.QPlace.place
 import com.herecity.place.domain.entity.QPlaceReview.placeReview
+import com.herecity.user.domain.entity.QUser.user
+import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
@@ -28,36 +30,53 @@ class PlaceReviewMariaAdapter(
 
     override fun save(entity: PlaceReview): PlaceReview = placeReviewRepository.save(entity)
 
-    override fun fetchReviewsPage(getReviewsDto: GetReviewsDto, pageable: Pageable): Page<PlaceReviewDto> {
+    override fun fetchReviews(
+        offSetPageable: OffSetPageable,
+        placeId: Long?,
+        tourId: Long?,
+    ): OffsetPaginated<PlaceReviewDto> {
         val qb = queryFactory
-            .selectFrom(placeReview)
-            .where(
-                eqPlaceId(getReviewsDto.placeId),
-                eqTourId(getReviewsDto.tourId),
-            )
-        val pageReviews = qb
-            .orderBy(placeReview.id.desc())
-            .offset(pageable.offset)
-            .limit(pageable.pageSize.toLong())
-            .fetch()
-            .map {
-                PlaceReviewDto(
-                    id = it.id,
-                    placeId = it.placeId,
-                    tourId = it.tourId,
-                    createdBy = it.createdBy,
-                    rating = it.rating,
-                    content = it.content,
-                    createdAt = it.createdAt,
-                    images = it.images,
+            .select(
+                Projections.constructor(
+                    PlaceReviewDto::class.java,
+                    placeReview.id,
+                    placeReview.placeId,
+                    placeReview.tourId,
+                    placeReview.rating,
+                    placeReview.content,
+                    placeReview.images,
+                    placeReview.createdAt,
+                    placeReview.createdBy,
+                    user.displayName.`as`("userDisplayName"),
+                    user.thumbnail.`as`("userThumbnail"),
                 )
-            }
+            )
+            .from(placeReview)
+            .where(
+                eqPlaceId(placeId),
+                eqTourId(tourId),
+            )
+            .innerJoin(user).on(user.id.eq(placeReview.createdBy))
+            .innerJoin(place).on(place.id.eq(placeReview.placeId))
+
+        val placeReviews = qb.clone()
+            .orderBy(placeReview.id.desc())
+            .offset(offSetPageable.offset())
+            .limit(offSetPageable.limit)
+            .fetch()
         val count = qb.fetchCount()
-        return PageImpl(pageReviews, pageable, count)
+
+        return OffsetPaginated(
+            content = placeReviews,
+            meta = OffsetPageMeta(
+                total = count,
+                page = offSetPageable.page,
+                limit = offSetPageable.limit,
+            )
+        )
     }
 
     override fun getById(id: Long): PlaceReview {
-        6
         return placeReviewRepository.getById(id)
     }
 

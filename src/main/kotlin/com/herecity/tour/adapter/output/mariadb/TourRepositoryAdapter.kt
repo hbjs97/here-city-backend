@@ -60,7 +60,11 @@ class TourRepositoryAdapter(
         )
     }
 
-    override fun findMyTours(userId: UUID, offSetPageable: OffSetPageable, isPast: Boolean?): OffsetPaginated<TourThumbnailDto> {
+    override fun findMyTours(
+        userId: UUID,
+        offSetPageable: OffSetPageable,
+        isPast: Boolean?,
+    ): OffsetPaginated<TourThumbnailDto> {
         val findQuery = queryFactory
             .select(
                 Projections.constructor(
