@@ -12,7 +12,7 @@ phases:
 artifacts:
   files:
     - build/generated/source/kapt/*.jar
-    - appspec.yaml
+    - appspec.deploy-api.yaml
     - scripts/**
   discard-paths: yes
 cache:
