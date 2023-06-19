@@ -7,11 +7,11 @@ phases:
       - ./gradlew build
   post_build:
     commands:
-      - echo $(basename ./build/generated/source/kapt/*.jar)
+      - echo $(basename ./build/generated/source/kapt/main/libs/*.jar)
       - pwd
 artifacts:
   files:
-    - build/generated/source/kapt/*.jar
+    - build/generated/source/kapt/main/libs/*.jar
     - appspec.yml
     - code-deploy/**
   discard-paths: yes
