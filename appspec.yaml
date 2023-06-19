@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/here-city/api
+    destination: /home/ubuntu/here-city
 permissions:
   - object: /
     pattern: "**"
