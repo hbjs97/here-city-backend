@@ -13,7 +13,7 @@ artifacts:
   files:
     - build/generated/source/kapt/*.jar
     - appspec.yml
-    - scripts/**
+    - code-deploy/**
   discard-paths: yes
 cache:
   paths:
