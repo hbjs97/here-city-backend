@@ -11,7 +11,7 @@ phases:
       - pwd
 artifacts:
   files:
-    - build/libs/*.jar
+    - build/generated/source/kapt/*.jar
     - appspec.yml
     - scripts/**
   discard-paths: yes
