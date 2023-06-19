@@ -40,16 +40,6 @@ class JwtAuthenticationFilter(
             }
         }
 
-//        if (SecurityContextHolder.getContext().authentication == null) {
-//            val context = SecurityContextHolder.createEmptyContext()
-//            val userDetail = UserDetail.getAnonymousUserDetail()
-//            context.let {
-//                it.authentication =
-//                    UsernamePasswordAuthenticationToken(userDetail, "", userDetail.authorities)
-//                SecurityContextHolder.setContext(it)
-//            }
-//        }
-
         chain.doFilter(request, response)
     }
 

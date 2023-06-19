@@ -15,7 +15,7 @@ interface SignInQuery {
         val accessToken: String,
         val refreshToken: String,
         val id: UUID,
-        val email: String,
+        val email: String?,
         val displayName: String,
         val role: UserRole,
         val thumbnail: String?,

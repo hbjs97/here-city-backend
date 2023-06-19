@@ -28,13 +28,10 @@ class User(
     var id: UUID = UUID.randomUUID(),
 
     @Column(length = 100, unique = true)
-    var providerId: String? = null,
+    var providerId: String,
 
     @Column(length = 100, unique = true)
-    var email: String,
-
-    @Column(length = 255)
-    var password: String,
+    var email: String?,
 
     @Column(length = 30, nullable = false)
     var displayName: String,
@@ -43,7 +40,7 @@ class User(
     var role: UserRole = UserRole.USER,
 
     @Enumerated(EnumType.STRING)
-    var provider: ProviderType? = null,
+    var provider: ProviderType,
 
     @Column
     var thumbnail: String? = null,
