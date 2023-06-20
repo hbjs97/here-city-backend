@@ -20,4 +20,4 @@ else
 fi
 
 echo "  > BUILD_JAR 배포"    >> /home/ubuntu/build/deploy.log
-nohup java -jar $BUILD_JAR >> /home/ubuntu/build/deploy.log 2>/home/ubuntu/build/deploy_err.log &
+nohup java -jar -Dspring.profiles.active=prod $BUILD_JAR >> /home/ubuntu/build/deploy.log 2>/home/ubuntu/build/deploy_err.log &
