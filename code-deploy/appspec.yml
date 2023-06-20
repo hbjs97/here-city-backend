@@ -15,4 +15,4 @@ hooks:
   ApplicationStart:
     - location: build.sh
       timeout: 60
-      runas: root
+      runas: root # 이거 권한 잘못되서 /opt/codedeploy-agent/ 디렉토리에서 logs 디렉토리 찾고, 권한없다고 하고 난리 났었음
