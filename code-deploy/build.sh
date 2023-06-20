@@ -23,4 +23,4 @@ echo "  > LogBack 로그저장 디렉토리 생성"
 sudo mkdir -p /home/ubuntu/build/logs
 
 echo "  > BUILD_JAR 배포"    >> /home/ubuntu/build/deploy.log
-nohup java -Dlogback.configurationFile=/home/ubuntu/build/logback-spring.xml -Dspring.profiles.active=prod -jar $BUILD_JAR >> /home/ubuntu/build/deploy.log 2>/home/ubuntu/build/deploy_err.log &
+nohup java -Dspring.config.location=/home/ubuntu/build/application.yaml -Dlogback.configurationFile=/home/ubuntu/build/logback-spring.xml -Dspring.profiles.active=prod -jar $BUILD_JAR >> /home/ubuntu/build/deploy.log 2>/home/ubuntu/build/deploy_err.log &
