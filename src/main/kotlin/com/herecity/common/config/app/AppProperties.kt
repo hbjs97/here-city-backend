@@ -15,20 +15,8 @@ class AppProperties {
     }
 
     class OAuth2 {
-        var googleAndroidClientId: String = ""
-        var googleIOSClientId: String = ""
         var authorizedRedirectUris: List<String> = ArrayList()
             private set
-
-        fun googleAndroidClientId(googleAndroidClientId: String): OAuth2 {
-            this.googleAndroidClientId = googleAndroidClientId
-            return this
-        }
-
-        fun googleIOSClientId(googleIOSClientId: String): OAuth2 {
-            this.googleIOSClientId = googleIOSClientId
-            return this
-        }
 
         fun authorizedRedirectUris(authorizedRedirectUris: List<String>): OAuth2 {
             this.authorizedRedirectUris = authorizedRedirectUris
