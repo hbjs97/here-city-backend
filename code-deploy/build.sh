@@ -8,7 +8,7 @@ sudo chmod 770 ${BUILD_JAR}
 
 echo "  > 현재 실행중인 애플리케이션 pid 확인" >> /home/ubuntu/build/deploy.log
 CURRENT_PID=$(pgrep -f $JAR_NAME)
-echo " > 현재 실행중인 애플리케이션 pid: $CURRENT_PID"
+echo "  > 현재 실행중인 애플리케이션 pid: $CURRENT_PID"
 
 if [ -z $CURRENT_PID ]
 then
@@ -18,6 +18,10 @@ else
   kill -15 $CURRENT_PID
   sleep 5
 fi
+
+echo "  > LogBack 로그저장 디렉토리 생성"
+sudo mkdir -p /home/ubuntu/build/logs
+
 
 echo "  > BUILD_JAR 배포"    >> /home/ubuntu/build/deploy.log
 nohup java -jar -Dspring.profiles.active=prod $BUILD_JAR >> /home/ubuntu/build/deploy.log 2>/home/ubuntu/build/deploy_err.log &
