@@ -1,16 +1,6 @@
 version: '3.6'
 
 services:
-  nginx:
-    image: nginx
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt/live/api.here-city.kro.kr/fullchain.pem:/etc/letsencrypt/live/api.here-city.kro.kr/fullchain.pem:ro
-      - /etc/letsencrypt/live/api.here-city.kro.kr/privkey.pem:/etc/letsencrypt/live/api.here-city.kro.kr/privkey.pem:ro
-
   mariadb:
     container_name: mariadb
     build:
