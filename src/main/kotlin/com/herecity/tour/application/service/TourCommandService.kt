@@ -1,6 +1,9 @@
 package com.herecity.tour.application.service
 
-import com.herecity.place.application.port.input.FetchPlaceUseCase
+import com.herecity.place.application.dto.Coordinate2D
+import com.herecity.place.application.dto.PlaceDto
+import com.herecity.place.application.port.input.FetchPlaceQuery
+import com.herecity.place.application.port.input.FetchPlacesQuery
 import com.herecity.tour.application.dto.CreateTourDto
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.dto.TourPlanDto
@@ -19,14 +22,19 @@ import java.util.UUID
 class TourCommandService(
     private val tourOutputPort: TourOutputPort,
     private val fetchUserUseCase: FetchUserUseCase,
-    private val fetchPlaceUseCase: FetchPlaceUseCase,
+    private val fetchPlaceQuery: FetchPlaceQuery,
+    private val fetchPlacesQuery: FetchPlacesQuery,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
 ) : SaveTourUseCase {
     override fun createTour(createTourDto: CreateTourDto, createdBy: UUID): TourPlanDto {
         val users = fetchUserUseCase.fetchUsers(createTourDto.tourists)
         if (users.size != createTourDto.tourists.size) throw NotFoundException("Invalid tourists")
 
-        val places = fetchPlaceUseCase.fetchPlaces(createTourDto.tourPlaces.map { it.placeId })
+        val places = fetchPlacesQuery.fetchPlaces(
+            FetchPlacesQuery.In(
+                ids = createTourDto.tourPlaces.map { it.placeId }
+            )
+        ).places
         if (places.size != createTourDto.tourPlaces.size) throw NotFoundException("Invalid places")
 
         val tour = tourOutputPort.save(Tour(createTourDto, createdBy))
@@ -76,6 +84,21 @@ class TourCommandService(
         updateTourPlaceDto.to?.let { tourPlace.to = it }
         updateTourPlaceDto.budgets.isNotEmpty().let { tourPlace.budgets = updateTourPlaceDto.budgets }
         tourOutputPort.save(tour)
-        return TourPlaceDto(tourPlace, fetchPlaceUseCase.fetchPlace(placeId))
+        val place = fetchPlaceQuery.fetchPlace(FetchPlaceQuery.In(id = placeId))
+        return TourPlaceDto(
+            place = PlaceDto(
+                id = place.id,
+                title = place.title,
+                name = place.name,
+                description = place.description,
+                address = place.address,
+                point = Coordinate2D(place.point),
+                rating = place.rating,
+                images = place.images,
+            ),
+            from = tourPlace.from,
+            to = tourPlace.to,
+            budgets = tourPlace.budgets,
+        )
     }
 }

@@ -1,13 +1,22 @@
 package com.herecity.place.application.port.output
 
 import com.herecity.common.adapter.mariadb.BaseQueryRepository
-import com.herecity.place.application.dto.GetPlacesDto
+import com.herecity.common.dto.OffSetPageable
+import com.herecity.common.dto.OffsetPaginated
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.domain.entity.Place
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.locationtech.jts.geom.Point
 
 interface PlaceQueryOutputPort : BaseQueryRepository<Place, Long> {
-    fun search(getPlacesDto: GetPlacesDto, pageable: Pageable): Page<PlaceDto>
+    fun search(
+        regionId: Long?,
+        activityId: List<Long>,
+        unitId: List<Long>,
+        offSetPageable: OffSetPageable,
+        placeTypeId: Long?,
+        name: String?,
+        point: Point?,
+    ): OffsetPaginated<PlaceDto>
+
     fun findAllById(ids: List<Long>): List<Place>
 }

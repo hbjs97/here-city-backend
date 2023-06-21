@@ -3,7 +3,7 @@ package com.herecity.place.application.service
 import com.herecity.place.application.dto.CreateReviewDto
 import com.herecity.place.application.dto.PlaceReviewDto
 import com.herecity.place.application.port.input.FetchMyReviewsQuery
-import com.herecity.place.application.port.input.FetchPlaceUseCase
+import com.herecity.place.application.port.input.FetchPlaceQuery
 import com.herecity.place.application.port.input.FetchReviewsQuery
 import com.herecity.place.application.port.input.RecordPlaceReviewUseCase
 import com.herecity.place.application.port.input.RecordPlaceUseCase
@@ -20,7 +20,7 @@ import java.util.UUID
 class PlaceReviewService(
     private val placeReviewQueryOutputPort: PlaceReviewQueryOutputPort,
     private val placeReviewCommandOutputPort: PlaceReviewCommandOutputPort,
-    private val fetchPlaceUseCase: FetchPlaceUseCase,
+    private val fetchPlaceQuery: FetchPlaceQuery,
     private val recordPlaceUseCase: RecordPlaceUseCase,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchUserUseCase: FetchUserUseCase,
@@ -55,7 +55,7 @@ class PlaceReviewService(
 
     @Transactional
     override fun review(userId: UUID, createReviewDto: CreateReviewDto): PlaceReviewDto {
-        fetchPlaceUseCase.fetchPlace(createReviewDto.placeId)
+        fetchPlaceQuery.fetchPlace(FetchPlaceQuery.In(createReviewDto.placeId))
         createReviewDto.tourId?.let {
             fetchTourPlanQuery.fetchTourPlan(
                 FetchTourPlanQuery.In(id = it)

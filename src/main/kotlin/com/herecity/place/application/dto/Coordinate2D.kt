@@ -1,11 +1,11 @@
-package com.herecity.place.domain.vo
+package com.herecity.place.application.dto
 
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Point
 
-data class PositionVO(
-    val x: Double, // longitude
-    val y: Double, // latitude
+data class Coordinate2D(
+    val x: Double,
+    val y: Double,
 ) {
     constructor(x: String, y: String) : this(x.toDouble(), y.toDouble())
     constructor(x: Int, y: Int) : this(x.toDouble(), y.toDouble())

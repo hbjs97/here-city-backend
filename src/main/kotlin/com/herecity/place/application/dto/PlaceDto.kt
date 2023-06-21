@@ -1,7 +1,6 @@
 package com.herecity.place.application.dto
 
 import com.herecity.place.domain.entity.Place
-import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Point
 
 data class PlaceDto(
@@ -10,7 +9,7 @@ data class PlaceDto(
     val name: String,
     val description: String?,
     val address: String,
-    val point: Coordinate,
+    val point: Coordinate2D,
     val rating: Double,
     val images: List<String> = emptyList(),
     var distance: Double? = null,
@@ -32,7 +31,7 @@ data class PlaceDto(
         name = name,
         description = description,
         address = address,
-        point = point.coordinate,
+        point = Coordinate2D(point.x, point.y),
         rating = rating,
         images = images
     )
@@ -43,7 +42,7 @@ data class PlaceDto(
         name = place.name,
         description = place.description,
         address = place.address,
-        point = place.point.coordinate,
+        point = Coordinate2D(place.point.x, place.point.y),
         rating = place.rating,
         images = place.images
     )

@@ -1,11 +1,11 @@
 package com.herecity.place.application.service
 
+import com.herecity.place.application.dto.Coordinate2D
 import com.herecity.place.application.port.input.FetchMyPlacesQuery
 import com.herecity.place.application.port.input.FetchPlaceLikeQuery
 import com.herecity.place.application.port.output.PlaceLikeQueryOutputPort
 import com.herecity.place.domain.service.DistanceCalculator
 import com.herecity.place.domain.vo.PlaceLikeId
-import com.herecity.place.domain.vo.PositionVO
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -36,7 +36,10 @@ class PlaceLikeQueryService(
                 if (query.x == null || query.y == null) {
                     return@forEach
                 }
-                place.distance = calculator.measure(PositionVO(query.x, query.y), PositionVO(place.point))
+                place.distance = calculator.measure(
+                    Coordinate2D(query.x, query.y),
+                    Coordinate2D(place.point.x, place.point.y)
+                )
             }
             FetchMyPlacesQuery.Out(
                 places = it.content,

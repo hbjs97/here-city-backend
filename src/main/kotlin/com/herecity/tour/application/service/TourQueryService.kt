@@ -1,6 +1,6 @@
 package com.herecity.tour.application.service
 
-import com.herecity.place.application.port.input.FetchPlaceUseCase
+import com.herecity.place.application.port.input.FetchPlacesQuery
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.tour.application.dto.TourNotificationDto
 import com.herecity.tour.application.dto.TourPlaceDto
@@ -18,7 +18,7 @@ class TourQueryService(
     private val tourOutputPort: TourOutputPort,
     private val fetchRegionUseCase: FetchRegionUseCase,
     private val fetchUserUseCase: FetchUserUseCase,
-    private val fetchPlaceUseCase: FetchPlaceUseCase,
+    private val fetchPlacesQuery: FetchPlacesQuery,
 ) : ShareTourQuery, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
     override fun shareJoinCode(query: ShareTourQuery.In): ShareTourQuery.Out =
         tourOutputPort.getById(query.id).let {
@@ -44,7 +44,11 @@ class TourQueryService(
         val region = fetchRegionUseCase.getById(tour.regionId)
         val host = fetchUserUseCase.fetchUser(tour.createdBy)
 
-        val places = fetchPlaceUseCase.fetchPlaces(tour.tourPlaces.map { it.placeId }).toSet()
+        val places = fetchPlacesQuery.fetchPlaces(
+            FetchPlacesQuery.In(
+                ids = tour.tourPlaces.map { it.placeId }
+            )
+        ).places.toSet()
         if (places.size != tour.tourPlaces.size) throw NotFoundException("Invalid places")
 
         val tourPlaces = tour.tourPlaces.map { TourPlaceDto(it, places.first { place -> place.id == it.placeId }) }
