@@ -54,7 +54,6 @@ class TourPlace(
             AttributeOverride(name = "description", column = Column(name = "description"))
         ]
     )
-
     var budgets: List<Budget>,
 ) : BaseEntity() {
     constructor(createTourPlaceDto: CreateTourPlaceDto, tour: Tour) : this(

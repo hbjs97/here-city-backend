@@ -13,10 +13,10 @@ import javax.persistence.Id
 @SQLDelete(sql = "UPDATE place_type SET deleted_at = NOW() WHERE id = ?")
 @Entity(name = "place_type")
 class PlaceType(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var id: Long = 0L,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L,
 
-  @Column(nullable = false, length = 50)
-  var name: String,
+    @Column(nullable = false, length = 50)
+    var name: String,
 ) : BaseEntity()

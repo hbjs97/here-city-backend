@@ -17,13 +17,23 @@ import javax.persistence.ManyToOne
 @IdClass(PlaceTypeGroupId::class)
 @Entity(name = "place_type_group")
 class PlaceTypeGroup(
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var place: Place? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(
+        name = "place_id",
+        insertable = false,
+        updatable = false,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var place: Place? = null,
 
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "place_type_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var type: PlaceType? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(
+        name = "place_type_id",
+        insertable = false,
+        updatable = false,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var type: PlaceType? = null,
 ) : BaseEntity()

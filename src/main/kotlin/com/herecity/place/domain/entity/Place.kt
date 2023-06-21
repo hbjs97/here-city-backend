@@ -9,6 +9,7 @@ import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -50,7 +51,12 @@ class Place(
     @Column(nullable = false, length = 1000)
     var images: List<String> = listOf(),
 
-    @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        mappedBy = "place",
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
+        orphanRemoval = true
+    )
     var placeTypes: MutableSet<PlaceTypeGroup> = mutableSetOf(),
 
     @OneToMany(mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)

@@ -63,19 +63,20 @@ class PlaceService(
         )
     }
 
-    override fun fetchPlace(query: FetchPlaceQuery.In): FetchPlaceQuery.Out = this.placeQueryOutputPort.getById(query.id).let {
-        FetchPlaceQuery.Out(
-            id = it.id,
-            title = it.title,
-            name = it.name,
-            description = it.description,
-            address = it.address,
-            point = Coordinate(it.point.x, it.point.y),
-            rating = it.rating,
-            images = it.images,
-            distance = null
-        )
-    }
+    override fun fetchPlace(query: FetchPlaceQuery.In): FetchPlaceQuery.Out =
+        this.placeQueryOutputPort.getById(query.id).let {
+            FetchPlaceQuery.Out(
+                id = it.id,
+                title = it.title,
+                name = it.name,
+                description = it.description,
+                address = it.address,
+                point = Coordinate(it.point.x, it.point.y),
+                rating = it.rating,
+                images = it.images,
+                distance = null
+            )
+        }
 
     override fun fetchPlaces(query: FetchPlacesQuery.In): FetchPlacesQuery.Out {
         val places = this.placeQueryOutputPort.findAllById(query.ids)
