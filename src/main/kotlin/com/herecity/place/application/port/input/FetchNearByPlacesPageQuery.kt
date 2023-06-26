@@ -6,8 +6,8 @@ import com.herecity.place.application.dto.PlaceDto
 import org.locationtech.jts.geom.Point
 import java.util.UUID
 
-interface FetchPlacesPageQuery {
-    fun fetchPlacesPage(query: In): Out
+interface FetchNearByPlacesPageQuery {
+    fun fetchNearByPlacesPage(query: In): Out
     data class In(
         val userId: UUID,
         val regionId: Long?,
@@ -15,7 +15,7 @@ interface FetchPlacesPageQuery {
         val activityId: List<Long> = emptyList(),
         val unitId: List<Long> = emptyList(),
         val name: String?,
-        val point: Point?,
+        val point: Point,
         val offsetPageable: OffSetPageable,
     )
 

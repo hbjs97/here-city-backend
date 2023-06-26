@@ -4,10 +4,11 @@ import com.herecity.activity.application.port.output.ActivityQueryOutputPort
 import com.herecity.place.application.dto.Coordinate2D
 import com.herecity.place.application.dto.CreatePlaceDto
 import com.herecity.place.application.dto.PlaceDto
+import com.herecity.place.application.port.input.FetchNearByPlacesPageQuery
 import com.herecity.place.application.port.input.FetchPlaceLikeQuery
 import com.herecity.place.application.port.input.FetchPlaceQuery
-import com.herecity.place.application.port.input.FetchPlacesPageQuery
 import com.herecity.place.application.port.input.FetchPlacesQuery
+import com.herecity.place.application.port.input.FetchRecommendPlacesPageQuery
 import com.herecity.place.application.port.input.RecordPlaceUseCase
 import com.herecity.place.application.port.output.PlaceCommandOutputPort
 import com.herecity.place.application.port.output.PlaceQueryOutputPort
@@ -16,7 +17,6 @@ import com.herecity.place.domain.entity.Place
 import com.herecity.place.domain.entity.PlaceActivity
 import com.herecity.place.domain.entity.PlaceTypeGroup
 import com.herecity.place.domain.entity.PlaceUnit
-import com.herecity.place.domain.service.DistanceCalculator
 import com.herecity.unit.application.port.output.UnitQueryOutputPort
 import org.locationtech.jts.geom.Coordinate
 import org.springframework.stereotype.Service
@@ -30,24 +30,17 @@ class PlaceService(
     private val placeCommandOutputPort: PlaceCommandOutputPort,
     private val placeTypeQueryOutputPort: PlaceTypeQueryOutputPort,
     private val fetchPlaceLikeQuery: FetchPlaceLikeQuery,
-    private val calculator: DistanceCalculator,
-) : FetchPlacesPageQuery, FetchPlacesQuery, FetchPlaceQuery, RecordPlaceUseCase {
-    override fun fetchPlacesPage(query: FetchPlacesPageQuery.In): FetchPlacesPageQuery.Out {
-        val places = this.placeQueryOutputPort.search(
+) : FetchNearByPlacesPageQuery, FetchRecommendPlacesPageQuery, FetchPlacesQuery, FetchPlaceQuery, RecordPlaceUseCase {
+    override fun fetchNearByPlacesPage(query: FetchNearByPlacesPageQuery.In): FetchNearByPlacesPageQuery.Out {
+        val places = this.placeQueryOutputPort.searchNearBy(
             regionId = query.regionId,
             activityId = query.activityId,
             unitId = query.unitId,
             offSetPageable = query.offsetPageable,
             placeTypeId = query.placeTypeId,
             name = query.name,
-            point = query.point,
+            point = Coordinate2D(query.point),
         )
-        if (query.point != null) {
-            places.content.forEach { v ->
-                val inputPoint = Coordinate2D(query.point)
-                v.distance = calculator.measure(inputPoint, Coordinate2D(v.point.x, v.point.y))
-            }
-        }
         val placeLikes = this.fetchPlaceLikeQuery.fetchPlaceLike(
             FetchPlaceLikeQuery.In(
                 userId = query.userId,
@@ -57,7 +50,31 @@ class PlaceService(
         placeLikes.forEach { v ->
             places.content.find { p -> p.id == v.placeId }?.liked = v.liked
         }
-        return FetchPlacesPageQuery.Out(
+        return FetchNearByPlacesPageQuery.Out(
+            places = places.content,
+            meta = places.meta
+        )
+    }
+
+    override fun fetchRecommendPlacesPage(query: FetchRecommendPlacesPageQuery.In): FetchRecommendPlacesPageQuery.Out {
+        val places = this.placeQueryOutputPort.search(
+            regionId = query.regionId,
+            activityId = query.activityId,
+            unitId = query.unitId,
+            offSetPageable = query.offsetPageable,
+            placeTypeId = query.placeTypeId,
+            name = query.name,
+        )
+        val placeLikes = this.fetchPlaceLikeQuery.fetchPlaceLike(
+            FetchPlaceLikeQuery.In(
+                userId = query.userId,
+                placeId = places.content.map { v -> v.id }
+            )
+        )
+        placeLikes.forEach { v ->
+            places.content.find { p -> p.id == v.placeId }?.liked = v.liked
+        }
+        return FetchRecommendPlacesPageQuery.Out(
             places = places.content,
             meta = places.meta
         )

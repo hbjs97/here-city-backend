@@ -33,7 +33,7 @@ data class PlaceDto(
         address = address,
         point = Coordinate2D(point.x, point.y),
         rating = rating,
-        images = images
+        images = images,
     )
 
     constructor(place: Place) : this(
