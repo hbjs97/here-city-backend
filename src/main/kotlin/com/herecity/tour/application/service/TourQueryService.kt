@@ -2,7 +2,6 @@ package com.herecity.tour.application.service
 
 import com.herecity.place.application.port.input.FetchPlacesQuery
 import com.herecity.region.application.port.input.FetchRegionUseCase
-import com.herecity.tour.application.dto.TourNotificationDto
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
@@ -60,7 +59,7 @@ class TourQueryService(
             scope = tour.scope.korName,
             from = tour.from,
             to = tour.to,
-            notifications = tour.tourNotifications.map { TourNotificationDto(it) },
+//            notifications = tour.tourNotifications.map { TourNotificationDto(it) },
             tourPlaces = tourPlaces
         )
     }

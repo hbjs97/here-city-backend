@@ -68,13 +68,13 @@ class Tour(
     )
     var tourists: Set<Tourist> = setOf(),
 
-    @OneToMany(
-        fetch = FetchType.LAZY,
-        mappedBy = "tour",
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
-        orphanRemoval = true
-    )
-    var tourNotifications: List<TourNotification> = listOf(),
+//    @OneToMany(
+//        fetch = FetchType.LAZY,
+//        mappedBy = "tour",
+//        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
+//        orphanRemoval = true
+//    )
+//    var tourNotifications: List<TourNotification> = listOf(),
 ) : BaseEntity() {
     constructor(createTourDto: CreateTourDto, createdBy: UUID) : this(
         name = createTourDto.name,
@@ -86,8 +86,8 @@ class Tour(
     ) {
         this.tourPlaces = createTourDto.tourPlaces.map { TourPlace(it, this) }.toSet()
         this.tourists = createTourDto.tourists.plus(createdBy).map { Tourist(it, this) }.toSet()
-        this.tourNotifications =
-            createTourDto.notifications.map { TourNotification(scheduledAt = it.scheduledAt, tour = this) }.toList()
+//        this.tourNotifications =
+//            createTourDto.notifications.map { TourNotification(scheduledAt = it.scheduledAt, tour = this) }.toList()
     }
 
     fun isHost(id: UUID): Boolean = this.createdBy == id

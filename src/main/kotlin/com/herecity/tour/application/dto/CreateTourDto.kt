@@ -16,5 +16,5 @@ data class CreateTourDto(
     @field:Valid
     val tourPlaces: List<CreateTourPlaceDto>,
     val tourists: List<UUID> = listOf(),
-    val notifications: List<CreateTourNotification>,
+//    val notifications: List<CreateTourNotification>,
 )
