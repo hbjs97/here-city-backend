@@ -6,4 +6,5 @@ data class UploadResult(
     val file: MultipartFile,
     val bucketName: String,
     val key: String,
+    val url: String,
 )

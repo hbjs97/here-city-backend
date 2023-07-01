@@ -10,36 +10,6 @@
     <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <!--        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
-        <!--            <providers>-->
-        <!--                <mdc/>-->
-        <!--                <pattern>-->
-        <!--                    <omitEmptyFields>true</omitEmptyFields>-->
-        <!--                    <pattern>-->
-        <!--                        {-->
-        <!--                        "timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}",-->
-        <!--                        "logger": "%logger",-->
-        <!--                        "level": "%level",-->
-        <!--                        "requestIp": "%mdc{REQUEST_IP}",-->
-        <!--                        "thread": "%thread",-->
-        <!--                        "traceId": "%mdc{traceId}",-->
-        <!--                        "spanId": "%mdc{spanId}",-->
-        <!--                        "message": "%message"-->
-        <!--                        }-->
-        <!--                    </pattern>-->
-        <!--                </pattern>-->
-        <!--                <stackTrace>-->
-        <!--                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">-->
-        <!--                        <maxDepthPerThrowable>30</maxDepthPerThrowable>-->
-        <!--                        <maxLength>2048</maxLength>-->
-        <!--                        <shortenedClassNameLength>20</shortenedClassNameLength>-->
-        <!--                        <exclude>^sun\.reflect\..*\.invoke</exclude>-->
-        <!--                        <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>-->
-        <!--                        <rootCauseFirst>true</rootCauseFirst>-->
-        <!--                    </throwableConverter>-->
-        <!--                </stackTrace>-->
-        <!--            </providers>-->
-        <!--        </encoder>-->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>

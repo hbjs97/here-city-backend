@@ -29,6 +29,7 @@ import kotlin.time.measureTimedValue
 class S3ClientAdapter(
     private val client: AmazonS3,
     private val methodMapper: S3MethodMapper,
+    private val s3Config: S3Config,
 ) : PresignUseCase {
     @OptIn(ExperimentalTime::class)
     fun upload(uploadObject: UploadObject): UploadResult {
@@ -38,7 +39,7 @@ class S3ClientAdapter(
                 client.putObject(
                     uploadObject.run {
                         PutObjectRequest(
-                            bucketName,
+                            s3Config.bucketName,
                             objectKey,
                             file.inputStream,
                             ObjectMetadata().apply {
@@ -55,7 +56,8 @@ class S3ClientAdapter(
         return UploadResult(
             file = uploadObject.file,
             key = uploadObject.objectKey,
-            bucketName = uploadObject.bucketName
+            bucketName = s3Config.bucketName,
+            url = "${s3Config.domain}/${uploadObject.objectKey}"
         )
     }
 
@@ -70,7 +72,7 @@ class S3ClientAdapter(
                 async(Dispatchers.IO) {
                     measureTimedValue {
                         transferManager.upload(
-                            v.bucketName,
+                            s3Config.bucketName,
                             v.objectKey,
                             v.file.inputStream,
                             ObjectMetadata().apply {
@@ -89,16 +91,22 @@ class S3ClientAdapter(
             transferManager.shutdownNow(false)
 //            results.map { UploadResult(file = it.first.file, key = it.second.key, bucketName = it.second.bucketName) }
         }
-        return obj.map { UploadResult(file = it.file, bucketName = it.bucketName, key = it.objectKey) }
+        return obj.map {
+            UploadResult(
+                file = it.file,
+                bucketName = s3Config.bucketName,
+                key = it.objectKey,
+                url = "${s3Config.domain}/${it.objectKey}"
+            )
+        }
     }
 
     override fun generatePresignedUrl(
-        bucketName: String,
         objectKey: String,
         method: ClientProperties.HttpMethod,
         expireSecond: Long,
     ): URL =
-        GeneratePresignedUrlRequest(bucketName, objectKey, methodMapper.map(method)).withExpiration(
+        GeneratePresignedUrlRequest(s3Config.bucketName, objectKey, methodMapper.map(method)).withExpiration(
             Date.from(
                 Instant.now().plusSeconds(expireSecond)
             )
@@ -108,6 +116,5 @@ class S3ClientAdapter(
 
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java)
-        private const val PROGRESS_SLEEP = 1000L
     }
 }
