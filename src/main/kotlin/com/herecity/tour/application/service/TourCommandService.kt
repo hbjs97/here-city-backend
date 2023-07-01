@@ -4,19 +4,15 @@ import com.herecity.place.application.dto.Coordinate2D
 import com.herecity.place.application.dto.PlaceDto
 import com.herecity.place.application.port.input.FetchPlaceQuery
 import com.herecity.place.application.port.input.FetchPlacesQuery
-import com.herecity.tour.application.dto.CreateTourDto
-import com.herecity.tour.application.dto.TourPlaceDto
-import com.herecity.tour.application.dto.TourPlanDto
-import com.herecity.tour.application.dto.UpdateTourDto
-import com.herecity.tour.application.dto.UpdateTourPlaceDto
+import com.herecity.tour.application.port.input.CreateTourCommand
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
-import com.herecity.tour.application.port.input.SaveTourUseCase
+import com.herecity.tour.application.port.input.UpdateTourCommand
+import com.herecity.tour.application.port.input.UpdateTourPlaceCommand
 import com.herecity.tour.application.port.output.TourOutputPort
 import com.herecity.tour.domain.entity.Tour
 import com.herecity.user.application.port.input.FetchUserUseCase
 import org.springframework.stereotype.Service
 import org.webjars.NotFoundException
-import java.util.UUID
 
 @Service
 class TourCommandService(
@@ -25,21 +21,40 @@ class TourCommandService(
     private val fetchPlaceQuery: FetchPlaceQuery,
     private val fetchPlacesQuery: FetchPlacesQuery,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
-) : SaveTourUseCase {
-    override fun createTour(createTourDto: CreateTourDto, createdBy: UUID): TourPlanDto {
-        val users = fetchUserUseCase.fetchUsers(createTourDto.tourists)
-        if (users.size != createTourDto.tourists.size) throw NotFoundException("Invalid tourists")
+) : CreateTourCommand, UpdateTourCommand, UpdateTourPlaceCommand {
+    override fun createTour(command: CreateTourCommand.In): CreateTourCommand.Out {
+        val users = fetchUserUseCase.fetchUsers(command.tourists.toList())
+        if (users.size != command.tourists.size) {
+            throw NotFoundException("Invalid tourists")
+        }
 
         val places = fetchPlacesQuery.fetchPlaces(
             FetchPlacesQuery.In(
-                ids = createTourDto.tourPlaces.map { it.placeId }
+                ids = command.tourPlaces.map { it.placeId }
             )
         ).places
-        if (places.size != createTourDto.tourPlaces.size) throw NotFoundException("Invalid places")
+        if (places.size != command.tourPlaces.size) {
+            throw NotFoundException("Invalid places")
+        }
 
-        val tour = tourOutputPort.save(Tour(createTourDto, createdBy))
+        val tour = Tour(
+            name = command.name,
+            regionId = command.regionId,
+            createdBy = command.createdBy,
+            scope = command.scope,
+            from = command.from,
+            to = command.to,
+        )
+        command.tourPlaces.forEach {
+            tour.addTourPlace(it)
+        }
+        command.tourists.forEach {
+            tour.addTourist(it)
+        }
+        tourOutputPort.save(tour)
+
         fetchTourPlanQuery.fetchTourPlan(FetchTourPlanQuery.In(id = tour.id)).let {
-            return TourPlanDto(
+            return CreateTourCommand.Out(
                 id = it.id,
                 ownerName = it.ownerName,
                 tourName = it.tourName,
@@ -53,16 +68,16 @@ class TourCommandService(
         }
     }
 
-    override fun updateTour(id: Long, updateTourDto: UpdateTourDto): TourPlanDto {
-        val tour = tourOutputPort.getById(id)
-        updateTourDto.name?.let { tour.name = it }
-        updateTourDto.scope?.let { tour.scope = it }
-        updateTourDto.from?.let { tour.from = it }
-        updateTourDto.to?.let { tour.to = it }
+    override fun updateTour(command: UpdateTourCommand.In): UpdateTourCommand.Out {
+        val tour = tourOutputPort.getById(command.id)
+        command.name?.let { tour.name = it }
+        command.scope?.let { tour.scope = it }
+        command.from?.let { tour.from = it }
+        command.to?.let { tour.to = it }
         tourOutputPort.save(tour)
 
         fetchTourPlanQuery.fetchTourPlan(FetchTourPlanQuery.In(id = tour.id)).let {
-            return TourPlanDto(
+            return UpdateTourCommand.Out(
                 id = it.id,
                 ownerName = it.ownerName,
                 tourName = it.tourName,
@@ -76,16 +91,16 @@ class TourCommandService(
         }
     }
 
-    override fun updateTourPlace(id: Long, placeId: Long, updateTourPlaceDto: UpdateTourPlaceDto): TourPlaceDto {
-        val tour = tourOutputPort.getById(id)
-        val tourPlace = tour.tourPlaces.firstOrNull { it.placeId == placeId }
-            ?: throw NoSuchElementException("$placeId is not in tour $id")
-        updateTourPlaceDto.from?.let { tourPlace.from = it }
-        updateTourPlaceDto.to?.let { tourPlace.to = it }
-        updateTourPlaceDto.budgets.isNotEmpty().let { tourPlace.budgets = updateTourPlaceDto.budgets }
+    override fun updateTourPlace(command: UpdateTourPlaceCommand.In): UpdateTourPlaceCommand.Out {
+        val tour = tourOutputPort.getById(command.id)
+        val tourPlace = tour.tourPlaces.firstOrNull { it.placeId == command.placeId }
+            ?: throw NoSuchElementException("${command.placeId} is not in tour ${command.id}")
+        command.from?.let { tourPlace.from = it }
+        command.to?.let { tourPlace.to = it }
+        command.budgets.isNotEmpty().let { tourPlace.budgets = command.budgets }
         tourOutputPort.save(tour)
-        val place = fetchPlaceQuery.fetchPlace(FetchPlaceQuery.In(id = placeId))
-        return TourPlaceDto(
+        val place = fetchPlaceQuery.fetchPlace(FetchPlaceQuery.In(id = command.placeId))
+        return UpdateTourPlaceCommand.Out(
             place = PlaceDto(
                 id = place.id,
                 title = place.title,

@@ -124,6 +124,8 @@ dependencies {
     implementation("io.github.serpro69:kotlin-faker:1.12.0")
 
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth:3.1.0")
+
+    implementation("net.logstash.logback:logstash-logback-encoder:7.3")
 }
 
 kotlin.sourceSets.main {

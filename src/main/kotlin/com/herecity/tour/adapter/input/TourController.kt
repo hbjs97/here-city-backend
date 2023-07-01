@@ -2,22 +2,26 @@ package com.herecity.tour.adapter.input
 
 import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.ReqUser
+import com.herecity.common.converter.LocalTimeConverter
 import com.herecity.common.dto.OffSetPageable
+import com.herecity.tour.adapter.input.request.CreateTourRequest
 import com.herecity.tour.adapter.input.request.FetchMyToursRequest
 import com.herecity.tour.adapter.input.request.FetchToursRequest
+import com.herecity.tour.adapter.input.request.UpdateTourPlaceRequest
+import com.herecity.tour.adapter.input.request.UpdateTourRequest
+import com.herecity.tour.adapter.input.response.CreateTourResponse
 import com.herecity.tour.adapter.input.response.FetchMyToursResponse
 import com.herecity.tour.adapter.input.response.FetchTourPlanResponse
 import com.herecity.tour.adapter.input.response.FetchToursResponse
-import com.herecity.tour.application.dto.CreateTourDto
-import com.herecity.tour.application.dto.TourPlaceDto
-import com.herecity.tour.application.dto.TourPlanDto
-import com.herecity.tour.application.dto.UpdateTourDto
-import com.herecity.tour.application.dto.UpdateTourPlaceDto
+import com.herecity.tour.adapter.input.response.UpdateTourPlaceResponse
+import com.herecity.tour.adapter.input.response.UpdateTourResponse
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
+import com.herecity.tour.application.port.input.CreateTourCommand
 import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
-import com.herecity.tour.application.port.input.SaveTourUseCase
+import com.herecity.tour.application.port.input.UpdateTourCommand
+import com.herecity.tour.application.port.input.UpdateTourPlaceCommand
 import com.herecity.user.domain.vo.UserDetail
 import com.herecity.user.domain.vo.UserRole
 import io.swagger.v3.oas.annotations.Operation
@@ -40,7 +44,9 @@ class TourController(
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchToursQuery: FetchToursQuery,
     private val fetchMyToursQuery: FetchMyToursQuery,
-    private val saveTourUseCase: SaveTourUseCase,
+    private val createTourCommand: CreateTourCommand,
+    private val updateTourCommand: UpdateTourCommand,
+    private val updateTourPlaceCommand: UpdateTourPlaceCommand,
     private val authorizeTourUseCase: AuthorizeTourUseCase,
 ) {
     @Operation(summary = "투어목록 조회", description = "투어목록을 조회합니다. 평점 순으로 조회됩니다.")
@@ -110,9 +116,20 @@ class TourController(
     @PostMapping
     fun createPlace(
         @ReqUser user: UserDetail,
-        @RequestBody @Valid createTourDto: CreateTourDto,
-    ): TourPlanDto =
-        this.saveTourUseCase.createTour(createTourDto, user.getId())
+        @RequestBody @Valid createTourRequest: CreateTourRequest,
+    ): CreateTourResponse =
+        this.createTourCommand.createTour(createTourRequest.toDomain(user.getId())).let {
+            CreateTourResponse(
+                id = it.id,
+                ownerName = it.ownerName,
+                tourName = it.tourName,
+                regionName = it.regionName,
+                scope = it.scope,
+                from = LocalTimeConverter.convert(it.from),
+                to = LocalTimeConverter.convert(it.to),
+                tourPlaces = it.tourPlaces,
+            )
+        }
 
     @Authorize
     @Operation(summary = "투어일정 수정")
@@ -123,10 +140,21 @@ class TourController(
         @PathVariable tourId: Long,
         @ReqUser user: UserDetail,
         @RequestBody @Valid
-        updateTourDto: UpdateTourDto,
-    ): TourPlanDto {
+        updateTourRequest: UpdateTourRequest,
+    ): UpdateTourResponse {
         authorizeTourUseCase.checkHost(tourId, user.getId())
-        return this.saveTourUseCase.updateTour(tourId, updateTourDto)
+        return this.updateTourCommand.updateTour(updateTourRequest.toDomain(tourId)).let {
+            UpdateTourResponse(
+                id = it.id,
+                ownerName = it.ownerName,
+                tourName = it.tourName,
+                regionName = it.regionName,
+                scope = it.scope,
+                from = LocalTimeConverter.convert(it.from),
+                to = LocalTimeConverter.convert(it.to),
+                tourPlaces = it.tourPlaces,
+            )
+        }
     }
 
     @Authorize
@@ -138,9 +166,21 @@ class TourController(
         @PathVariable tourId: Long,
         @PathVariable placeId: Long,
         @ReqUser user: UserDetail,
-        @RequestBody updateTourPlaceDto: UpdateTourPlaceDto,
-    ): TourPlaceDto {
+        @RequestBody updateTourPlaceRequest: UpdateTourPlaceRequest,
+    ): UpdateTourPlaceResponse {
         authorizeTourUseCase.checkHost(tourId, user.getId())
-        return this.saveTourUseCase.updateTourPlace(tourId, placeId, updateTourPlaceDto)
+        return this.updateTourPlaceCommand.updateTourPlace(
+            updateTourPlaceRequest.toDomain(
+                tourId = tourId,
+                placeId = placeId,
+            )
+        ).let {
+            UpdateTourPlaceResponse(
+                place = it.place,
+                from = LocalTimeConverter.convert(it.from),
+                to = LocalTimeConverter.convert(it.to),
+                budgets = it.budgets,
+            )
+        }
     }
 }
