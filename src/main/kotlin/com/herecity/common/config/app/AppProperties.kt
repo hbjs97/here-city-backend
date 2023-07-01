@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration
 class AppProperties {
     val auth = Auth()
     val oauth2 = OAuth2()
+    val aws = Aws()
 
     class Auth {
         var accessTokenSecret: String = ""
@@ -21,6 +22,18 @@ class AppProperties {
         fun authorizedRedirectUris(authorizedRedirectUris: List<String>): OAuth2 {
             this.authorizedRedirectUris = authorizedRedirectUris
             return this
+        }
+    }
+
+    class Aws {
+        var accessKeyId: String = ""
+        var secretAccessKey: String = ""
+        var s3 = S3()
+
+        class S3 {
+            var domain: String = ""
+            var bucketName: String = ""
+            var region: String = ""
         }
     }
 }

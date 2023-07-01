@@ -12,9 +12,9 @@ buildscript {
 plugins {
     val kotlinVersion = "1.6.21"
 
-    id("org.springframework.boot") version "2.6.3"
+    id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
@@ -120,10 +120,19 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
 
+    // coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.4")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.5")
+
+    // s3
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.464")
+
     // kotlin-faker
     implementation("io.github.serpro69:kotlin-faker:1.12.0")
 
-    implementation("org.springframework.cloud:spring-cloud-starter-sleuth:3.1.0")
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth:3.1.8")
 
     implementation("net.logstash.logback:logstash-logback-encoder:7.3")
 }

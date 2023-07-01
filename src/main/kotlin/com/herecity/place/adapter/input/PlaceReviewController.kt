@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/v1/places/reviews")
@@ -78,6 +79,7 @@ class PlaceReviewController(
     fun review(
         @ReqUser user: UserDetail,
         @RequestBody createReviewDto: CreateReviewDto,
+        @RequestPart files: List<MultipartFile>,
     ): PlaceReviewDto =
         this.recordPlaceReviewUseCase.review(user.getId(), createReviewDto)
 }
