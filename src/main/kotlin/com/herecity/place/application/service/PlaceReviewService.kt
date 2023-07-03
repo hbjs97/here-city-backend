@@ -9,11 +9,10 @@ import com.herecity.place.application.port.output.PlaceReviewCommandOutputPort
 import com.herecity.place.application.port.output.PlaceReviewQueryOutputPort
 import com.herecity.place.domain.entity.PlaceReview
 import com.herecity.s3.S3ClientAdapter
-import com.herecity.s3.core.ClientProperties
 import com.herecity.s3.core.UploadObject
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.user.application.port.input.FetchUserUseCase
-import dev.wimcorp.common.util.UrlUtils
+import dev.wimcorp.common.util.FileUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -28,7 +27,7 @@ class PlaceReviewService(
     private val recordPlaceUseCase: RecordPlaceUseCase,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchUserUseCase: FetchUserUseCase,
-    private val s3Client: S3ClientAdapter,
+    private val s3ClientAdapter: S3ClientAdapter,
 ) : FetchReviewsQuery, FetchMyReviewsQuery, CreatePlaceReviewCommand {
     override fun fetchReviews(query: FetchReviewsQuery.In): FetchReviewsQuery.Out {
         return placeReviewQueryOutputPort.fetchReviews(
@@ -67,9 +66,11 @@ class PlaceReviewService(
             )
         }
 
-        val uploadedImages = s3Client.upload(command.images.map {
+        val uploadedImages = s3ClientAdapter.upload(command.images.map {
             UploadObject(
-                objectKey = "${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))}-${UUID.randomUUID().toString()}",
+                objectKey = "${
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                }-${UUID.randomUUID()}.${FileUtils.extractExtension(it.originalFilename)}",
                 file = it,
             )
         })
@@ -95,12 +96,7 @@ class PlaceReviewService(
                 tourId = it.tourId,
                 content = it.content,
                 createdAt = it.createdAt,
-                images = it.images.map { url ->
-                    s3Client.generatePresignedUrl(
-                        UrlUtils.extractPathFromUrl(url),
-                        ClientProperties.HttpMethod.GET
-                    ).toString()
-                },
+                images = it.images,
                 createdBy = it.createdBy,
                 userDisplayName = user.displayName,
                 userThumbnail = user.thumbnail,
