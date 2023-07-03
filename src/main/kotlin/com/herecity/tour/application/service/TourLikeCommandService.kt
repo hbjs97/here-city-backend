@@ -13,8 +13,7 @@ class TourLikeCommandService(
     private val tourLikeCommandOutputPort: TourLikeCommandOutputPort,
 ) : TourLikeCommand, TourDisLikeCommand {
     override fun like(command: TourLikeCommand.In): TourLikeCommand.Out {
-        val tour = tourOutputPort.getById(command.tourId)
-        tour.tourists.find { it.userId == command.userId } ?: throw IllegalArgumentException("해당 유저는 투어에 참여하지 않았습니다.")
+        tourOutputPort.getById(command.tourId)
         val tourLikeLike = TourLike(command.tourId, command.userId)
         tourLikeLike.like()
         return tourLikeCommandOutputPort.save(tourLikeLike).let {
