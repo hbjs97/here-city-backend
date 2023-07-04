@@ -80,9 +80,9 @@ class TourRepositoryAdapter(
                 )
             )
             .from(tourist)
-            .where(tourist.userId.eq(userId))
+            .innerJoin(tourist.tour, tour)
             .innerJoin(region).on(tour.regionId.eq(region.id))
-            .innerJoin(tourist.tour)
+            .where(tourist.userId.eq(userId))
 
         when (isPast) {
             false -> {
