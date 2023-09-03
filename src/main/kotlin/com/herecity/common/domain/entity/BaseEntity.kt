@@ -16,4 +16,8 @@ open class BaseEntity {
 
     @Column(nullable = true)
     var deletedAt: LocalDateTime? = null
+
+    fun delete() {
+        deletedAt = LocalDateTime.now()
+    }
 }

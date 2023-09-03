@@ -2,10 +2,10 @@
 <!-- 60초마다 설정 파일의 변경을 확인 하여 변경시 갱신 -->
 <configuration scan="true" scanPeriod="60 seconds">
     <property name="LOG_PATH" value="logs"/>
-    <!--    <property name="LOG_PATTERN"-->
-    <!--              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) -&#45;&#45; [ %thread, %X{traceId}, %X{spanId} ] %cyan(%logger{20}:%line) : %msg%n"/>-->
     <property name="LOG_PATTERN"
               value='{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%highlight(%-5level)","thread":"[%thread]","traceId":"%X{traceId}","spanId":"%X{spanId}","logger":"%cyan(%logger{20}:%line)","message":"%msg"}%n'/>
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) --- [ %thread, %X{traceId}, %X{spanId} ] %cyan(%logger{20}:%line) : %msg%n"/>
 
     <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
 
