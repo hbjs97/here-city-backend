@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class MessageService {
-  fun send(token: String) {
-    val message = Message.builder()
-      .putData("title", "title")
-      .putData("body", "body")
-      .setToken(token)
-      .build()
-    FirebaseMessaging.getInstance().send(message)
-  }
+    fun send(token: String) {
+        val message = Message.builder()
+            .putData("title", "title")
+            .putData("body", "body")
+            .setToken(token)
+            .build()
+        FirebaseMessaging.getInstance().send(message)
+    }
 }

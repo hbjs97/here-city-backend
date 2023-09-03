@@ -8,8 +8,8 @@ import com.herecity.region.application.port.output.RegionCommandOutputPort
 import com.herecity.region.application.port.output.RegionQueryOutputPort
 import com.herecity.region.domain.entity.Region
 import com.herecity.region.domain.exception.DuplicateRegionNameException
-import com.herecity.region.domain.exception.ExistSubRegionsException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RegionService(
@@ -17,39 +17,18 @@ class RegionService(
     private val regionCommandOutputPort: RegionCommandOutputPort,
 ) :
     FetchRegionUseCase, RecordRegionUseCase {
-    override fun getUpperRegions(): List<RegionDto> = this.regionQueryOutputPort.getUpperRegions()
-
-    override fun getSubRegions(upperRegionId: Long): List<RegionDto> =
-        this.regionQueryOutputPort.getSubRegions(upperRegionId)
+    override fun getRegions(): List<RegionDto> = this.regionQueryOutputPort.getRegions()
 
     override fun getById(id: Long): RegionDto {
         val region = this.regionQueryOutputPort.getById(id)
         return RegionDto(region)
     }
 
-    /**
-     * @see
-     * 상위지역 이름은 중복될 수 없다.
-     */
-    override fun createUpperRegion(name: String): RegionDto {
+    override fun createRegion(name: String): RegionDto {
         val exist = this.regionQueryOutputPort.existsByName(name)
         if (exist) throw DuplicateRegionNameException()
         val region = this.regionCommandOutputPort.save(Region(name = name))
         return RegionDto(region.id, region.name)
-    }
-
-    /**
-     * @see
-     * 하위지역 이름은 같은 상위지역 아래 중복될 수 없다.
-     */
-    override fun addSubRegion(upperRegionId: Long, name: String): RegionDto {
-        val exist = this.regionQueryOutputPort.existsByUpperRegionIdAndName(upperRegionId, name)
-        if (exist) throw DuplicateRegionNameException("같은 상위지역 아래 이름이 중복될 수 없습니다.")
-
-        val upperRegion = this.regionQueryOutputPort.getById(upperRegionId)
-
-        val region = this.regionCommandOutputPort.save(Region(upperRegion = upperRegion, name = name))
-        return RegionDto(region.id, region.name, upperRegion)
     }
 
     override fun updateRegion(id: Long, updateRegionDto: UpdateRegionDto): RegionDto {
@@ -61,11 +40,8 @@ class RegionService(
         return RegionDto(region)
     }
 
+    @Transactional
     override fun deleteRegion(id: Long) {
-        val hasSubRegion = this.regionQueryOutputPort.hasSubRegion(id)
-        if (hasSubRegion) throw ExistSubRegionsException()
-
-        this.regionQueryOutputPort.getById(id)
-        this.regionCommandOutputPort.deleteById(id)
+        this.regionQueryOutputPort.getById(id).apply { delete() }
     }
 }

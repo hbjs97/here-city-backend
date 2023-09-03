@@ -20,36 +20,18 @@ class RegionController(
     private val fetchRegionUseCase: FetchRegionUseCase,
     private val recordRegionUseCase: RecordRegionUseCase,
 ) {
-    @Operation(summary = "상위 지역 목록 조회")
-    @ApiResponse(responseCode = "200")
+    @Operation(summary = "지역 목록 조회")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping
-    fun getUpperRegions(): List<RegionDto> = this.fetchRegionUseCase.getUpperRegions()
-
-    @Operation(summary = "하위 지역 목록 조회")
-    @ApiResponse(responseCode = "200")
-    @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping("{id}")
-    fun getSubRegions(@PathVariable id: Long): List<RegionDto> =
-        this.fetchRegionUseCase.getSubRegions(id)
+    fun fetchRegions(): List<RegionDto> = this.fetchRegionUseCase.getRegions()
 
     @Authorize
-    @Operation(summary = "상위 지역 등록")
-    @ApiResponse(responseCode = "201")
+    @Operation(summary = "지역 등록")
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize(UserRole.Authority.hasAdminRole)
     @PostMapping
     fun createUpperRegion(@RequestBody nameDto: NameDto): RegionDto =
-        this.recordRegionUseCase.createUpperRegion(nameDto.name)
-
-    @Authorize
-    @Operation(summary = "하위 지역 등록")
-    @ApiResponse(responseCode = "201")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize(UserRole.Authority.hasAdminRole)
-    @PostMapping("{id}")
-    fun addSubRegion(@PathVariable id: Long, @RequestBody nameDto: NameDto): RegionDto =
-        this.recordRegionUseCase.addSubRegion(id, nameDto.name)
+        this.recordRegionUseCase.createRegion(nameDto.name)
 
     @Authorize
     @Operation(summary = "지역 정보 수정")
