@@ -1,8 +1,6 @@
 package com.herecity.unit.adapter.rest
 
 import com.herecity.common.annotation.Authorize
-import com.herecity.member.application.dto.AddMemberDto
-import com.herecity.unit.adapter.dto.UnitMemberDto
 import com.herecity.unit.application.dto.CreateUnitDto
 import com.herecity.unit.application.dto.UnitDto
 import com.herecity.unit.application.dto.UpdateUnitDto
@@ -33,14 +31,6 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     fun getUnits(): List<UnitDto> = this.loadUnitUseCase.getAllUnits()
 
     @Authorize
-    @Operation(summary = "유닛멤버 목록 조회")
-    @ApiResponse(responseCode = "200")
-    @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize(UserRole.Authority.hasAllRoles)
-    @GetMapping("{id}/members")
-    fun getUnitMembers(@PathVariable id: Long): List<UnitMemberDto> = this.loadUnitUseCase.getUnitMembers(id)
-
-    @Authorize
     @Operation(summary = "유닛 등록")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -48,15 +38,6 @@ class UnitController(private val loadUnitUseCase: LoadUnitUseCase, private val r
     @PostMapping
     fun createUnit(@RequestBody createUnitDto: CreateUnitDto): UnitDto =
         this.recordUnitUseCase.createUnit(createUnitDto.name)
-
-    @Authorize
-    @Operation(summary = "유닛에 멤버 추가")
-    @ApiResponse(responseCode = "201")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize(UserRole.Authority.hasAdminRole)
-    @PostMapping("{unitId}/members/{memberId}")
-    fun addMember(@PathVariable unitId: Long, @PathVariable memberId: Long): UnitMemberDto =
-        this.recordUnitUseCase.addUnitMember(AddMemberDto(unitId, memberId))
 
     @Authorize
     @Operation(summary = "유닛 수정")

@@ -13,10 +13,10 @@ import javax.persistence.Id
 @SQLDelete(sql = "UPDATE tag SET deleted_at = NOW() WHERE id = ?")
 @Entity(name = "tag")
 class Tag(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var id: Long? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
 
-  @Column(nullable = false, length = 100)
-  var name: String,
+    @Column(nullable = false, length = 100)
+    var name: String,
 ) : BaseEntity()
