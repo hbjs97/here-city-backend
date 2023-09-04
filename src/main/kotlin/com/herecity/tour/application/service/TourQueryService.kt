@@ -1,6 +1,6 @@
 package com.herecity.tour.application.service
 
-import com.herecity.place.application.port.input.FetchPlacesQuery
+import com.herecity.place.application.port.input.place.FetchPlacesQuery
 import com.herecity.region.application.port.input.FetchRegionUseCase
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery

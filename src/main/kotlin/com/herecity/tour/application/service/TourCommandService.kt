@@ -2,8 +2,8 @@ package com.herecity.tour.application.service
 
 import com.herecity.place.application.dto.Coordinate2D
 import com.herecity.place.application.dto.PlaceDto
-import com.herecity.place.application.port.input.FetchPlaceQuery
-import com.herecity.place.application.port.input.FetchPlacesQuery
+import com.herecity.place.application.port.input.place.FetchPlaceQuery
+import com.herecity.place.application.port.input.place.FetchPlacesQuery
 import com.herecity.tour.application.port.input.CreateTourCommand
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.UpdateTourCommand
