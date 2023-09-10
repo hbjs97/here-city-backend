@@ -12,13 +12,13 @@ import javax.persistence.*
 @IdClass(PlaceActivityId::class)
 @Entity(name = "place_activity")
 class PlaceActivity(
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var place: Place? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    var place: Place,
 
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "activity_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var activity: Activity? = null
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "activity_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    var activity: Activity,
 ) : BaseEntity()

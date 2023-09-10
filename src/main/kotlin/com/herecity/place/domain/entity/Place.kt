@@ -52,10 +52,7 @@ class Place(
     var images: List<String> = listOf(),
 
     @OneToMany(
-        fetch = FetchType.LAZY,
-        mappedBy = "place",
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
-        orphanRemoval = true
+        fetch = FetchType.LAZY, mappedBy = "place", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true
     )
     var placeTypes: MutableSet<PlaceTypeGroup> = mutableSetOf(),
 

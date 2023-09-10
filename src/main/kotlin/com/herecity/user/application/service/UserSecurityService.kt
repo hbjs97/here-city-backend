@@ -1,6 +1,6 @@
 package com.herecity.user.application.service
 
-import com.herecity.user.application.port.output.UserQueryOutputPort
+import com.herecity.user.application.port.outbound.UserQueryOutputPort
 import com.herecity.user.domain.exception.UserNotFoundException
 import com.herecity.user.domain.vo.UserDetail
 import org.springframework.security.core.userdetails.UserDetails

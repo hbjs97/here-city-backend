@@ -11,7 +11,7 @@ import com.herecity.place.domain.entity.PlaceReview
 import com.herecity.s3.S3ClientAdapter
 import com.herecity.s3.core.UploadObject
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
-import com.herecity.user.application.port.input.FetchUserUseCase
+import com.herecity.user.application.port.inbound.FetchUserQuery
 import dev.wimcorp.common.util.FileUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,7 +25,7 @@ class PlaceReviewService(
     private val placeReviewCommandOutputPort: PlaceReviewCommandOutputPort,
     private val fetchPlaceQuery: FetchPlaceQuery,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
-    private val fetchUserUseCase: FetchUserUseCase,
+    private val fetchUserQuery: FetchUserQuery,
     private val s3ClientAdapter: S3ClientAdapter,
     private val savePlaceRatingCommand: SavePlaceRatingCommand,
 ) : FetchReviewsQuery, FetchMyReviewsQuery, CreatePlaceReviewCommand {
@@ -85,7 +85,7 @@ class PlaceReviewService(
                 images = uploadedImages.map { it.url }
             )
         )
-        val user = fetchUserUseCase.fetchUser(command.userId)
+        val user = fetchUserQuery.fetchUser(FetchUserQuery.In(command.userId))
         val ratingAvg = placeReviewCommandOutputPort.getAverageRating(placeId = placeReview.placeId)
         savePlaceRatingCommand.savePlaceRating(SavePlaceRatingCommand.In(id = placeReview.placeId, rating = ratingAvg))
         return placeReview.let {

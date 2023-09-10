@@ -1,10 +1,10 @@
 package com.herecity.activity.application.port.service
 
-import com.herecity.activity.application.port.input.CreateActivityCommand
-import com.herecity.activity.application.port.input.DeleteActivityCommand
-import com.herecity.activity.application.port.input.UpdateActivityCommand
-import com.herecity.activity.application.port.output.ActivityCommandOutputPort
-import com.herecity.activity.application.port.output.ActivityQueryOutputPort
+import com.herecity.activity.application.port.inbound.CreateActivityCommand
+import com.herecity.activity.application.port.inbound.DeleteActivityCommand
+import com.herecity.activity.application.port.inbound.UpdateActivityCommand
+import com.herecity.activity.application.port.outbound.ActivityCommandOutputPort
+import com.herecity.activity.application.port.outbound.ActivityQueryOutputPort
 import com.herecity.activity.domain.entity.Activity
 import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import org.springframework.stereotype.Service

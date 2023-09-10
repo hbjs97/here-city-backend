@@ -1,6 +1,6 @@
 package com.herecity.activity.adapter.inbound.web.response
 
-import com.herecity.activity.application.port.input.UpdateActivityCommand
+import com.herecity.activity.application.port.inbound.UpdateActivityCommand
 
 data class UpdateActivityResponse(
     val id: Long,

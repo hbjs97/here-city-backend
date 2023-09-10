@@ -2,9 +2,9 @@ package com.herecity.user.application.service
 
 import com.herecity.s3.S3ClientAdapter
 import com.herecity.s3.core.UploadObject
-import com.herecity.user.application.port.input.UpdateUserProfileCommand
-import com.herecity.user.application.port.output.UserCommandOutputPort
-import com.herecity.user.application.port.output.UserQueryOutputPort
+import com.herecity.user.application.port.inbound.UpdateUserProfileCommand
+import com.herecity.user.application.port.outbound.UserCommandOutputPort
+import com.herecity.user.application.port.outbound.UserQueryOutputPort
 import dev.wimcorp.common.util.FileUtils
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime

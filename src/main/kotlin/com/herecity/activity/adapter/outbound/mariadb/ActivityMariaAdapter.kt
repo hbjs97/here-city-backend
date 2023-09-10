@@ -1,7 +1,7 @@
 package com.herecity.activity.adapter.outbound.mariadb
 
-import com.herecity.activity.application.port.output.ActivityCommandOutputPort
-import com.herecity.activity.application.port.output.ActivityQueryOutputPort
+import com.herecity.activity.application.port.outbound.ActivityCommandOutputPort
+import com.herecity.activity.application.port.outbound.ActivityQueryOutputPort
 import com.herecity.activity.domain.entity.Activity
 import com.herecity.activity.domain.exception.DuplicateActivityNameException
 import com.querydsl.jpa.impl.JPAQueryFactory

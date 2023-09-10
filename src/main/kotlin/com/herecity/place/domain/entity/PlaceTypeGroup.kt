@@ -25,7 +25,7 @@ class PlaceTypeGroup(
         updatable = false,
         foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
     )
-    var place: Place? = null,
+    var place: Place,
 
     @Id
     @ManyToOne
@@ -35,5 +35,5 @@ class PlaceTypeGroup(
         updatable = false,
         foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
     )
-    var type: PlaceType? = null,
+    var type: PlaceType,
 ) : BaseEntity()

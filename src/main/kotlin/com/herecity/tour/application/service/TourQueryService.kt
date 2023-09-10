@@ -1,22 +1,22 @@
 package com.herecity.tour.application.service
 
 import com.herecity.place.application.port.input.place.FetchPlacesQuery
-import com.herecity.region.application.port.input.FetchRegionUseCase
+import com.herecity.region.application.port.outbound.RegionQueryOutputPort
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.ShareTourQuery
 import com.herecity.tour.application.port.output.TourOutputPort
-import com.herecity.user.application.port.input.FetchUserUseCase
+import com.herecity.user.application.port.inbound.FetchUserQuery
 import org.springframework.stereotype.Service
 import org.webjars.NotFoundException
 
 @Service
 class TourQueryService(
     private val tourOutputPort: TourOutputPort,
-    private val fetchRegionUseCase: FetchRegionUseCase,
-    private val fetchUserUseCase: FetchUserUseCase,
+    private val regionQueryOutputPort: RegionQueryOutputPort,
+    private val fetchUserQuery: FetchUserQuery,
     private val fetchPlacesQuery: FetchPlacesQuery,
 ) : ShareTourQuery, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
     override fun shareJoinCode(query: ShareTourQuery.In): ShareTourQuery.Out =
@@ -40,8 +40,8 @@ class TourQueryService(
 
     override fun fetchTourPlan(query: FetchTourPlanQuery.In): FetchTourPlanQuery.Out {
         val tour = tourOutputPort.getById(query.id)
-        val region = fetchRegionUseCase.getById(tour.regionId)
-        val host = fetchUserUseCase.fetchUser(tour.createdBy)
+        val region = regionQueryOutputPort.getById(tour.regionId)
+        val host = fetchUserQuery.fetchUser(FetchUserQuery.In(tour.createdBy))
 
         val places = fetchPlacesQuery.fetchPlaces(
             FetchPlacesQuery.In(

@@ -6,10 +6,10 @@ import com.herecity.activity.adapter.inbound.web.request.UpdateActivityRequest
 import com.herecity.activity.adapter.inbound.web.response.CreateActivityResponse
 import com.herecity.activity.adapter.inbound.web.response.FetchActivitiesResponse
 import com.herecity.activity.adapter.inbound.web.response.UpdateActivityResponse
-import com.herecity.activity.application.port.input.CreateActivityCommand
-import com.herecity.activity.application.port.input.DeleteActivityCommand
-import com.herecity.activity.application.port.input.SearchActivityQuery
-import com.herecity.activity.application.port.input.UpdateActivityCommand
+import com.herecity.activity.application.port.inbound.CreateActivityCommand
+import com.herecity.activity.application.port.inbound.DeleteActivityCommand
+import com.herecity.activity.application.port.inbound.SearchActivityQuery
+import com.herecity.activity.application.port.inbound.UpdateActivityCommand
 import com.herecity.common.annotation.Authorize
 import com.herecity.common.annotation.DomainContext
 import com.herecity.user.domain.vo.UserRole

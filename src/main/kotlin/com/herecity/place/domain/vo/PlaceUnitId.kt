@@ -5,7 +5,6 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class PlaceUnitId(
-  var place: Long? = null,
-
-  var unit: Long? = null,
+    val place: Long,
+    val unit: Long,
 ) : Serializable

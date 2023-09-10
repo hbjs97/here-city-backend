@@ -12,13 +12,13 @@ import javax.persistence.*
 @IdClass(PlaceUnitId::class)
 @Entity(name = "place_unit")
 class PlaceUnit(
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var place: Place? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "place_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    var place: Place,
 
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "unit_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-  var unit: Unit? = null,
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "unit_id", insertable = false, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    var unit: Unit,
 ) : BaseEntity()

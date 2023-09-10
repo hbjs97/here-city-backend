@@ -1,6 +1,6 @@
 package com.herecity.place.application.service.place
 
-import com.herecity.activity.application.port.output.ActivityQueryOutputPort
+import com.herecity.activity.application.port.outbound.ActivityQueryOutputPort
 import com.herecity.place.application.dto.Coordinate2D
 import com.herecity.place.application.port.input.place.CreatePlaceCommand
 import com.herecity.place.application.port.input.place.DeletePlaceCommand
@@ -13,7 +13,7 @@ import com.herecity.place.domain.entity.Place
 import com.herecity.place.domain.entity.PlaceActivity
 import com.herecity.place.domain.entity.PlaceTypeGroup
 import com.herecity.place.domain.entity.PlaceUnit
-import com.herecity.unit.application.port.output.UnitQueryOutputPort
+import com.herecity.unit.application.port.outbound.UnitQueryOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

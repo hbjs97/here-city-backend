@@ -1,7 +1,7 @@
 package com.herecity.activity.application.port.service
 
-import com.herecity.activity.application.port.input.SearchActivityQuery
-import com.herecity.activity.application.port.output.ActivityQueryOutputPort
+import com.herecity.activity.application.port.inbound.SearchActivityQuery
+import com.herecity.activity.application.port.outbound.ActivityQueryOutputPort
 import org.springframework.stereotype.Service
 
 @Service

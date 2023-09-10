@@ -1,7 +1,7 @@
 package com.herecity.common.config
 
 import com.herecity.common.config.app.AppProperties
-import com.herecity.user.application.port.output.UserQueryOutputPort
+import com.herecity.user.application.port.outbound.UserQueryOutputPort
 import com.herecity.user.application.security.JwtAuthenticationFilter
 import com.herecity.user.application.security.JwtService
 import com.herecity.user.application.security.TokenAccessDeniedHandler

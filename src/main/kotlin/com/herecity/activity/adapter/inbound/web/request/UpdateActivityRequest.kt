@@ -1,6 +1,6 @@
 package com.herecity.activity.adapter.inbound.web.request
 
-import com.herecity.activity.application.port.input.UpdateActivityCommand
+import com.herecity.activity.application.port.inbound.UpdateActivityCommand
 import javax.validation.constraints.Size
 
 data class UpdateActivityRequest(

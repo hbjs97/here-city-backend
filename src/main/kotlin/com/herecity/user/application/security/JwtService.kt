@@ -2,7 +2,7 @@ package com.herecity.user.application.security
 
 import com.herecity.common.config.app.AppProperties
 import com.herecity.user.application.dto.UserDto
-import com.herecity.user.application.port.output.UserQueryOutputPort
+import com.herecity.user.application.port.outbound.UserQueryOutputPort
 import com.herecity.user.domain.vo.UserDetail
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException

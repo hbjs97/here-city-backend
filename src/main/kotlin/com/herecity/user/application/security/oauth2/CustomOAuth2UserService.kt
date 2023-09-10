@@ -1,7 +1,7 @@
 package com.herecity.user.application.security.oauth2
 
-import com.herecity.user.application.port.output.UserCommandOutputPort
-import com.herecity.user.application.port.output.UserQueryOutputPort
+import com.herecity.user.application.port.outbound.UserCommandOutputPort
+import com.herecity.user.application.port.outbound.UserQueryOutputPort
 import com.herecity.user.domain.entity.User
 import com.herecity.user.domain.exception.OAuth2AuthenticationProcessingException
 import com.herecity.user.domain.vo.ProviderType

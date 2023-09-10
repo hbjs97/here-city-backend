@@ -10,20 +10,24 @@ import com.herecity.tour.application.port.input.UpdateTourCommand
 import com.herecity.tour.application.port.input.UpdateTourPlaceCommand
 import com.herecity.tour.application.port.output.TourOutputPort
 import com.herecity.tour.domain.entity.Tour
-import com.herecity.user.application.port.input.FetchUserUseCase
+import com.herecity.user.application.port.inbound.FetchUsersQuery
 import org.springframework.stereotype.Service
 import org.webjars.NotFoundException
 
 @Service
 class TourCommandService(
     private val tourOutputPort: TourOutputPort,
-    private val fetchUserUseCase: FetchUserUseCase,
+    private val fetchUsersQuery: FetchUsersQuery,
     private val fetchPlaceQuery: FetchPlaceQuery,
     private val fetchPlacesQuery: FetchPlacesQuery,
     private val fetchTourPlanQuery: FetchTourPlanQuery,
 ) : CreateTourCommand, UpdateTourCommand, UpdateTourPlaceCommand {
     override fun createTour(command: CreateTourCommand.In): CreateTourCommand.Out {
-        val users = fetchUserUseCase.fetchUsers(command.tourists.toList())
+        val users = fetchUsersQuery.fetchUsers(
+            FetchUsersQuery.In(
+                ids = command.tourists.toList()
+            )
+        ).users
         if (users.size != command.tourists.size) {
             throw NotFoundException("Invalid tourists")
         }

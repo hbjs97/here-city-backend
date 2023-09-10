@@ -1,6 +1,6 @@
 package com.herecity.activity.adapter.inbound.web.request
 
-import com.herecity.activity.application.port.input.SearchActivityQuery
+import com.herecity.activity.application.port.inbound.SearchActivityQuery
 
 data class SearchActivitiesRequest(
     val name: String?,
