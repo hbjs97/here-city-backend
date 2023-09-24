@@ -21,7 +21,7 @@ class PlaceLikeQueryService(
     }
 
     override fun fetchPlaceLike(query: FetchPlaceLikeQuery.In): List<FetchPlaceLikeQuery.PlaceLikeDto> {
-        return placeLikeQueryOutputPort.findAllByIds(query.placeId.map { PlaceLikeId(it, query.userId) })
+        return placeLikeQueryOutputPort.findAllByUserIdAndPlaceIdIn(userId = query.userId, placeId = query.placeId)
             .map {
                 FetchPlaceLikeQuery.PlaceLikeDto(it.placeId, it.liked())
             }

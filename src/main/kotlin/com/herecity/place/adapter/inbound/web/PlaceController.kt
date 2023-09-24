@@ -41,6 +41,7 @@ class PlaceController(
     private val updatePlaceCommand: UpdatePlaceCommand,
     private val deletePlaceCommand: DeletePlaceCommand,
 ) {
+    @Authorize
     @Operation(summary = "주변 장소 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)
@@ -61,6 +62,7 @@ class PlaceController(
         )
     }
 
+    @Authorize
     @Operation(summary = "추천 장소 목록 조회")
     @ApiResponse(responseCode = "200")
     @ResponseStatus(value = HttpStatus.OK)

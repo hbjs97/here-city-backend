@@ -9,6 +9,6 @@ import com.herecity.place.domain.vo.PlaceLikeId
 import java.util.UUID
 
 interface PlaceLikeQueryOutputPort : BaseQueryRepository<PlaceLike, PlaceLikeId> {
-    fun findAllByIds(ids: List<PlaceLikeId>): List<PlaceLike>
+    fun findAllByUserIdAndPlaceIdIn(userId: UUID, placeId: List<Long>): List<PlaceLike>
     fun findMyPlaces(userId: UUID, offSetPageable: OffSetPageable): OffsetPaginated<PlaceDto>
 }

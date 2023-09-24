@@ -10,6 +10,7 @@ import com.herecity.place.application.port.input.place.FetchRecommendPlacesPageQ
 import com.herecity.place.application.port.output.place.PlaceQueryOutputPort
 import org.locationtech.jts.geom.Coordinate
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class PlaceQueryService(
@@ -26,15 +27,7 @@ class PlaceQueryService(
             name = query.name,
             point = Coordinate2D(query.point),
         )
-        val placeLikes = fetchPlaceLikeQuery.fetchPlaceLike(
-            FetchPlaceLikeQuery.In(
-                userId = query.userId,
-                placeId = places.content.map { v -> v.id }
-            )
-        )
-        placeLikes.forEach { v ->
-            places.content.find { p -> p.id == v.placeId }?.liked = v.liked
-        }
+        setPlaceLike(places.content, query.userId)
         return FetchNearByPlacesPageQuery.Out(
             places = places.content,
             meta = places.meta
@@ -50,15 +43,7 @@ class PlaceQueryService(
             placeTypeId = query.placeTypeId,
             name = query.name,
         )
-        val placeLikes = fetchPlaceLikeQuery.fetchPlaceLike(
-            FetchPlaceLikeQuery.In(
-                userId = query.userId,
-                placeId = places.content.map { v -> v.id }
-            )
-        )
-        placeLikes.forEach { v ->
-            places.content.find { p -> p.id == v.placeId }?.liked = v.liked
-        }
+        setPlaceLike(places.content, query.userId)
         return FetchRecommendPlacesPageQuery.Out(
             places = places.content,
             meta = places.meta
@@ -83,5 +68,13 @@ class PlaceQueryService(
     override fun fetchPlaces(query: FetchPlacesQuery.In): FetchPlacesQuery.Out {
         val places = placeQueryOutputPort.findAllById(query.ids)
         return FetchPlacesQuery.Out(places = places.map { v -> PlaceDto(v) })
+    }
+
+    private fun setPlaceLike(places: List<PlaceDto>, userId: UUID) {
+        fetchPlaceLikeQuery.fetchPlaceLike(
+            FetchPlaceLikeQuery.In(userId = userId, placeId = places.map { v -> v.id })
+        ).forEach { v ->
+            places.find { p -> p.id == v.placeId }?.liked = v.liked
+        }
     }
 }
