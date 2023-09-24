@@ -19,9 +19,9 @@ interface PlaceQueryOutputPort : BaseQueryRepository<Place, Long> {
     ): OffsetPaginated<PlaceDto>
 
     fun search(
-        regionId: Long?,
+        regionIds: List<Long>,
         activityId: List<Long>,
-        unitId: List<Long>,
+        unitIds: List<Long>,
         offSetPageable: OffSetPageable,
         placeTypeId: Long?,
         name: String?,

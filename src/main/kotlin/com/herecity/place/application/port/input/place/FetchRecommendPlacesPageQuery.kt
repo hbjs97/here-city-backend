@@ -9,12 +9,12 @@ interface FetchRecommendPlacesPageQuery {
     fun fetchRecommendPlacesPage(query: In): Out
     data class In(
         val userId: UUID,
-        val regionId: Long?,
-        val placeTypeId: Long?,
-        val activityId: List<Long> = emptyList(),
-        val unitId: List<Long> = emptyList(),
-        val name: String?,
         val offsetPageable: OffSetPageable,
+        val placeTypeId: Long?,
+        val name: String?,
+        val regionIds: List<Long> = emptyList(),
+        val activityId: List<Long> = emptyList(),
+        val unitIds: List<Long> = emptyList(),
     )
 
     data class Out(

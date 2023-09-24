@@ -43,9 +43,9 @@ class PlaceQueryService(
 
     override fun fetchRecommendPlacesPage(query: FetchRecommendPlacesPageQuery.In): FetchRecommendPlacesPageQuery.Out {
         val places = placeQueryOutputPort.search(
-            regionId = query.regionId,
+            regionIds = query.regionIds,
             activityId = query.activityId,
-            unitId = query.unitId,
+            unitIds = query.unitIds,
             offSetPageable = query.offsetPageable,
             placeTypeId = query.placeTypeId,
             name = query.name,

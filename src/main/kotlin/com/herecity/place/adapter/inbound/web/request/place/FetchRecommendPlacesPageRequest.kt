@@ -5,20 +5,20 @@ import com.herecity.place.application.port.input.place.FetchRecommendPlacesPageQ
 import java.util.UUID
 
 data class FetchRecommendPlacesPageRequest(
-    val regionId: Long?,
+    val regionIds: List<Long>?,
+    val activityId: List<Long>?,
+    val unitIds: List<Long>?,
     val placeTypeId: Long?,
-    val activityId: List<Long> = emptyList(),
-    val unitId: List<Long> = emptyList(),
     val name: String?,
 ) {
     fun toDomain(userId: UUID, offSetPageable: OffSetPageable):
         FetchRecommendPlacesPageQuery.In = FetchRecommendPlacesPageQuery.In(
         userId = userId,
         offsetPageable = offSetPageable,
-        regionId = this.regionId,
-        placeTypeId = this.placeTypeId,
-        activityId = this.activityId,
-        unitId = this.unitId,
-        name = this.name,
+        regionIds = regionIds ?: emptyList(),
+        placeTypeId = placeTypeId,
+        activityId = activityId ?: emptyList(),
+        unitIds = unitIds ?: emptyList(),
+        name = name,
     )
 }

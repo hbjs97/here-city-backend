@@ -28,7 +28,7 @@ class PlaceMariaAdapter(
 
     override fun save(entity: Place): Place {
         try {
-            return this.placeRepository.save(entity)
+            return placeRepository.save(entity)
         } catch (e: DataIntegrityViolationException) {
             throw DuplicateActivityNameException()
         }
@@ -43,7 +43,7 @@ class PlaceMariaAdapter(
         placeTypeId: Long?,
         name: String?,
     ): OffsetPaginated<PlaceDto> {
-        val qb = this.queryFactory
+        val qb = queryFactory
             .select(
                 Projections.constructor(
                     PlaceDto::class.java,
@@ -58,8 +58,8 @@ class PlaceMariaAdapter(
                 )
             )
             .from(place)
-            .where(this.eqRegionId(regionId))
-            .where(this.containsName(name))
+            .where(eqRegionId(regionId))
+            .where(containsName(name))
 
         if (name != null) {
             qb.where(place.name.contains(name).or(place.title.contains(name)))
@@ -106,14 +106,14 @@ class PlaceMariaAdapter(
     }
 
     override fun search(
-        regionId: Long?,
+        regionIds: List<Long>,
         activityId: List<Long>,
-        unitId: List<Long>,
+        unitIds: List<Long>,
         offSetPageable: OffSetPageable,
         placeTypeId: Long?,
         name: String?,
     ): OffsetPaginated<PlaceDto> {
-        val qb = this.queryFactory
+        val qb = queryFactory
             .select(
                 Projections.constructor(
                     PlaceDto::class.java,
@@ -128,8 +128,8 @@ class PlaceMariaAdapter(
                 )
             )
             .from(place)
-            .where(this.eqRegionId(regionId))
-            .where(this.containsName(name))
+            .where(containsRegionId(regionIds))
+            .where(containsName(name))
 
         if (name != null) {
             qb.where(place.name.contains(name).or(place.title.contains(name)))
@@ -145,8 +145,8 @@ class PlaceMariaAdapter(
             qb.innerJoin(place.placeTypes).where(place.placeTypes.any().type.id.eq(placeTypeId))
         }
 
-        if (unitId.isNotEmpty()) {
-            qb.innerJoin(place.placeUnits).where(place.placeUnits.any().unit.id.`in`(unitId))
+        if (unitIds.isNotEmpty()) {
+            qb.innerJoin(place.placeUnits).where(place.placeUnits.any().unit.id.`in`(unitIds))
         }
 
         val places = qb
@@ -170,12 +170,17 @@ class PlaceMariaAdapter(
 
     override fun findAllById(ids: List<Long>): List<Place> = placeRepository.findAllById(ids)
 
-    override fun getById(id: Long): Place = this.placeRepository.findById(id).orElseThrow()
+    override fun getById(id: Long): Place = placeRepository.findById(id).orElseThrow()
 
-    override fun findById(id: Long): Place? = this.placeRepository.findByIdOrNull(id)
+    override fun findById(id: Long): Place? = placeRepository.findByIdOrNull(id)
 
     private fun eqRegionId(regionId: Long?): BooleanExpression? {
         if (regionId != null) return place.regionId.eq(regionId)
+        return null
+    }
+
+    private fun containsRegionId(regionIds: List<Long>): BooleanExpression? {
+        if (regionIds.isNotEmpty()) return place.regionId.`in`(regionIds)
         return null
     }
 
