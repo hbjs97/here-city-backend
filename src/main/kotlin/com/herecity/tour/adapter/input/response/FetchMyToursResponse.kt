@@ -4,6 +4,6 @@ import com.herecity.common.dto.OffsetPageMeta
 import com.herecity.tour.application.dto.TourThumbnailDto
 
 data class FetchMyToursResponse(
-    val content: List<TourThumbnailDto>,
+    val content: List<TourThumbnailDto.Zoned>,
     val meta: OffsetPageMeta,
 )

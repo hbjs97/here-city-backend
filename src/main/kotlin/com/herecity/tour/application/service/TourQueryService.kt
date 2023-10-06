@@ -3,6 +3,7 @@ package com.herecity.tour.application.service
 import com.herecity.place.application.port.input.place.FetchPlacesQuery
 import com.herecity.region.application.port.outbound.RegionQueryOutputPort
 import com.herecity.tour.application.dto.TourPlaceDto
+import com.herecity.tour.application.dto.TourThumbnailDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
@@ -32,7 +33,7 @@ class TourQueryService(
             name = query.name,
         ).let {
             return FetchToursQuery.Out(
-                tours = it.content,
+                tours = it.content.map(TourThumbnailDto.Zoned::from),
                 meta = it.meta,
             )
         }
@@ -71,7 +72,7 @@ class TourQueryService(
             isPast = query.isPast,
         ).let {
             return FetchMyToursQuery.Out(
-                tours = it.content,
+                tours = it.content.map(TourThumbnailDto.Zoned::from),
                 meta = it.meta,
             )
         }

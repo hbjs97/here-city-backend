@@ -12,7 +12,7 @@ interface FetchToursQuery {
     )
 
     data class Out(
-        val tours: List<TourThumbnailDto>,
+        val tours: List<TourThumbnailDto.Zoned>,
         val meta: OffsetPageMeta,
     )
 }
