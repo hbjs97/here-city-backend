@@ -11,6 +11,7 @@ import com.herecity.tour.adapter.input.request.UpdateTourPlaceRequest
 import com.herecity.tour.adapter.input.request.UpdateTourRequest
 import com.herecity.tour.adapter.input.response.CreateTourResponse
 import com.herecity.tour.adapter.input.response.FetchMyToursResponse
+import com.herecity.tour.adapter.input.response.FetchTourPlacesReviewResponse
 import com.herecity.tour.adapter.input.response.FetchTourPlanResponse
 import com.herecity.tour.adapter.input.response.FetchToursResponse
 import com.herecity.tour.adapter.input.response.UpdateTourPlaceResponse
@@ -18,6 +19,7 @@ import com.herecity.tour.adapter.input.response.UpdateTourResponse
 import com.herecity.tour.application.port.input.AuthorizeTourUseCase
 import com.herecity.tour.application.port.input.CreateTourCommand
 import com.herecity.tour.application.port.input.FetchMyToursQuery
+import com.herecity.tour.application.port.input.FetchTourPlacesReviewQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.UpdateTourCommand
@@ -44,6 +46,7 @@ class TourController(
     private val fetchTourPlanQuery: FetchTourPlanQuery,
     private val fetchToursQuery: FetchToursQuery,
     private val fetchMyToursQuery: FetchMyToursQuery,
+    private val fetchTourPlacesReviewQuery: FetchTourPlacesReviewQuery,
     private val createTourCommand: CreateTourCommand,
     private val updateTourCommand: UpdateTourCommand,
     private val updateTourPlaceCommand: UpdateTourPlaceCommand,
@@ -107,6 +110,19 @@ class TourController(
                 tourPlaces = it.tourPlaces,
             )
         }
+
+    @Authorize
+    @Operation(summary = "투어장소 리뷰조회")
+    @ApiResponse(responseCode = "200")
+    @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize(UserRole.Authority.hasUserRole)
+    @GetMapping("{tourId}/reviews")
+    fun fetchTourPlacesReview(@PathVariable tourId: Long, @ReqUser user: UserDetail): FetchTourPlacesReviewResponse =
+        FetchTourPlacesReviewResponse.from(
+            fetchTourPlacesReviewQuery.fetchReviews(
+                FetchTourPlacesReviewQuery.In(tourId = tourId, userId = user.getId())
+            )
+        )
 
     @Authorize
     @Operation(summary = "투어 생성")

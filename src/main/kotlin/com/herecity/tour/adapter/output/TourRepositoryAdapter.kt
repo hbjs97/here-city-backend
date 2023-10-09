@@ -7,6 +7,7 @@ import com.herecity.region.domain.entity.QRegion.region
 import com.herecity.tour.application.dto.TourThumbnailDto
 import com.herecity.tour.application.port.output.TourOutputPort
 import com.herecity.tour.domain.entity.QTour.tour
+import com.herecity.tour.domain.entity.QTourPlace.tourPlace
 import com.herecity.tour.domain.entity.QTourist.tourist
 import com.herecity.tour.domain.entity.Tour
 import com.herecity.tour.domain.vo.Scope
@@ -117,6 +118,17 @@ class TourRepositoryAdapter(
 
     override fun getById(id: Long): Tour = mariaRepository.findById(id).orElseThrow()
     override fun findById(id: Long): Tour? = mariaRepository.findById(id).get()
+    override fun findJoinedTourPlaces(tourId: Long, userId: UUID): Tour {
+        return queryFactory
+            .select(tour)
+            .from(tour)
+            .where(tour.id.eq(tourId))
+            .innerJoin(tour.tourPlaces, tourPlace)
+            .innerJoin(tour.tourists, tourist)
+            .where(tourist.userId.eq(userId))
+            .fetchOne() ?: throw NoSuchElementException("No such tour $tourId for user $userId")
+    }
+
     override fun save(project: Tour): Tour = mariaRepository.save(project)
     private fun containsName(name: String?): BooleanExpression? {
         if (name == null) return null

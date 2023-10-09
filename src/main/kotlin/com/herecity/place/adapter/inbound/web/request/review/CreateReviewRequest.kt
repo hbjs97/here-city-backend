@@ -8,7 +8,7 @@ import javax.validation.constraints.Min
 
 data class CreateReviewRequest(
     val placeId: Long,
-    val tourId: Long?,
+    val tourId: Long,
     @field:Min(1) @field:Max(5)
     val rating: Double,
     val content: String,

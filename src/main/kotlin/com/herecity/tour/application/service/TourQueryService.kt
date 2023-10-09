@@ -1,10 +1,13 @@
 package com.herecity.tour.application.service
 
+import com.herecity.common.converter.LocalTimeConverter
 import com.herecity.place.application.port.input.place.FetchPlacesQuery
+import com.herecity.place.application.port.output.review.PlaceReviewQueryOutputPort
 import com.herecity.region.application.port.outbound.RegionQueryOutputPort
 import com.herecity.tour.application.dto.TourPlaceDto
 import com.herecity.tour.application.dto.TourThumbnailDto
 import com.herecity.tour.application.port.input.FetchMyToursQuery
+import com.herecity.tour.application.port.input.FetchTourPlacesReviewQuery
 import com.herecity.tour.application.port.input.FetchTourPlanQuery
 import com.herecity.tour.application.port.input.FetchToursQuery
 import com.herecity.tour.application.port.input.ShareTourQuery
@@ -19,7 +22,8 @@ class TourQueryService(
     private val regionQueryOutputPort: RegionQueryOutputPort,
     private val fetchUserQuery: FetchUserQuery,
     private val fetchPlacesQuery: FetchPlacesQuery,
-) : ShareTourQuery, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery {
+    private val placeReviewQueryOutputPort: PlaceReviewQueryOutputPort,
+) : ShareTourQuery, FetchTourPlanQuery, FetchToursQuery, FetchMyToursQuery, FetchTourPlacesReviewQuery {
     override fun shareJoinCode(query: ShareTourQuery.In): ShareTourQuery.Out =
         tourOutputPort.getById(query.id).let {
             ShareTourQuery.Out(
@@ -60,7 +64,6 @@ class TourQueryService(
             scope = tour.scope.korName,
             from = tour.from,
             to = tour.to,
-//            notifications = tour.tourNotifications.map { TourNotificationDto(it) },
             tourPlaces = tourPlaces
         )
     }
@@ -76,5 +79,16 @@ class TourQueryService(
                 meta = it.meta,
             )
         }
+    }
+
+    override fun fetchReviews(query: FetchTourPlacesReviewQuery.In): FetchTourPlacesReviewQuery.Out {
+        val joinedTour = tourOutputPort.findJoinedTourPlaces(query.tourId, query.userId)
+        val placeReviews = placeReviewQueryOutputPort.findTourPlaceReviews(tourId = joinedTour.id)
+        return FetchTourPlacesReviewQuery.Out(
+            name = joinedTour.name,
+            from = LocalTimeConverter.convert(joinedTour.from),
+            to = LocalTimeConverter.convert(joinedTour.to),
+            reviews = placeReviews,
+        )
     }
 }

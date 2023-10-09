@@ -20,5 +20,6 @@ interface TourOutputPort {
 
     fun getById(id: Long): Tour
     fun findById(id: Long): Tour?
+    fun findJoinedTourPlaces(tourId: Long, userId: UUID): Tour
     fun save(tour: Tour): Tour
 }

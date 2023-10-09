@@ -9,7 +9,7 @@ interface CreatePlaceReviewCommand {
     data class In(
         val userId: UUID,
         val placeId: Long,
-        val tourId: Long?,
+        val tourId: Long,
         val rating: Double,
         val content: String,
         val images: List<MultipartFile> = emptyList(),

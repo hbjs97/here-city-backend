@@ -9,6 +9,8 @@ import com.herecity.place.application.port.output.review.PlaceReviewQueryOutputP
 import com.herecity.place.domain.entity.PlaceReview
 import com.herecity.place.domain.entity.QPlace.place
 import com.herecity.place.domain.entity.QPlaceReview.placeReview
+import com.herecity.tour.application.port.input.FetchTourPlacesReviewQuery
+import com.herecity.tour.domain.entity.QTourPlace.tourPlace
 import com.herecity.user.domain.entity.QUser.user
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
@@ -77,6 +79,27 @@ class PlaceReviewMariaAdapter(
                 limit = offSetPageable.limit,
             )
         )
+    }
+
+    override fun findTourPlaceReviews(tourId: Long): List<FetchTourPlacesReviewQuery.PlaceReview> {
+        return queryFactory
+            .select(
+                Projections.constructor(
+                    FetchTourPlacesReviewQuery.PlaceReview::class.java,
+                    tourPlace.placeId,
+                    place.title,
+                    place.name,
+                    placeReview.rating,
+                    placeReview.content,
+                    placeReview.images,
+                )
+            )
+            .from(tourPlace)
+            .innerJoin(place).on(place.id.eq(tourPlace.placeId))
+            .leftJoin(placeReview).on(placeReview.placeId.eq(tourPlace.placeId))
+            .where(tourPlace.tour.id.eq(tourId))
+            .groupBy(tourPlace.placeId)
+            .fetch()
     }
 
     override fun getById(id: Long): PlaceReview {
